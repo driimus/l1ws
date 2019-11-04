@@ -54,10 +54,10 @@ describe('register()', () => {
 describe('uploadPicture()', () => {
 	test('upload a valid PNG picture', async done => {
 		expect.assertions(1)
-
 		const [user, pass] = ['doej', 'password']
 		const exp = `public/avatars/${user}.png`
 		await this.account.register(user, pass)
+		const image = {path: 'mockdir/fixtures/some.png', type: 'image/png'}
 		await mock({
 			'mockdir': {
 				'fixtures': {
@@ -65,7 +65,7 @@ describe('uploadPicture()', () => {
 				}
 			}
 		})
-		await this.account.uploadPicture(user, 'mockdir/fixtures/some.png', 'image/png')
+		await this.account.uploadPicture(user, image)
 		expect(fs.existsSync(exp)).toBe(true)
 		await mock.restore()
 		done()
@@ -83,7 +83,7 @@ describe('uploadPicture()', () => {
 				}
 			}
 		})
-		await expect( this.account.uploadPicture(user, soundFile.path, soundFile.type) )
+		await expect( this.account.uploadPicture(user, soundFile) )
 			.rejects.toEqual( Error('invalid image MIME type') )
 		await mock.restore()
 		done()
