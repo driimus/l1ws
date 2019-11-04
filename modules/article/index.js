@@ -1,9 +1,9 @@
 
 'use strict'
 
-const db = require('../db')
+const db = require('../../db')
 
-module.exports = class Article {
+class Article {
 
 	constructor() {
 		return (async() => {
@@ -18,10 +18,9 @@ module.exports = class Article {
 		})()
 	}
 
-	async add(userId, article) {
-		const sql = 'INSERT INTO article(author_id, data) VALUES($1, $2)'
-		await this.db.query(sql, [userId, JSON.stringify(article)])
-		return true
-	}
-
 }
+
+// Extend base class with custom functions.
+require('./add')(Article)
+
+module.exports = Article
