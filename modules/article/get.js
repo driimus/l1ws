@@ -4,11 +4,13 @@
 /**
  * Retrieves all the stored articles in reverse chronological order.
  *
- * @param {number} articleId - The ID of the requested article.
+ * @param {number} id - The ID of the requested article.
  * @async
  */
-const get = async function(articleId) {
-	throw new Error('function not implemented')
+const get = async function(id) {
+	const sql = 'SELECT * FROM article WHERE id=$1'
+	const {rows: [article]} = await this.db.query(sql, [id])
+	return article
 }
 
 module.exports = Article => Article.prototype.get = get
