@@ -141,3 +141,15 @@ describe('getAll()', () => {
 	})
 
 })
+
+describe('get()', () => {
+	test('get article with existing ID', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const {data: res} = await this.article.get(1)
+		// Check that the result has the same content as the dummy.
+		expect(res).toMatchObject(dummy)
+		done()
+	})
+
+})
