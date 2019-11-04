@@ -44,4 +44,18 @@ describe('add()', () => {
 		done()
 	})
 
+	test('error if blank article headline', async done => {
+		expect.assertions(1)
+		const dummy = {
+			// no headline
+			summary: 'Test article summary that is reasonably short',
+			thumbnail: 'mockdir/fixtures/some.png',
+			content: `Test article body. All the multi-line content
+			goes here, with no minimum character count.`
+		}
+		await expect( this.article.add(1, dummy) )
+			.rejects.toEqual( Error('missing article headline') )
+		done()
+	})
+
 })
