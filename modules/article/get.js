@@ -9,6 +9,8 @@
  */
 const get = async function(id) {
 	try {
+		id = parseInt(id)
+		if (isNaN(id)) throw new Error('invalid article ID')
 		const sql = 'SELECT * FROM article WHERE id=$1'
 		const {rows: [article]} = await this.db.query(sql, [id])
 		return article
