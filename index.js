@@ -67,7 +67,7 @@ router.post('/register', koaBody, async ctx => {
 		const body = ctx.request.body
 		console.log(body)
 		// call the functions in the module
-		const user = await new User(dbName)
+		const user = await new User()
 		await user.register(body.user, body.pass)
 		// await user.uploadPicture(path, type)
 		// redirect to the home page
@@ -87,7 +87,7 @@ router.get('/login', async ctx => {
 router.post('/login', async ctx => {
 	try {
 		const body = ctx.request.body
-		const user = await new User(dbName)
+		const user = await new User()
 		await user.login(body.user, body.pass)
 		ctx.session.authorised = true
 		return ctx.redirect('/?msg=you are now logged in...')
