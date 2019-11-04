@@ -13,6 +13,7 @@ const get = async function(id) {
 		if (isNaN(id)) throw new Error('invalid article ID')
 		const sql = 'SELECT * FROM article WHERE id=$1'
 		const {rows: [article]} = await this.db.query(sql, [id])
+		if(article === undefined) throw new Error(`article with ID "${id}" not found`)
 		return article
 	} catch(err) {
 		throw err
