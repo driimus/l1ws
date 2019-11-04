@@ -2,8 +2,9 @@
 'use strict'
 
 const add = async function(userId, article) {
+	if(userId === undefined) throw new Error(`missing user ID ${userId}`)
 	const sql = 'INSERT INTO article(author_id, data) VALUES($1, $2)'
-	await this.db.query(sql, [userId, JSON.stringify(article)])
+	await this.db.query(sql, [userId, article])
 	return true
 }
 
