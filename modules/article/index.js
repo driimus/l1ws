@@ -22,6 +22,7 @@ class Article {
 
 // Extend base class with custom functions.
 require('./add')(Article)
+require('./get-all')(Article)
 require('./is-valid')(Article)
 require('./upload-picture')(Article)
 

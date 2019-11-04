@@ -101,3 +101,25 @@ describe('uploadPicture()', () => {
 	})
 
 })
+
+describe('getAll()', () => {
+	test('get articles in reverse chronological order', async done => {
+		expect.assertions(1)
+		const mostRecent = {
+			headline: 'Recent article title',
+			summary: 'Recent article summary that is reasonably short',
+			thumbnail: 'mockdir/fixtures/recent.png',
+			content: `Recent article body. All the multi-line content
+			that is definitely not copied from the dummy article goes here.`
+		}
+		// Insert both articles.
+		await this.article.add(1, dummy)
+		await this.article.add(1, mostRecent)
+		const res = await this.article.getAll()
+		const dates = res.map((result) => new Date(result.created_at))
+		// First result must be the newest.
+		expect(dates[0] >= dates[1]).toBe(true)
+		done()
+	})
+
+})
