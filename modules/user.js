@@ -41,6 +41,7 @@ module.exports = class User {
 	}
 
 	async uploadPicture(username, path, mimeType) {
+		if(mimeType.split('/')[0] !== 'image') throw new Error('invalid image MIME type')
 		const extension = mime.extension(mimeType)
 		await fs.copy(path, `public/avatars/${username}.${extension}`)
 	}
