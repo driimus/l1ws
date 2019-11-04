@@ -17,11 +17,11 @@ describe('database connection', () => {
 	test('connect to prod database', async done => {
 		const { production } = require('../db/config')
 		process.env = {
-			DB_USER: 'prod',
-			DB_HOST: 'production',
-			DB_DATABASE: 'cwprod',
-			DB_PASSWORD: 'secret',
-			DB_PORT: 5432,
+			RDS_USERNAME: 'prod',
+			RDS_HOSTNAME: 'production',
+			RDS_DB_NAME: 'cwprod',
+			RDS_PASSWORD: 'secret',
+			RDS_PORT: 5432,
 			NODE_ENV: 'production'
 		}
 		const db = new Connection()
