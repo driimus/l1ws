@@ -1,24 +1,27 @@
 
 'use strict'
 
-const db = require('../db/db.js')
+const db = require('../db')
 
 module.exports = class Article {
 
 	constructor() {
 		return (async() => {
+			this.db = new db()
 			const sql = `CREATE TABLE IF NOT EXISTS article (
 				id SERIAL PRIMARY KEY,
 				author_id INTEGER,
 				data JSON NOT NULL
 			)`
-			await db.query(sql)
+			await this.db.query(sql)
 			return this
 		})()
 	}
 
-	async add(title, summary, content) {
-		throw new Error('missing function implementation')
+	async add(userId, article) {
+		const sql = 'INSERT INTO article(author_id, data) VALUES($1, $2)'
+		await this.db.query(sql, [userId, JSON.stringify(article)])
+		return true
 	}
 
 }
