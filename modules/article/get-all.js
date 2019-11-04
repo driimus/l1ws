@@ -3,8 +3,9 @@
 
 const getAll = async function() {
 	// TO-DO: implement pagination
-	// TO-DO: get articles from the database
-	throw Error('function not implemented')
+	const sql = 'SELECT * FROM article ORDER BY created_at DESC'
+	const {rows} = await this.db.query(sql)
+	return rows
 }
 
 module.exports = Article => Article.prototype.getAll = getAll

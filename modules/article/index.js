@@ -11,7 +11,8 @@ class Article {
 			const sql = `CREATE TABLE IF NOT EXISTS article (
 				id SERIAL PRIMARY KEY,
 				author_id INTEGER,
-				data JSON NOT NULL
+				data JSON NOT NULL,
+				created_at TIMESTAMPTZ DEFAULT now()
 			)`
 			await this.db.query(sql)
 			return this
