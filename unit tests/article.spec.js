@@ -29,4 +29,19 @@ describe('add()', () => {
 		done()
 	})
 
+	test('error if missing userId', async done => {
+		expect.assertions(1)
+		const dummy = {
+			headline: 'Test article title',
+			summary: 'Test article summary that is reasonably short',
+			thumbnail: 'mockdir/fixtures/some.png',
+			content: `Test article body. All the multi-line content
+			goes here, with no minimum character count.`
+		}
+		const uId = undefined
+		await expect( this.article.add(uId, dummy) )
+			.rejects.toEqual( Error(`missing user ID ${uId}`) )
+		done()
+	})
+
 })
