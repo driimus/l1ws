@@ -71,6 +71,24 @@ describe('uploadPicture()', () => {
 		done()
 	})
 
+	test('error if file is not an image', async done => {
+		expect.assertions(1)
+		const [user, pass] = ['doej', 'password']
+		await this.account.register(user, pass)
+		const soundFile = {path: 'mockdir/fixtures/some', type: 'audio/x-wav'}
+		await mock({
+			'mockdir': {
+				'fixtures': {
+					'some.wav': Buffer.from([1, 1, 2, 3, 5, 8, 13])
+				}
+			}
+		})
+		await expect( this.account.uploadPicture(user, soundFile.path, soundFile.type) )
+			.rejects.toEqual( Error('invalid image MIME type') )
+		await mock.restore()
+		done()
+	})
+
 })
 
 describe('login()', () => {
