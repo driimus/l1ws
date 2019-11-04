@@ -7,9 +7,11 @@
     "node": "12.x"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js --watch modules --watch routes --watch views",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
+    "test": "jest --coverage --detectOpenHandles",
     "unit": "./node_modules/.bin/jest --coverage 'unit tests/'"
   },
   "jest": {
@@ -41,12 +43,14 @@
     "remark-preset-lint-recommended": "^3.0.3"
   },
   "devDependencies": {
+    "cross-env": "^6.0.3",
     "eslint": "^5.15.2",
     "handlebars-validate": "^0.1.2",
     "http-status-codes": "^1.4.0",
     "jest": "^24.9.0",
     "jsdoc": "^3.6.3",
     "jsdoc-route-plugin": "^0.1.0",
-    "markdownlint": "^0.17.2"
+    "markdownlint": "^0.17.2",
+    "nodemon": "^1.19.4"
   }
 }
