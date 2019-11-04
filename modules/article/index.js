@@ -22,5 +22,6 @@ class Article {
 
 // Extend base class with custom functions.
 require('./add')(Article)
+require('./is-valid')(Article)
 
 module.exports = Article
