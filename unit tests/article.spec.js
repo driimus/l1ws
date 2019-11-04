@@ -140,6 +140,14 @@ describe('getAll()', () => {
 		done()
 	})
 
+	test('error if no published articles', async done => {
+		expect.assertions(1)
+		// Add no articles.
+		await expect( this.article.getAll() )
+			.rejects.toEqual( Error('found no published articles') )
+		done()
+	})
+
 })
 
 describe('get()', () => {
