@@ -2,7 +2,7 @@
 'use strict'
 
 const bcrypt = require('bcrypt-promise')
-// const fs = require('fs-extra')
+const fs = require('fs-extra')
 const mime = require('mime-types')
 
 const db = require('../db')
@@ -40,11 +40,9 @@ module.exports = class User {
 		}
 	}
 
-	async uploadPicture(path, mimeType) {
+	async uploadPicture(username, path, mimeType) {
 		const extension = mime.extension(mimeType)
-		console.log(`path: ${path}`)
-		console.log(`extension: ${extension}`)
-		//await fs.copy(path, `public/avatars/${username}.${fileExtension}`)
+		await fs.copy(path, `public/avatars/${username}.${extension}`)
 	}
 
 	async login(username, password) {
