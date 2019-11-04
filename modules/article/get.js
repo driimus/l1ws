@@ -8,9 +8,13 @@
  * @async
  */
 const get = async function(id) {
-	const sql = 'SELECT * FROM article WHERE id=$1'
-	const {rows: [article]} = await this.db.query(sql, [id])
-	return article
+	try {
+		const sql = 'SELECT * FROM article WHERE id=$1'
+		const {rows: [article]} = await this.db.query(sql, [id])
+		return article
+	} catch(err) {
+		throw err
+	}
 }
 
 module.exports = Article => Article.prototype.get = get
