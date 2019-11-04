@@ -94,7 +94,7 @@ describe('uploadPicture()', () => {
 		})
 		const path = await this.article.uploadPicture(picture)
 		// Check the relative path.
-		expect(path).toEqual(exp)
+		expect(`public/${path}`).toEqual(exp)
 		// Check that the 'file' is there.
 		expect(fs.existsSync(exp)).toBe(true)
 		await mock.restore()
