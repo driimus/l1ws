@@ -80,6 +80,7 @@ describe('add()', () => {
 })
 
 describe('uploadPicture()', () => {
+
 	test('upload a valid article picture', async done => {
 		expect.assertions(2)
 		const picture = {path: 'mockdir/fixtures/some', type: 'image/png'}
@@ -100,9 +101,26 @@ describe('uploadPicture()', () => {
 		done()
 	})
 
+	test('error if file is not an image', async done => {
+		expect.assertions(1)
+		const soundFile = {path: 'mockdir/fixtures/some', type: 'audio/x-wav'}
+		await mock({
+			'mockdir': {
+				'fixtures': {
+					'some': Buffer.from([1, 1, 2, 3, 5, 8, 13])
+				}
+			}
+		})
+		await expect( this.article.uploadPicture(soundFile) )
+			.rejects.toEqual( Error('invalid image MIME type') )
+		await mock.restore()
+		done()
+	})
+
 })
 
 describe('getAll()', () => {
+
 	test('get articles in reverse chronological order', async done => {
 		expect.assertions(1)
 		const mostRecent = {
