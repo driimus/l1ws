@@ -1,6 +1,9 @@
 
 'use strict'
 
+const mock = require('mock-fs')
+const fs = require('fs')
+
 const Articles = require('../modules/article')
 
 const dummy = {
@@ -71,6 +74,29 @@ describe('add()', () => {
 		const { headline, summary, thumbnail } = dummy
 		await expect( this.article.add(1, {headline, summary, thumbnail, content: ''}) )
 			.rejects.toEqual( Error('missing article content') )
+		done()
+	})
+
+})
+
+describe('uploadPicture()', () => {
+	test('upload a valid article picture', async done => {
+		expect.assertions(2)
+		const picture = {path: 'mockdir/fixtures/some', type: 'image/png'}
+		const exp = 'public/uploads/some.png'
+		await mock({
+			'mockdir': {
+				'fixtures': {
+					'some': Buffer.from([1, 1, 2, 3, 5, 8, 13])
+				}
+			}
+		})
+		const path = await this.article.uploadPicture(picture)
+		// Check the relative path.
+		expect(path).toEqual(exp)
+		// Check that the 'file' is there.
+		expect(fs.existsSync(exp)).toBe(true)
+		await mock.restore()
 		done()
 	})
 
