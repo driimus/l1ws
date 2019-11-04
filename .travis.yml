@@ -1,0 +1,34 @@
+sudo: required
+services:
+  - docker
+  - postgresql
+
+# Build the image before running scripts.
+before_install:
+  - docker build -t petrec/localnews -f Dockerfile .
+
+# Set up the test database
+before_script:
+  - psql -c "CREATE USER petest WITH PASSWORD 'secretpassword';"
+  - psql -c "CREATE DATABASE cwtests;"
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE cwtests TO petest;"
+  # Use a temporary, per-session schema for isolated tests.
+  - psql -c "ALTER ROLE petest SET search_path = pg_temp;"
+
+# Execute tests
+script:
+  - docker run --network=host -e CI=true petrec/localnews npm run test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "eu-central-1"
+  app: "340ct-cw"
+  env: "340ctCw-env"
+  bucket_name: "elasticbeanstalk-eu-central-1-956957738733"
+  bucket_path: "localnews"
+  on:
+    branch: master
+
+  access_key_id: $ACCESS_KEY_ID
+  secret_access_key:
+    secure: $SECRET_ACCESS_KEY
