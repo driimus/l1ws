@@ -14,6 +14,12 @@ const app = new Koa()
 /* CONFIGURING THE MIDDLEWARE */
 app.keys = ['darkSecret']
 app.use(staticDir('public'))
+
+/* Bootstrap the views. */
+app.use(staticDir('node_modules/jquery/dist'))
+app.use(staticDir('node_modules/bootstrap/dist/js'))
+app.use(staticDir('node_modules/bootstrap/dist/css'))
+
 app.use(bodyParser())
 app.use(session(app))
 app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handlebars: 'handlebars' }}))
