@@ -55,4 +55,20 @@ router.post('/new', koaBody, async ctx => {
 	}
 })
 
+/**
+ * The published article full-view page.
+ *
+ * @name Published Article
+ * @route {GET} /:id
+ */
+router.get('/:id([0-9]{1,})', async ctx => {
+	try {
+		const article = await new Article()
+		const data = await article.get(ctx.params.id)
+		return ctx.render('articleView', data)
+	}	catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
 module.exports = router
