@@ -36,7 +36,7 @@ app.use(views(`${__dirname}/views`, {
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 
-const router = require('./routes/user')
+const router = require('./routes')
 app.use(router.routes())
 
 module.exports = app.listen(port, async() => console.log(`listening on port ${port}`))
