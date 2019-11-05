@@ -19,10 +19,19 @@ app.use(staticDir('public'))
 app.use(staticDir('node_modules/jquery/dist'))
 app.use(staticDir('node_modules/bootstrap/dist/js'))
 app.use(staticDir('node_modules/bootstrap/dist/css'))
+app.use(staticDir('node_modules/@fortawesome'))
 
 app.use(bodyParser())
 app.use(session(app))
-app.use(views(`${__dirname}/views`, { extension: 'handlebars' }, {map: { handlebars: 'handlebars' }}))
+app.use(views(`${__dirname}/views`, {
+	extension: 'handlebars', map: {handlebars: 'handlebars'},
+	options: {
+		partials: {
+			header: './partials/header',
+			footer: './partials/footer'
+		}
+	}
+}))
 
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort

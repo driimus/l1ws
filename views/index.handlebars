@@ -5,11 +5,16 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Home Page</title>
-		<meta name="description" content="form to add new books">
-		<meta name="author" content="Mark Tyers">
-		<link href="style.css" type="text/css" rel="stylesheet" />
+		<meta name="description" content="Page that lists published articles">
+		<meta name="author" content="Cristian Petre">
+		<link href="/style.css" type="text/css" rel="stylesheet" />
+		<link href="/bootstrap.min.css" type="text/css" rel="stylesheet" />
+		<link href="/fontawesome-free/css/all.css" rel="stylesheet" />
+		<link rel="preload" href="/jquery.js" as "script">
+		<link rel="preload" href="/bootstrap.min.js" as "script">
 	</head>
 	<body>
+		{{> header }}
 		<h1>Home</h1>
 		<p>This is a secure page. Users need to have a valid account and be logged in to see it.</p>
 		<p><a href="/logout">log out</a></p>
