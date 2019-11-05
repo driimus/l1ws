@@ -5,6 +5,7 @@
     "jasmine": true,
     "node": true,
     "browser": true,
+    "jquery": true,
     "jest": true
   },
   "parserOptions": {
@@ -70,5 +71,9 @@
 			"max-statements": "off",
 			"no-magic-numbers": "off"
 		}
-	}]
+	}],
+    "plugins": ["html"],
+    "settings": {
+        "html/html-extensions": [".handlebars", ".html"]
+    }
 }
