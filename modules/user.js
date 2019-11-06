@@ -7,7 +7,7 @@ const mime = require('mime-types')
 
 const db = require('../db')
 
-const saltRounds = 10
+const {saltRounds} = require('../config')[process.env.NODE_ENV]
 
 module.exports = class User {
 
