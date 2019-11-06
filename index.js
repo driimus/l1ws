@@ -27,8 +27,8 @@ app.use(views(`${__dirname}/views`, {
 	extension: 'handlebars', map: {handlebars: 'handlebars'},
 	options: {
 		partials: {
-			header: './partials/header',
-			footer: './partials/footer'
+			header: `${__dirname}/views/partials/header`,
+			footer: `${__dirname}/views/partials/footer`
 		}
 	}
 }))
