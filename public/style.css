@@ -6,9 +6,18 @@ body {
 	position: relative;
 }
 
-footer {
+.container {
+	width: 80%;
+	margin: auto;
+}
+
+.footer {
 	position: absolute;
 	bottom: 0;
+	width: 100%;
+}
+
+input {
 	width: 100%;
 }
 
@@ -17,4 +26,16 @@ footer {
 	font-weight: bold;
 	color: red;
 	padding: 1em;
+}
+
+.content {
+	width: 100%;
+}
+
+.article {
+	border: 1px;
+	padding: 0 1rem;
+	margin-bottom: 1rem;
+	border-color: #1DE9B6;
+	border-style: solid;
 }

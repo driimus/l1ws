@@ -29,7 +29,7 @@ router.get('/new', async ctx => {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const data = {}
 		if(ctx.query.msg) data.msg = ctx.query.msg
-		await ctx.render('article', data)
+		await ctx.render('article/new', data)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -56,6 +56,24 @@ router.post('/new', koaBody, async ctx => {
 })
 
 /**
+ * The article image upload script.
+ *
+ * @name Upload Pictures
+ * @route {POST} /upload
+ */
+router.post('/upload', koaBody, async ctx => {
+	try {
+		console.log(ctx.request.files)
+		const {thumbnail: {path, type}} = ctx.request.files
+		const article = await new Article()
+		const thumbnail = await article.uploadPicture({path, type})
+		return ctx.render('article/new', {thumbnail})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+/**
  * The published article full-view page.
  *
  * @name Published Article
@@ -65,7 +83,7 @@ router.get('/:id([0-9]{1,})', async ctx => {
 	try {
 		const article = await new Article()
 		const data = await article.get(ctx.params.id)
-		return ctx.render('articleView', data)
+		return ctx.render('article/', data)
 	}	catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
