@@ -5,6 +5,13 @@ const fs = require('fs-extra')
 const mime = require('mime-types')
 const path = require('path')
 
+/**
+ * Saves a new article thumbnail to the filesystem.
+ *
+ * @param {object} img - The submitted image.
+ * @async
+ * @returns {string} Relative path to the public uploaded image.
+ */
 const uploadPicture = async img => {
 	try {
 		if(img.type.split('/')[0] !== 'image') throw new Error('invalid image MIME type')

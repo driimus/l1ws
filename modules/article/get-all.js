@@ -2,9 +2,10 @@
 'use strict'
 
 /**
- * Retrieves all the stored articles in reverse chronological order.
+ * Retrieves all the articles in reverse chronological order.
  *
  * @async
+ * @returns {Array} List of the published articles as objects.
  */
 const getAll = async function() {
 	try {

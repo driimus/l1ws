@@ -2,7 +2,7 @@
 'use strict'
 
 
-const Accounts = require('../modules/user.js')
+const Accounts = require('../modules/user')
 
 const mock = require('mock-fs')
 const fs = require('fs')
