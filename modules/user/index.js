@@ -3,8 +3,12 @@
 
 const db = require('../../db')
 
+/** Class representing an user. */
 class User {
 
+	/**
+	 * Create a database connection and initialise a new table if needed.
+	 */
 	constructor() {
 		return (async() => {
 			this.db = new db()
