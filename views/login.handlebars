@@ -2,29 +2,43 @@
 <!doctype html>
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Log In</title>
-		<meta name="description" content="Authentication page for users">
-		<meta name="author" content="Cristian Petre">
-		<link href="/style.css" type="text/css" rel="stylesheet" />
-		<link href="/bootstrap.min.css" type="text/css" rel="stylesheet" />
-		<link href="/fontawesome-free/css/all.css" rel="stylesheet" />
-		<link rel="preload" href="/jquery.js" as "script">
-		<link rel="preload" href="/bootstrap.min.js" as "script">
-	</head>
-	<body>
-		{{> header }}
-		<h1>Log In</h1>
+<head>
+	<meta charset="utf-8">
+	<title>Log In</title>
+	<meta name="description" content="Authentication page for users">
+	<meta name="author" content="Cristian Petre">
+	<link href="/style.css" type="text/css" rel="stylesheet">
+	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
+	<link rel="preload" href="/jquery.js" as "script">
+	<link rel="preload" href="/bootstrap.min.js" as "script">
+</head>
+<body>
+	{{> header }}
+	<div class="container col-xs-12 col-md-4 pb-5">
+		<h1 class="p-4 text-center">Log in to CW</h1>
 		{{#if msg}}
- 			<p class="msg">{{msg}}</p>
+		<div class="alert alert-danger">{{msg}}</div>
 		{{/if}}
-		<form action="/login" method="post">
-			<p>Username:<br /><input type="text" name="user" placeholder="your username" value="{{user}}" autofocus></p>
-			<p>Password:<br /><input type="password" name="pass" placeholder="your password" value=""></p>
-			<p><input type="submit" value="Log in"></p>
-		</form>
-		<p><a href="/register">register</a></p>
-		{{> footer }}
-	</body>
+		<div class="card mb-4">
+			<form action="/login" method="post">
+				<div class="card-body">
+					<div class="form-group">
+						<label for="user">Username</label>
+						<input type="text" class="form-control" name="user" placeholder="Enter your username" value="{{user}}" required autofocus>
+					</div>
+					<div class="form-group">
+						<label for="pass">Password</label>
+						<input type="password" class="form-control" name="pass" placeholder="Enter your password" value="" required>
+					</div>
+					<input type="submit" class="btn btn-lg btn-dark mt-2" value="Log in">
+				</div>
+			</form>
+		</div>
+		<div class="alert alert-success text-center">
+			New here? <a href="/register" class="alert-link">Create a new account</a>
+		</div>
+	</div>
+	{{> footer }}
+</body>
 </html>
