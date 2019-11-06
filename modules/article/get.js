@@ -6,12 +6,14 @@
  *
  * @param {number} id - The ID of the requested article.
  * @async
+ * @returns {object} Article with a matching id.
  */
 const get = async function(id) {
 	try {
 		// Check that Article ID is numeric.
 		if (isNaN(id)) throw new Error('invalid article ID')
 		const sql = 'SELECT * FROM article WHERE id=$1'
+		// Get first result.
 		const {rows: [article]} = await this.db.query(sql, [id])
 		if(article === undefined) throw new Error(`article with ID "${id}" not found`)
 		return article
