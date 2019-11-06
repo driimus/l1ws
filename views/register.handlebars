@@ -2,20 +2,47 @@
 <!doctype html>
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Create an Account</title>
-		<meta name="description" content="form to add new books">
-		<meta name="author" content="Mark Tyers">
-		<link href="style.css" type="text/css" rel="stylesheet" />
-	</head>
-	<body>
-		<h1>Create an Account</h1>
-		<form action="/register" enctype="multipart/form-data" method="post">
-			<p>Username:<br /><input type="text" name="user" placeholder="your preferred username (no spaces)" value=""></p>
-            <p>Password:<br /><input type="password" name="pass" placeholder="your chosen password" value=""></p>
-			<p>Profile Picture:<br /><input type="file" name="avatar"></p>
-			<p><input type="submit" value="Create"></p>
-		</form>
-	</body>
+<head>
+	<meta charset="utf-8">
+	<title>Create an Account</title>
+	<meta name="description" content="New user registration page">
+	<meta name="author" content="Cristian Petre">
+	<link href="/style.css" type="text/css" rel="stylesheet" />
+	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet" />
+	<link href="/fontawesome-free/css/all.css" rel="stylesheet" />
+	<link rel="preload" href="/jquery.js" as "script">
+	<link rel="preload" href="/bootstrap.min.js" as "script">
+</head>
+<body class="pb-4">
+	{{> header }}
+	<div class="container col-xs-12 col-md-4 pb-5">
+		<h1 class="p-4 text-center">Create an Account</h1>
+		<div class="card mb-4">
+			<form action="/register" enctype="multipart/form-data" method="post">
+				<div class="card-body">
+					<div class="form-group">
+						<label for="user">Username</label>
+						<input type="text" class="form-control" name="user" placeholder="Choose an username" value="{{user}}" required autofocus>
+					</div>
+					<div class="form-group">
+						<label for="pass">Password</label>
+						<input type="password" class="form-control" name="pass" placeholder="Choose a password" value="" required>
+					</div>
+					<div class="form-group">
+						<label for="avatar">Profile picture <small>(optional)</small></label>
+						<div class="custom-file">
+							<input accepts="image/*" type="file" name="avatar" class="custom-file-input" id="avatar">
+							<label class="custom-file-label" for="avatar">Choose file</label>
+						</div>
+					</div>
+					<input type="submit" class="btn btn-lg btn-outline-dark mt-2" value="Sign up">
+				</div>
+			</form>
+		</div>
+		<div class="alert alert-success text-center">
+			Already have an account? <a href="/login" class="alert-link">Log in</a>
+		</div>
+	</div>
+	{{> footer }}
+</body>
 </html>

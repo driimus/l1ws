@@ -5,6 +5,7 @@
     "jasmine": true,
     "node": true,
     "browser": true,
+    "jquery": true,
     "jest": true
   },
   "parserOptions": {
@@ -27,7 +28,7 @@
     "max-depth": ["error", 3],
     "max-len": ["warn", { "code": 120, "tabWidth": 4 }],
     "max-lines": ["warn", {"max": 150, "skipBlankLines": true, "skipComments": true}],
-    "max-lines-per-function": ["error", 20],
+    "max-lines-per-function": ["warn", {"max": 20, "skipBlankLines": true, "skipComments": true}],
     "max-nested-callbacks": ["error", 4],
     "max-params": ["error", 5],
     "max-statements": ["error", 20],
@@ -70,5 +71,9 @@
 			"max-statements": "off",
 			"no-magic-numbers": "off"
 		}
-	}]
+	}],
+    "plugins": ["html"],
+    "settings": {
+        "html/html-extensions": [".handlebars", ".html"]
+    }
 }
