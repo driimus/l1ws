@@ -9,7 +9,7 @@ const config = require('./config.js')
  * Class representing a pool of database connections.
  * @extends Pool
  */
-module.exports = class Database extends Pool {
+class Database extends Pool {
 
 	/**
    * Create a new Pool.
@@ -20,3 +20,5 @@ module.exports = class Database extends Pool {
 	}
 
 }
+
+module.exports = Database
