@@ -19,6 +19,7 @@ const setStatus = async function(id, newStatus) {
 			throw new Error(`new status "${newStatus}" is not allowed`)
 		const sql = 'UPDATE article SET status=$2 WHERE id=$1'
 		const {rowCount} = await this.db.query(sql, [id, newStatus])
+		// Check if no record was updated.
 		if(rowCount === 0) throw new Error(`article with ID "${id}" not found`)
 		return true
 	} catch(err) {
