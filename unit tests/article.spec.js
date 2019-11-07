@@ -161,7 +161,6 @@ describe('get()', () => {
 		done()
 	})
 
-
 	test('error if article ID is not numeric', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)
@@ -242,6 +241,14 @@ describe('setStatus()', () => {
 		const newStatus = 'sent into space'
 		await expect( this.article.setStatus(1, newStatus) )
 			.rejects.toEqual( Error(`new status "${newStatus}" is not allowed`) )
+		done()
+	})
+
+	test('error if article ID is not numeric', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.setStatus('horse', 'approved') )
+			.rejects.toEqual( Error('invalid article ID') )
 		done()
 	})
 
