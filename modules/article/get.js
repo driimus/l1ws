@@ -17,7 +17,7 @@ const get = async function(id, showHidden=false) {
 			${showHidden === false ? 'AND status=\'approved\'' : ''}
 		`
 		// Get first result.
-		const {rows: [article]} = await this.db.query(sql, [id])
+		const { rows: [article] } = await this.db.query(sql, [id])
 		if(article === undefined) throw new Error(`article with ID "${id}" not found`)
 		return article
 	} catch(err) {

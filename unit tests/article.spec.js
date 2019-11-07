@@ -154,7 +154,20 @@ describe('get()', () => {
 
 	test('get hidden article with existing ID', async done => {
 		expect.assertions(1)
+		// Add article that is 'pending' by default.
 		await this.article.add(1, dummy)
+		const showHidden = true
+		const {data: res} = await this.article.get(1, showHidden)
+		expect(res).toMatchObject(dummy)
+		done()
+	})
+
+	test('get rejected article with existing ID', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		// Mark article as rejected.
+		await this.article.setStatus(1, 'rejected')
 		const showHidden = true
 		const {data: res} = await this.article.get(1, showHidden)
 		expect(res).toMatchObject(dummy)
@@ -163,6 +176,7 @@ describe('get()', () => {
 
 	test('get article with existing ID', async done => {
 		expect.assertions(1)
+		// Add article that is 'pending' by default.
 		await this.article.add(1, dummy)
 		// Mark article as approved.
 		await this.article.setStatus(1, 'approved')
@@ -170,6 +184,27 @@ describe('get()', () => {
 		const {data: res} = await this.article.get(1)
 		// Check that the result has the same content as the dummy.
 		expect(res).toMatchObject(dummy)
+		done()
+	})
+
+
+	test('error if article is not approved', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		await expect( this.article.get(1) )
+			.rejects.toEqual( Error('article with ID "1" not found') )
+		done()
+	})
+
+	test('error if article is rejected', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		// Mark article as rejected.
+		await this.article.setStatus(1, 'rejected')
+		await expect( this.article.get(1) )
+			.rejects.toEqual( Error('article with ID "1" not found') )
 		done()
 	})
 
