@@ -11,6 +11,7 @@
 const getAll = async function(showHidden=false) {
 	try {
 		// TO-DO: implement pagination
+		if (typeof showHidden !== 'boolean') throw new Error(`invalid showHidden value: "${showHidden}"`)
 		const sql = `SELECT * FROM article
 			${showHidden === false ? 'WHERE status=\'approved\'' : ''}
 			ORDER BY created_at DESC
