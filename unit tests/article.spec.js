@@ -226,6 +226,8 @@ describe('get()', () => {
 	test('error if article does not exist', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
 		const invalidId = 999
 		await expect( this.article.get(invalidId) )
 			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
