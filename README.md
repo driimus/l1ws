@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/driimus/340ctcw.svg?token=kAw4dYYDuYsjS2BM8ceE&branch=development)](https://travis-ci.com/driimus/340ctcw)
 [![Code Coverage](https://codecov.io/gh/driimus/340ctcw/branch/master/graph/badge.svg?token=BseGtb6kXn)](https://codecov.io/gh/driimus/340ctcw)
+[![BCH compliance](https://bettercodehub.com/edge/badge/driimus/340ctcw?branch=development&token=3fe4a078e4b128f4c9399facabd3d763186b5bd0)](https://bettercodehub.com/)
 
 This repository contains the base files for the assignment. You will need to create a _private duplicate_ in your module organisation. Carry out the following steps, taken from the [GitHub documentation](https://help.github.com/en/enterprise/2.16/user/articles/duplicating-a-repository):
 
