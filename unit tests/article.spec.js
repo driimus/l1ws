@@ -121,21 +121,42 @@ describe('uploadPicture()', () => {
 
 describe('getAll()', () => {
 
+	const mostRecent = {
+		headline: 'Recent article title',
+		summary: 'Recent article summary that is reasonably short',
+		thumbnail: 'mockdir/fixtures/recent.png',
+		content: `Recent article body. All the multi-line content
+		that is definitely not copied from the dummy article goes here.`
+	}
+
 	test('get articles in reverse chronological order', async done => {
 		expect.assertions(1)
-		const mostRecent = {
-			headline: 'Recent article title',
-			summary: 'Recent article summary that is reasonably short',
-			thumbnail: 'mockdir/fixtures/recent.png',
-			content: `Recent article body. All the multi-line content
-			that is definitely not copied from the dummy article goes here.`
-		}
 		// Insert both articles.
 		await this.article.add(1, dummy)
 		await this.article.add(1, mostRecent)
-		const res = await this.article.getAll()
+		// Allow searching for unapproved articles.
+		const showHidden = true
+		const res = await this.article.getAll(showHidden)
 		const dates = res.map((result) => new Date(result.created_at))
 		// First result must be the newest.
+		expect(dates[0] >= dates[1]).toBe(true)
+		done()
+	})
+
+	test('get approved articles in reverse chronological order', async done => {
+		expect.assertions(2)
+		// Insert multiple articles.
+		await this.article.add(1, dummy)
+		await this.article.add(1, mostRecent)
+		await this.article.add(1, dummy)
+		// Only approve the last two articles.
+		await this.article.setStatus(2, 'approved')
+		await this.article.setStatus(3, 'approved')
+		const res = await this.article.getAll()
+		// There should only be two results.
+		expect(res.length).toBe(2)
+		// First result should be most recent.
+		const dates = res.map((result) => new Date(result.created_at))
 		expect(dates[0] >= dates[1]).toBe(true)
 		done()
 	})

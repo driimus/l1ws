@@ -4,10 +4,11 @@
 /**
  * Retrieves all the articles in reverse chronological order.
  *
+ * @param {boolean} showHidden - Flag for filtering articles by status.
  * @async
  * @returns {Array} List of the published articles as objects.
  */
-const getAll = async function() {
+const getAll = async function(showHidden=false) {
 	try {
 		// TO-DO: implement pagination
 		const sql = 'SELECT * FROM article ORDER BY created_at DESC'
