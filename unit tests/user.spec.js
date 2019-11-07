@@ -139,4 +139,12 @@ describe('isAdmin()', () => {
 		done()
 	})
 
+	test('invalid username', async done => {
+		expect.assertions(1)
+		const user = 'doej'
+		await expect( this.account.isAdmin(user) )
+			.rejects.toEqual( Error(`username "${user}" not found`) )
+		done()
+	})
+
 })
