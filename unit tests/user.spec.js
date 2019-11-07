@@ -170,4 +170,13 @@ describe('setAdmin()', () => {
 		done()
 	})
 
+	test('error if flag is done by user', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.register('roej', 'password')
+		await expect( this.account.setAdmin('doej', 'roej', true) )
+			.rejects.toEqual( Error('user "doej" is not an admin') )
+		done()
+	})
+
 })
