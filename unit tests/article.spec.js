@@ -200,4 +200,12 @@ describe('getStatus()', () => {
 		done()
 	})
 
+	test('error if article ID is not numeric', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.getStatus('horse') )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
 })
