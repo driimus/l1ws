@@ -220,6 +220,22 @@ describe('setStatus()', () => {
 		done()
 	})
 
+	test('mark article as pending', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const res = await this.article.setStatus(1, 'pending')
+		expect(res).toBe(true)
+		done()
+	})
+
+	test('mark article as rejected', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const res = await this.article.setStatus(1, 'rejected')
+		expect(res).toBe(true)
+		done()
+	})
+
 	test('error if invalid article status', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)

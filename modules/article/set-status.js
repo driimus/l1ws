@@ -12,7 +12,7 @@
 const setStatus = async function(id, newStatus) {
 	try {
 		const sql = 'UPDATE article SET status=$2 WHERE id=$1'
-		if (!['pending', 'approved'].includes(newStatus))
+		if (!['pending', 'approved', 'rejected'].includes(newStatus))
 			throw new Error(`new status "${newStatus}" is not allowed`)
 		await this.db.query(sql, [id, newStatus])
 		return true

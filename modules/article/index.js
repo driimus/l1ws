@@ -18,7 +18,7 @@ class Article {
 				data JSON NOT NULL,
 				created_at TIMESTAMPTZ DEFAULT now(),
 				status TEXT DEFAULT 'pending'
-					CHECK (status in ('pending','approved'))
+					CHECK (status in ('pending','approved','rejected'))
 			)`
 			await this.db.query(sql)
 			return this
