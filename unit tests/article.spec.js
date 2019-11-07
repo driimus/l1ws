@@ -187,6 +187,13 @@ describe('get()', () => {
 		done()
 	})
 
+	test('error if invalid showHidden flag', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await expect( this.article.get(1, 'veryBOolean') )
+			.rejects.toEqual( Error('invalid showHidden value: "veryBOolean"') )
+		done()
+	})
 
 	test('error if article is not approved', async done => {
 		expect.assertions(1)
