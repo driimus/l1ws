@@ -161,6 +161,13 @@ describe('getAll()', () => {
 		done()
 	})
 
+	test('error if invalid showHidden flag', async done => {
+		expect.assertions(1)
+		await expect( this.article.getAll('veryBOolean') )
+			.rejects.toEqual( Error('invalid showHidden value: "veryBOolean"') )
+		done()
+	})
+
 	test('error if no published articles', async done => {
 		expect.assertions(1)
 		// Add no articles.
@@ -210,7 +217,6 @@ describe('get()', () => {
 
 	test('error if invalid showHidden flag', async done => {
 		expect.assertions(1)
-		// Add article that is 'pending' by default.
 		await expect( this.article.get(1, 'veryBOolean') )
 			.rejects.toEqual( Error('invalid showHidden value: "veryBOolean"') )
 		done()
@@ -253,7 +259,7 @@ describe('get()', () => {
 		await expect( this.article.get(invalidId) )
 			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
 		done()
-	})
+		})
 
 })
 
