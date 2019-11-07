@@ -18,7 +18,8 @@ const setStatus = async function(id, newStatus) {
 		if (!['pending', 'approved', 'rejected'].includes(newStatus))
 			throw new Error(`new status "${newStatus}" is not allowed`)
 		const sql = 'UPDATE article SET status=$2 WHERE id=$1'
-		await this.db.query(sql, [id, newStatus])
+		const {rowCount} = await this.db.query(sql, [id, newStatus])
+		if(rowCount === 0) throw new Error(`article with ID "${id}" not found`)
 		return true
 	} catch(err) {
 		throw err
