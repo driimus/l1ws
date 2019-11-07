@@ -147,4 +147,11 @@ describe('isAdmin()', () => {
 		done()
 	})
 
+	test('guest is not an admin', async done => {
+		expect.assertions(1)
+		const admin = await this.account.isAdmin()
+		expect(admin).toBe(false)
+		done()
+	})
+
 })
