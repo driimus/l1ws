@@ -10,8 +10,8 @@
  */
 const getStatus = async function(id) {
 	const sql = 'SELECT status FROM article WHERE id=$1'
-	const {rows: [{status}] } = await this.db.query(sql, [id])
-	return status
+	const {rows: [article] } = await this.db.query(sql, [id])
+	return article.status
 }
 
 module.exports = Article => Article.prototype.getStatus = getStatus
