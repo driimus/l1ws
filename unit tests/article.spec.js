@@ -152,9 +152,21 @@ describe('getAll()', () => {
 
 describe('get()', () => {
 
+	test('get hidden article with existing ID', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const showHidden = true
+		const {data: res} = await this.article.get(1, showHidden)
+		expect(res).toMatchObject(dummy)
+		done()
+	})
+
 	test('get article with existing ID', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Retrieve approved article.
 		const {data: res} = await this.article.get(1)
 		// Check that the result has the same content as the dummy.
 		expect(res).toMatchObject(dummy)
