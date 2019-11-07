@@ -9,7 +9,9 @@
  * @returns {string} Current submission status (approved/pending).
  */
 const getStatus = async function(id) {
-	throw new Error('function not implemented')
+	const sql = 'SELECT status FROM article WHERE id=$1'
+	const {rows: [{status}] } = await this.db.query(sql, [id])
+	return status
 }
 
 module.exports = Article => Article.prototype.getStatus = getStatus
