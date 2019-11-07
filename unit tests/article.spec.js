@@ -209,3 +209,15 @@ describe('getStatus()', () => {
 	})
 
 })
+
+describe('setStatus()', () => {
+
+	test('mark article as approved', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const res = await this.article.setStatus(1, 'approved')
+		expect(res).toBe(true)
+		done()
+	})
+
+})
