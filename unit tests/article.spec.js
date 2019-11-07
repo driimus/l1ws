@@ -220,4 +220,13 @@ describe('setStatus()', () => {
 		done()
 	})
 
+	test('error if invalid article status', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const newStatus = 'sent into space'
+		await expect( this.article.setStatus(1, newStatus) )
+			.rejects.toEqual( Error(`new status "${newStatus}" is not allowed`) )
+		done()
+	})
+
 })
