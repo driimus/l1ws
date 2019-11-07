@@ -155,3 +155,19 @@ describe('isAdmin()', () => {
 	})
 
 })
+
+describe('setAdmin()', () => {
+
+	test('flag user as admin by admin', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Promote user to admin from admin account.
+		await this.account.register('roej', 'password')
+		const flagged = await this.account.setAdmin('doej', 'roej', true)
+		expect(flagged).toBe(true)
+		done()
+	})
+
+})
