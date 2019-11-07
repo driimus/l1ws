@@ -244,6 +244,15 @@ describe('setStatus()', () => {
 		done()
 	})
 
+	test('error if article does not exist', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const invalidId = 999
+		await expect( this.article.setStatus(invalidId, 'approved') )
+			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
+		done()
+	})
+
 	test('error if article ID is not numeric', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)
