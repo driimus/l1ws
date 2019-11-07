@@ -12,6 +12,7 @@
 		<link href="/fontawesome-free/css/all.css" rel="stylesheet">
 		<link rel="preload" href="/jquery.js" as "script">
 		<link rel="preload" href="/bootstrap.min.js" as "script">
+		<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}"></script>
 	</head>
 	<body>
 		{{> header }}
@@ -20,7 +21,7 @@
 		<div class="container col-xs-12 col-md-6 pb-5 m-auto">
 			<article>
 				<h1 class="display-4 pt-4">{{data.headline}}</h1>
-				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light">{{created_at}}</strong></p>
+				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
 				<p class="font-italic text-muted">{{data.summary}}</p>
 				<img src="/{{data.thumbnail}}" class="rounded">
 				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>

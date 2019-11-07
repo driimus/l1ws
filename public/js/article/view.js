@@ -1,6 +1,11 @@
 
 'use strict'
 
+document.addEventListener('DOMContentLoaded', () => {
+	const data = document.getElementById('articleView')
+	setDate(data)
+})
+
 /**
  * Displays submission date in local time.
  */
