@@ -16,7 +16,9 @@ class Article {
 				id SERIAL PRIMARY KEY,
 				author_id INTEGER,
 				data JSON NOT NULL,
-				created_at TIMESTAMPTZ DEFAULT now()
+				created_at TIMESTAMPTZ DEFAULT now(),
+				status TEXT DEFAULT 'pending'
+					CHECK (status in ('pending','approved'))
 			)`
 			await this.db.query(sql)
 			return this

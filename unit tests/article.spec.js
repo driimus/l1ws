@@ -180,3 +180,15 @@ describe('get()', () => {
 	})
 
 })
+
+describe('getStatus()', () => {
+
+	test('get pending article status', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const status = await this.article.getStatus(1)
+		expect(status).toBe('pending')
+		done()
+	})
+
+})
