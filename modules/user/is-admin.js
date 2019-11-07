@@ -8,11 +8,9 @@
  * @async
  */
 const isAdmin = async function(username) {
-	try {
-		throw new Error('function not implmented')
-	} catch(err) {
-		throw err
-	}
+	const sql = 'SELECT id,is_admin FROM users where username=$1'
+	const { rows: [res] } = await this.db.query(sql, [username])
+	return res.is_admin
 }
 
 module.exports = User => User.prototype.isAdmin = isAdmin
