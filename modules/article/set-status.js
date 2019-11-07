@@ -10,9 +10,13 @@
  * @returns {string} Whether the update was performed successfully.
  */
 const setStatus = async function(id, newStatus) {
-	const sql = 'UPDATE article SET status=$2 WHERE id=$1'
-	await this.db.query(sql, [id, newStatus])
-	return true
+	try {
+		const sql = 'UPDATE article SET status=$2 WHERE id=$1'
+		await this.db.query(sql, [id, newStatus])
+		return true
+	} catch(err) {
+		throw err
+	}
 }
 
 module.exports = Article => Article.prototype.setStatus = setStatus
