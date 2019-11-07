@@ -179,4 +179,15 @@ describe('setAdmin()', () => {
 		done()
 	})
 
+	test('error if blank target username', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Try to promote blank username.
+		await expect( this.account.setAdmin('doej', '') )
+			.rejects.toEqual( Error('missing target username') )
+		done()
+	})
+
 })
