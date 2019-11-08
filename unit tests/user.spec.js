@@ -190,4 +190,15 @@ describe('setAdmin()', () => {
 		done()
 	})
 
+	test('error if invalid user status', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Try to promote username to invalid status.
+		await expect( this.account.setAdmin('doej', 'roej', 'rocket scientist') )
+			.rejects.toEqual( Error('invalid toAdmin value: "rocket scientist"') )
+		done()
+	})
+
 })
