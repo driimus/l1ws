@@ -259,7 +259,7 @@ describe('get()', () => {
 		await expect( this.article.get(invalidId) )
 			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
 		done()
-		})
+	})
 
 })
 
