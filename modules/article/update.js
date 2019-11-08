@@ -3,6 +3,14 @@
 
 const isId = require('../utils')
 
+/**
+ * Compares two article objects for equality.
+ *
+ * @private
+ * @param {object} article - The current article object.
+ * @param {object} newArticle - The updated article object.
+ * @returns {boolean} Whether the new article is different.
+ */
 const modified = (article, newArticle) =>
 	Object.keys(article).some((attr) => newArticle[attr] !== article[attr])
 
@@ -13,7 +21,7 @@ const modified = (article, newArticle) =>
  * @param {number} articleId - The ID of the original article.
  * @param {object} newArticle - The updated article object.
  * @async
- * @returns {boolean} If the process was successful.
+ * @returns {boolean} Whether the process was successful.
  */
 const update = async function(userId, articleId, newArticle) {
 	try {

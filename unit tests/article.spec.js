@@ -354,8 +354,77 @@ describe('update()', () => {
 		// Mark article as approved.
 		await this.article.setStatus(1, 'approved')
 		// Create modified article.
+		const updated = {
+			headline: 'Updated article title',
+			summary: 'Updated article summary that is reasonably short',
+			thumbnail: 'mockdir/fixtures/updated.png',
+			content: `Updated article body. All the multi-line content
+		that is definitely not identical to the dummy article's goes here.`
+		}
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article headline', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
 		const updated = Object.assign({}, dummy)
 		updated.headline = 'Updated headline'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article summary', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.summary = 'Updated summary'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article thumbnail', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.thumbnail = 'Updated thumbnail'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article content', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = 'Updated content'
 		const update = await this.article.update(1, 1, updated)
 		const {status} = await this.article.get(1, true)
 		// Article should be flagged as 'pending' again.
