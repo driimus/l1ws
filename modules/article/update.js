@@ -11,7 +11,9 @@
  * @returns {boolean} If the process was successful.
  */
 const update = async function(userId, articleId, newArticle) {
-	throw new Error('function not implemented')
+	const sql = 'UPDATE article SET (data, created_at) = ($2, now()) WHERE id=$1'
+	await this.db.query(sql, [articleId, newArticle])
+	return true
 }
 
 module.exports = Article => Article.prototype.update = update
