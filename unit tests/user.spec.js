@@ -201,4 +201,15 @@ describe('setAdmin()', () => {
 		done()
 	})
 
+	test('error if inexistent username', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Try to promote inexistent user.
+		await expect( this.account.setAdmin('doej', 'roej') )
+			.rejects.toEqual( Error('target username "roej" not found') )
+		done()
+	})
+
 })
