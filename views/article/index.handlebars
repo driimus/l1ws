@@ -18,14 +18,31 @@
 		{{> header }}
 	</head>
 	<body class="pb-4">
-		<div class="container col-xs-12 col-md-6 pb-5 m-auto">
-			<article>
-				<h1 class="display-4 pt-4">{{data.headline}}</h1>
-				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
-				<p class="font-italic text-muted">{{data.summary}}</p>
-				<img src="/{{data.thumbnail}}" class="rounded">
-				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
-			</article>
+		<div class="row m-0 pb-5">
+			<div class="container col-xs-12 col-md-3 m-0">
+				<div class="card border-dark mt-3">
+				  <div class="card-header bg-transparent border-dark">Admin actions</div>
+				  <div class="card-body text-dark">
+				    <h5 class="card-title">Update Article Status</h5>
+						<p class="card-text">Current status: <span class="badge badge-dark">{{status}}</badge></p>
+					  <form enctype="multipart/form-data" method="post">
+					  	<div class="btn-group w-100">
+								<button class="btn btn-success" name="status" value="approved" type="submit">Approve</button>
+								<button class="btn btn-outline-danger" name="status" value="rejected" type="submit">Reject</button>
+					  	</div>
+						</form>
+				  </div>
+				</div>
+			</div>
+			<div class="container col-xs-12 col-md-6 pb-5 m-0">
+				<article>
+					<h1 class="display-4 pt-4">{{data.headline}}</h1>
+					<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
+					<p class="font-italic text-muted">{{data.summary}}</p>
+					<img src="/{{data.thumbnail}}" class="rounded">
+					<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
+				</article>
+			</div>
 		</div>
 		{{> footer }}
 	</body>
