@@ -24,7 +24,8 @@ const setAdmin = async function(admin, username, toAdmin=true) {
 		if (byAdmin === false) throw new Error(`user "${admin}" is not an admin`)
 		// Update user status.
 		const sql = 'UPDATE users SET is_admin=$2 WHERE username=$1'
-		await this.db.query(sql, [username, toAdmin])
+		const {rowCount: updates} = await this.db.query(sql, [username, toAdmin])
+		if (updates === 0) throw new Error(`target username "${username}" not found`)
 		return true
 	} catch(err) {
 		throw err
