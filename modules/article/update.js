@@ -3,6 +3,9 @@
 
 const isId = require('../utils')
 
+const modified = (article, newArticle) =>
+	Object.keys(article).some((attr) => newArticle[attr] !== article[attr])
+
 /**
  * Updates an existing article submission.
  *
@@ -15,6 +18,9 @@ const isId = require('../utils')
 const update = async function(userId, articleId, newArticle) {
 	try {
 		await isId(articleId)		// Validate given ID.
+		const {data: article} = await this.get(articleId)
+		// Skip if no changes were made.
+		if(modified(article, newArticle) === false) return false
 		const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [articleId, newArticle])
 		if(updates === 0) throw new Error(`article with ID "${articleId}" not found`)
