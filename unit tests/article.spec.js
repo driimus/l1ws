@@ -473,4 +473,18 @@ describe('update()', () => {
 		done()
 	})
 
+	test('requester ID is numeric string', async done => {
+		expect.assertions(1)
+		const authorId = '1'
+		await this.article.add(authorId, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = 'Updated content'
+		const update = await this.article.update(authorId, 1, updated)
+		expect(update).toBe(true)
+		done()
+	})
+
 })
