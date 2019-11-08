@@ -345,3 +345,17 @@ describe('setStatus()', () => {
 	})
 
 })
+
+describe('update()', () => {
+
+	test('update a valid article', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const updated = Object.assign({}, dummy)
+		updated.headline = 'Updated headline'
+		const update = await this.article.update(1, 1, updated)
+		expect(update).toBe(true)
+		done()
+	})
+
+})
