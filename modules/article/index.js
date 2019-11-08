@@ -16,7 +16,9 @@ class Article {
 				id SERIAL PRIMARY KEY,
 				author_id INTEGER,
 				data JSON NOT NULL,
-				created_at TIMESTAMPTZ DEFAULT now()
+				created_at TIMESTAMPTZ DEFAULT now(),
+				status TEXT DEFAULT 'pending'
+					CHECK (status in ('pending','approved','rejected'))
 			)`
 			await this.db.query(sql)
 			return this
@@ -29,6 +31,8 @@ class Article {
 require('./add')(Article)
 require('./get')(Article)
 require('./get-all')(Article)
+require('./get-status')(Article)
+require('./set-status')(Article)
 require('./is-valid')(Article)
 require('./upload-picture')(Article)
 

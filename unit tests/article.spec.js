@@ -121,22 +121,50 @@ describe('uploadPicture()', () => {
 
 describe('getAll()', () => {
 
+	const mostRecent = {
+		headline: 'Recent article title',
+		summary: 'Recent article summary that is reasonably short',
+		thumbnail: 'mockdir/fixtures/recent.png',
+		content: `Recent article body. All the multi-line content
+		that is definitely not copied from the dummy article goes here.`
+	}
+
 	test('get articles in reverse chronological order', async done => {
 		expect.assertions(1)
-		const mostRecent = {
-			headline: 'Recent article title',
-			summary: 'Recent article summary that is reasonably short',
-			thumbnail: 'mockdir/fixtures/recent.png',
-			content: `Recent article body. All the multi-line content
-			that is definitely not copied from the dummy article goes here.`
-		}
 		// Insert both articles.
 		await this.article.add(1, dummy)
 		await this.article.add(1, mostRecent)
-		const res = await this.article.getAll()
+		// Allow searching for unapproved articles.
+		const showHidden = true
+		const res = await this.article.getAll(showHidden)
 		const dates = res.map((result) => new Date(result.created_at))
 		// First result must be the newest.
 		expect(dates[0] >= dates[1]).toBe(true)
+		done()
+	})
+
+	test('get approved articles in reverse chronological order', async done => {
+		expect.assertions(2)
+		// Insert multiple articles.
+		await this.article.add(1, dummy)
+		await this.article.add(1, mostRecent)
+		await this.article.add(1, dummy)
+		// Only approve the last two articles.
+		await this.article.setStatus(2, 'approved')
+		await this.article.setStatus(3, 'approved')
+		const res = await this.article.getAll()
+		// There should only be two results.
+		expect(res.length).toBe(2)
+		// First result should be most recent.
+		const dates = res.map((result) => new Date(result.created_at))
+		expect(dates[0] >= dates[1]).toBe(true)
+		done()
+	})
+
+	test('error if invalid showHidden flag', async done => {
+		expect.assertions(1)
+		await expect( this.article.getAll('veryBOolean') )
+			.rejects.toEqual( Error('invalid showHidden value: "veryBOolean"') )
 		done()
 	})
 
@@ -152,15 +180,67 @@ describe('getAll()', () => {
 
 describe('get()', () => {
 
+	test('get hidden article with existing ID', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		const showHidden = true
+		const {data: res} = await this.article.get(1, showHidden)
+		expect(res).toMatchObject(dummy)
+		done()
+	})
+
+	test('get rejected article with existing ID', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		// Mark article as rejected.
+		await this.article.setStatus(1, 'rejected')
+		const showHidden = true
+		const {data: res} = await this.article.get(1, showHidden)
+		expect(res).toMatchObject(dummy)
+		done()
+	})
+
 	test('get article with existing ID', async done => {
 		expect.assertions(1)
+		// Add article that is 'pending' by default.
 		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Retrieve approved article.
 		const {data: res} = await this.article.get(1)
 		// Check that the result has the same content as the dummy.
 		expect(res).toMatchObject(dummy)
 		done()
 	})
 
+	test('error if invalid showHidden flag', async done => {
+		expect.assertions(1)
+		await expect( this.article.get(1, 'veryBOolean') )
+			.rejects.toEqual( Error('invalid showHidden value: "veryBOolean"') )
+		done()
+	})
+
+	test('error if article is not approved', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		await expect( this.article.get(1) )
+			.rejects.toEqual( Error('article with ID "1" not found') )
+		done()
+	})
+
+	test('error if article is rejected', async done => {
+		expect.assertions(1)
+		// Add article that is 'pending' by default.
+		await this.article.add(1, dummy)
+		// Mark article as rejected.
+		await this.article.setStatus(1, 'rejected')
+		await expect( this.article.get(1) )
+			.rejects.toEqual( Error('article with ID "1" not found') )
+		done()
+	})
 
 	test('error if article ID is not numeric', async done => {
 		expect.assertions(1)
@@ -173,9 +253,94 @@ describe('get()', () => {
 	test('error if article does not exist', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
 		const invalidId = 999
 		await expect( this.article.get(invalidId) )
 			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
+		done()
+	})
+
+})
+
+describe('getStatus()', () => {
+
+	test('get pending article status', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const status = await this.article.getStatus(1)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('error if article does not exist', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const invalidId = 999
+		await expect( this.article.getStatus(invalidId) )
+			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
+		done()
+	})
+
+	test('error if article ID is not numeric', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.getStatus('horse') )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
+})
+
+describe('setStatus()', () => {
+
+	test('mark article as approved', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const res = await this.article.setStatus(1, 'approved')
+		expect(res).toBe(true)
+		done()
+	})
+
+	test('mark article as pending', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const res = await this.article.setStatus(1, 'pending')
+		expect(res).toBe(true)
+		done()
+	})
+
+	test('mark article as rejected', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const res = await this.article.setStatus(1, 'rejected')
+		expect(res).toBe(true)
+		done()
+	})
+
+	test('error if invalid article status', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const newStatus = 'sent into space'
+		await expect( this.article.setStatus(1, newStatus) )
+			.rejects.toEqual( Error(`new status "${newStatus}" is not allowed`) )
+		done()
+	})
+
+	test('error if article does not exist', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const invalidId = 999
+		await expect( this.article.setStatus(invalidId, 'approved') )
+			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
+		done()
+	})
+
+	test('error if article ID is not numeric', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.setStatus('horse', 'approved') )
+			.rejects.toEqual( Error('invalid article ID') )
 		done()
 	})
 
