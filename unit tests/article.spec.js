@@ -373,4 +373,11 @@ describe('update()', () => {
 		done()
 	})
 
+	test('error if article ID is not numeric', async done => {
+		expect.assertions(1)
+		await expect( this.article.update(1, 'horse', dummy) )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
 })
