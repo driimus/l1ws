@@ -17,7 +17,7 @@ before_script:
 
 # Execute tests
 script:
-  - docker run --network=host -e CI=true petrec/localnews npm run test
+  - docker run --network=host -e CI=true -e CODECOV=$CODECOV_TOKEN petrec/localnews npm run test
 
 deploy:
   provider: elasticbeanstalk

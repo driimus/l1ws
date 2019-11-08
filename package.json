@@ -11,7 +11,7 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js --watch modules --watch routes --watch views",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
-    "test": "jest --coverage --detectOpenHandles",
+    "test": "jest --coverage --detectOpenHandles && codecov --token=$CODECOV",
     "unit": "./node_modules/.bin/jest --coverage 'unit tests/'"
   },
   "jest": {
@@ -47,15 +47,18 @@
     "remark-preset-lint-recommended": "^3.0.3"
   },
   "devDependencies": {
+    "codecov": "^3.6.1",
     "cross-env": "^6.0.3",
     "eslint": "^5.15.2",
     "eslint-plugin-html": "^6.0.0",
+    "faker": "^4.1.0",
     "handlebars-validate": "^0.1.2",
     "http-status-codes": "^1.4.0",
     "jest": "^24.9.0",
     "jsdoc": "^3.6.3",
     "jsdoc-route-plugin": "^0.1.0",
     "markdownlint": "^0.17.2",
-    "nodemon": "^1.19.4"
+    "nodemon": "^1.19.4",
+    "puppeteer": "^2.0.0"
   }
 }

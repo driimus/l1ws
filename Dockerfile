@@ -7,7 +7,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install bcrypt prerequisites
-RUN apt-get update && apt-get install build-essential python -y
+RUN apt-get update && apt-get install build-essential python curl git -y
 # Install dependencies
 RUN npm i
 
