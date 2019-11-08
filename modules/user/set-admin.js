@@ -16,6 +16,7 @@ const setAdmin = async function(admin, username, toAdmin=true) {
 		const byAdmin = await this.isAdmin(admin)
 		if (byAdmin === false) throw new Error(`user "${admin}" is not an admin`)
 		if(username.length === 0) throw new Error('missing target username')
+		if (typeof toAdmin !== 'boolean') throw new Error(`invalid toAdmin value: "${toAdmin}"`)
 		// Update user status.
 		const sql = 'UPDATE users SET is_admin=$2 WHERE username=$1'
 		await this.db.query(sql, [username, toAdmin])
