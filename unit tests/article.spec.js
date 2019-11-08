@@ -364,6 +364,16 @@ describe('update()', () => {
 		done()
 	})
 
+	test('skip update if unmodified', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		const update = await this.article.update(1, 1, dummy)
+		expect(update).toBe(false)
+		done()
+	})
+
 	test('error if article does not exist', async done => {
 		expect.assertions(1)
 		await this.article.add(1, dummy)
