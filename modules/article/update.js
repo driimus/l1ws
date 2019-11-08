@@ -15,9 +15,18 @@ const isId = require('../utils')
 const wasModified = async(article, newArticle) =>
 	Object.keys(article).some((attr) => newArticle[attr] !== article[attr])
 
-const byAuthor = async(authorId, userId) => {
+/**
+ * Compares two user IDs for equality.
+ *
+ * @private
+ * @async
+ * @param {number} thisId - The ID to compare.
+ * @param {number} thatId - The ID to compare against.
+ * @returns {boolean} If the two IDs match.
+ */
+const byAuthor = async(thisId, thatId) => {
 	// Convert to number and compare.
-	if(+authorId !== +userId) throw new Error(`user with ID "${userId}" is not the author`)
+	if(+thisId !== +thatId) throw new Error(`user with ID "${thisId}" is not the author`)
 	return true
 }
 
@@ -38,7 +47,7 @@ const update = async function(userId, articleId, newArticle) {
 		const modified = await wasModified(article.data, newArticle)
 		if(modified === false) return false
 		// Check that the request is made by the author.
-		await byAuthor(article.author_id, userId)
+		await byAuthor(userId, article.author_id)
 		const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
 		await this.db.query(sql, [articleId, newArticle])
 		return true
