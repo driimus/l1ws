@@ -2,8 +2,12 @@
 'use strict'
 
 const isBool = async flag => {
-	if (typeof flag !== 'boolean') throw new Error(`invalid toAdmin value: "${flag}"`)
-	return true
+	try {
+		if (typeof flag !== 'boolean') throw new Error(`invalid toAdmin value: "${flag}"`)
+		return true
+	} catch(err) {
+		throw err
+	}
 }
 
 /**
