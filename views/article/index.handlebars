@@ -2,48 +2,49 @@
 <!doctype html>
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>{{data.headline}}</title>
-		<meta name="description" content="Full-view of a published article">
-		<meta name="author" content="Cristian Petre">
-		<link href="/style.css" type="text/css" rel="stylesheet">
-		<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
-		<link href="/fontawesome-free/css/all.css" rel="stylesheet">
-		<link rel="preload" href="/jquery.js" as "script">
-		<link rel="preload" href="/bootstrap.min.js" as "script">
-		<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}"></script>
-	</head>
-	<body class="pb-4">
-		{{> header }}
-		<div class="row m-0 pb-5">
-			<div class="container col-xs-12 col-md-3 m-0">
+<head>
+	<meta charset="utf-8">
+	<title>{{data.headline}}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="Full-view of a published article">
+	<meta name="author" content="Cristian Petre">
+	<link href="/style.css" type="text/css" rel="stylesheet">
+	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
+	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
+	<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}"></script>
+</head>
+<body class="pb-4">
+	{{> header }}
+	<div class="row m-0 pb-5">
+		<div class="container col-xs-12 col-md-3 m-0">
 			{{#if isAdmin}}
-				<div class="sticky-top card border-dark mt-3" style="top: 1rem;">
-				  <div class="card-header bg-transparent border-dark">Admin actions</div>
-				  <div class="card-body text-dark">
-				    <h5 class="card-title">Update Article Status</h5>
-						<p class="card-text">Current status: <span class="badge badge-dark">{{status}}</badge></p>
-					  <form enctype="multipart/form-data" method="post">
-					  	<div class="btn-group w-100">
-								<button class="btn btn-success" name="status" value="approved" type="submit">Approve</button>
-								<button class="btn btn-outline-danger" name="status" value="rejected" type="submit">Reject</button>
-					  	</div>
-						</form>
-				  </div>
+			<div class="sticky-top card border-dark mt-3" style="top: 1rem;">
+				<div class="card-header bg-transparent border-dark">Admin actions</div>
+				<div class="card-body text-dark">
+					<h5 class="card-title">Update Article Status</h5>
+					<p class="card-text">Current status: <span class="badge badge-dark">{{status}}</span></p>
+					<form enctype="multipart/form-data" method="post">
+						<div class="btn-group w-100">
+							<button class="btn btn-success" name="status" value="approved" type="submit">Approve</button>
+							<button class="btn btn-outline-danger" name="status" value="rejected" type="submit">Reject</button>
+						</div>
+					</form>
 				</div>
+			</div>
 			{{/if}}
-			</div>
-			<div class="container col-xs-12 col-md-6 pb-5 m-0">
-				<article>
-					<h1 class="display-4 pt-4">{{data.headline}}</h1>
-					<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
-					<p class="font-italic text-muted">{{data.summary}}</p>
-					<img src="/{{data.thumbnail}}" class="rounded">
-					<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
-				</article>
-			</div>
 		</div>
-		{{> footer }}
-	</body>
+		<div class="container col-xs-12 col-md-6 pb-5 m-0">
+			<article>
+				<h1 class="display-4 pt-4">{{data.headline}}</h1>
+				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
+				<p class="font-italic text-muted">{{data.summary}}</p>
+				<img src="/{{data.thumbnail}}" class="rounded">
+				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
+			</article>
+		</div>
+	</div>
+	{{> footer }}
+	<script type="text/javascript" src="/jquery.js"></script>
+	<script type="text/javascript" src="/bootstrap.min.js"></script>
+</body>
 </html>
