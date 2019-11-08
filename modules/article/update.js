@@ -12,8 +12,8 @@
  */
 const update = async function(userId, articleId, newArticle) {
 	const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
-	const {rowCount} = await this.db.query(sql, [articleId, newArticle])
-	if(rowCount === 0) throw new Error(`article with ID "${articleId}" not found`)
+	const {rowCount: updates} = await this.db.query(sql, [articleId, newArticle])
+	if(updates === 0) throw new Error(`article with ID "${articleId}" not found`)
 	return true
 }
 
