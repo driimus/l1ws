@@ -6,6 +6,7 @@ const Router = require('koa-router')
 
 /* IMPORT CUSTOM MODULE */
 const Article = require('../modules/article')
+const User = require('../modules/user')
 
 const router = new Router({prefix: '/article'})
 
@@ -84,6 +85,28 @@ router.get('/:id([0-9]{1,})', async ctx => {
 		const article = await new Article()
 		const data = await article.get(ctx.params.id)
 		return ctx.render('article/', data)
+	}	catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
+/**
+ * The secure article status update endpoint.
+ *
+ * @name Review Article
+ * @route {POST} /:id
+ * @authentication This route requires cookie-based authentication as admin.
+ */
+router.post('/:id([0-9]{1,})', koaBody, async ctx => {
+	try {
+		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
+		// Check that requester is an admin.
+		const user = await new User()
+		await user.getAdmin(ctx.session.username)
+		// Update article submission status.
+		const article = await new Article()
+		await article.setStatus(ctx.params.id, ctx.request.body.status)
+		return ctx.redirect(`/article/${ctx.params.id}`)
 	}	catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
