@@ -349,12 +349,18 @@ describe('setStatus()', () => {
 describe('update()', () => {
 
 	test('update a valid article', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
 		const updated = Object.assign({}, dummy)
 		updated.headline = 'Updated headline'
 		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
 		expect(update).toBe(true)
+		expect(status).toBe('pending')
 		done()
 	})
 

@@ -11,7 +11,7 @@
  * @returns {boolean} If the process was successful.
  */
 const update = async function(userId, articleId, newArticle) {
-	const sql = 'UPDATE article SET (data, created_at) = ($2, now()) WHERE id=$1'
+	const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
 	await this.db.query(sql, [articleId, newArticle])
 	return true
 }
