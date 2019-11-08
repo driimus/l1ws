@@ -10,6 +10,7 @@
  */
 const getAdmin = async function(username) {
 	const byAdmin = await this.isAdmin(username)
+	if (byAdmin === false) throw new Error(`user "${username}" is not an admin`)
 	return byAdmin
 }
 
