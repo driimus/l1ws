@@ -459,4 +459,18 @@ describe('update()', () => {
 		done()
 	})
 
+	test('requester is not the author', async done => {
+		expect.assertions(1)
+		const authorId = 1, scammerId = 99
+		await this.article.add(authorId, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = 'Updated content'
+		await expect( this.article.update(scammerId, 1, updated) )
+			.rejects.toEqual( Error(`user with ID "${scammerId}" is not the author`) )
+		done()
+	})
+
 })
