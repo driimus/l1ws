@@ -15,7 +15,8 @@ class User {
 			const sql = `CREATE TABLE IF NOT EXISTS users (
 				id SERIAL PRIMARY KEY,
 				username TEXT NOT NULL,
-				password TEXT NOT NULL
+				password TEXT NOT NULL,
+				is_admin BOOLEAN DEFAULT FALSE
 			)`
 			await this.db.query(sql)
 			return this
@@ -28,5 +29,7 @@ class User {
 require('./register')(User)
 require('./login')(User)
 require('./upload-picture')(User)
+require('./is-admin')(User)
+require('./set-admin')(User)
 
 module.exports = User

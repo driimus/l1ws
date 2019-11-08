@@ -118,3 +118,98 @@ describe('login()', () => {
 	})
 
 })
+
+describe('isAdmin()', () => {
+
+	test('account has admin status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		// Manually promote user to admin.
+		await this.account.db.query('update users set is_admin=true where username=\'doej\'')
+		const isAdmin = await this.account.isAdmin('doej')
+		expect(isAdmin).toBe(true)
+		done()
+	})
+
+	test('normal user is not an admin', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const admin = await this.account.isAdmin('doej')
+		expect(admin).toBe(false)
+		done()
+	})
+
+	test('invalid username', async done => {
+		expect.assertions(1)
+		const user = 'doej'
+		await expect( this.account.isAdmin(user) )
+			.rejects.toEqual( Error(`username "${user}" not found`) )
+		done()
+	})
+
+	test('guest is not an admin', async done => {
+		expect.assertions(1)
+		const admin = await this.account.isAdmin()
+		expect(admin).toBe(false)
+		done()
+	})
+
+})
+
+describe('setAdmin()', () => {
+
+	test('flag user as admin by admin', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Promote user to admin from admin account.
+		await this.account.register('roej', 'password')
+		const flagged = await this.account.setAdmin('doej', 'roej', true)
+		expect(flagged).toBe(true)
+		done()
+	})
+
+	test('error if flag is done by user', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.register('roej', 'password')
+		await expect( this.account.setAdmin('doej', 'roej', true) )
+			.rejects.toEqual( Error('user "doej" is not an admin') )
+		done()
+	})
+
+	test('error if blank target username', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Try to promote blank username.
+		await expect( this.account.setAdmin('doej', '') )
+			.rejects.toEqual( Error('missing target username') )
+		done()
+	})
+
+	test('error if invalid user status', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Try to promote username to invalid status.
+		await expect( this.account.setAdmin('doej', 'roej', 'rocket scientist') )
+			.rejects.toEqual( Error('invalid toAdmin value: "rocket scientist"') )
+		done()
+	})
+
+	test('error if inexistent username', async done => {
+		expect.assertions(1)
+		// Add dummy admin.
+		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
+		await this.account.db.query(dummy)
+		// Try to promote inexistent user.
+		await expect( this.account.setAdmin('doej', 'roej') )
+			.rejects.toEqual( Error('target username "roej" not found') )
+		done()
+	})
+
+})
