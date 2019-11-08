@@ -8,21 +8,23 @@ const router = new Router()
 router.use(require('./article').routes())
 router.use(require('./user').routes())
 
-/* IMPORT CUSTOM MODULE */
+/* Import custom modules. */
 const Article = require('../modules/article')
+const User = require('../modules/user')
 
 /**
  * The home page where published articles are listed.
  *
  * @name Home Page
  * @route {GET} /
- * @authentication This route requires cookie-based authentication.
  */
 router.get('/', async ctx => {
 	try {
-		// TO-DO: get articles
 	  const article = await new Article()
-		const articles = await article.getAll()
+		const user = await new User()
+		// Filter out hidden articles for non-admins.
+		const showHidden = await user.isAdmin(ctx.session.username)
+		const articles = await article.getAll(showHidden)
 		await ctx.render('index', {articles})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
