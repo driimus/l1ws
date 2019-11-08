@@ -156,6 +156,28 @@ describe('isAdmin()', () => {
 
 })
 
+describe('getAdmin()', () => {
+
+	test('account has admin status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		// Manually promote user to admin.
+		await this.account.db.query('update users set is_admin=true where username=\'doej\'')
+		const isAdmin = await this.account.getAdmin('doej')
+		expect(isAdmin).toBe(true)
+		done()
+	})
+
+	test('error if account is not admin', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await expect( this.account.getAdmin('doej') )
+			.rejects.toEqual( Error('user "doej" is not an admin') )
+		done()
+	})
+
+})
+
 describe('setAdmin()', () => {
 
 	test('flag user as admin by admin', async done => {
