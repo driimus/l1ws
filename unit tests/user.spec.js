@@ -168,6 +168,14 @@ describe('getAdmin()', () => {
 		done()
 	})
 
+	test('error if account is not admin', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await expect( this.account.getAdmin('doej') )
+			.rejects.toEqual( Error('user "doej" is not an admin') )
+		done()
+	})
+
 })
 
 describe('setAdmin()', () => {
