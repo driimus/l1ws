@@ -26,9 +26,11 @@ const modified = (article, newArticle) =>
 const update = async function(userId, articleId, newArticle) {
 	try {
 		await isId(articleId)		// Validate given ID.
-		const {data: article} = await this.get(articleId)
+		const article = await this.get(articleId)
 		// Skip if no changes were made.
-		if(modified(article, newArticle) === false) return false
+		if(modified(article.data, newArticle) === false) return false
+		// Check that the request is made by the author.
+		if(article.author_id !== userId) throw new Error(`user with ID "${userId}" is not the author`)
 		const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [articleId, newArticle])
 		if(updates === 0) throw new Error(`article with ID "${articleId}" not found`)
