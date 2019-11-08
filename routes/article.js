@@ -82,8 +82,12 @@ router.post('/upload', koaBody, async ctx => {
  */
 router.get('/:id([0-9]{1,})', async ctx => {
 	try {
-		const article = await new Article()
-		const data = await article.get(ctx.params.id)
+
+	  const article = await new Article()
+		const user = await new User()
+		// Filter out hidden articles for non-admins.
+		const showHidden = await user.isAdmin(ctx.session.username)
+		const data = await article.get(ctx.params.id, showHidden)
 		return ctx.render('article/', data)
 	}	catch(err) {
 		await ctx.render('error', {message: err.message})
