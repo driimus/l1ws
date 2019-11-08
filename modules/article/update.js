@@ -16,7 +16,8 @@ const wasModified = async(article, newArticle) =>
 	Object.keys(article).some((attr) => newArticle[attr] !== article[attr])
 
 const byAuthor = async(authorId, userId) => {
-	if(authorId !== userId) throw new Error(`user with ID "${userId}" is not the author`)
+	// Convert to number and compare.
+	if(+authorId !== +userId) throw new Error(`user with ID "${userId}" is not the author`)
 	return true
 }
 
