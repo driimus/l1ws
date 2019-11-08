@@ -14,12 +14,11 @@
 		<link rel="preload" href="/bootstrap.min.js" as "script">
 		<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}"></script>
 	</head>
-	<body>
-		{{> header }}
-	</head>
 	<body class="pb-4">
+		{{> header }}
 		<div class="row m-0 pb-5">
 			<div class="container col-xs-12 col-md-3 m-0">
+			{{#if isAdmin}}
 				<div class="sticky-top card border-dark mt-3" style="top: 1rem;">
 				  <div class="card-header bg-transparent border-dark">Admin actions</div>
 				  <div class="card-body text-dark">
@@ -33,6 +32,7 @@
 						</form>
 				  </div>
 				</div>
+			{{/if}}
 			</div>
 			<div class="container col-xs-12 col-md-6 pb-5 m-0">
 				<article>
