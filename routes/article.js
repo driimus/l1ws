@@ -117,4 +117,24 @@ router.post('/:id([0-9]{1,})', koaBody, async ctx => {
 	}
 })
 
+/**
+ * The secure article editing page.
+ *
+ * @name Published Article
+ * @route {GET} /:id/edit
+ * @authentication This route requires cookie-based authentication.
+ */
+router.get('/:id([0-9]{1,})/edit', async ctx => {
+	try {
+		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
+		const article = await new Article()
+		const data = await article.get(ctx.params.id, true)
+		// Check that the author requested an edit.
+		await article.byAuthor(ctx.session.userId, data.author_id)
+		return ctx.render('article/new', data)
+	}	catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
 module.exports = router
