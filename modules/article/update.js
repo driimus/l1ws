@@ -58,3 +58,4 @@ const update = async function(userId, articleId, newArticle) {
 }
 
 module.exports = Article => Article.prototype.update = update
+module.exports = Article => Article.prototype.byAuthor = byAuthor
