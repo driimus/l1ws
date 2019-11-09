@@ -37,7 +37,9 @@
 			<article>
 				<h1 class="display-4 pt-4">{{data.headline}}</h1>
 				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
+				{{#if isAuthor }}
 				<a class="btn btn-dark rounded-pill" href="/article/{{id}}/edit">Edit</a></p>
+				{{/if}}
 				<p class="font-italic text-muted">{{data.summary}}</p>
 				<img src="/{{data.thumbnail}}" class="rounded">
 				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
