@@ -16,10 +16,12 @@ class Article {
 				id SERIAL PRIMARY KEY,
 				author_id INTEGER,
 				data JSON NOT NULL,
-				created_at TIMESTAMPTZ DEFAULT now(),
-				status TEXT DEFAULT 'pending'
-					CHECK (status in ('pending','approved','rejected'))
-			)`
+				created_at TIMESTAMPTZ DEFAULT now()
+			);
+			ALTER TABLE article
+				ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending'
+				CHECK (status in ('pending','approved','rejected'));
+			`
 			await this.db.query(sql)
 			return this
 		})()
