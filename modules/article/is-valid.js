@@ -14,7 +14,7 @@ const isValid = async(article) => {
 		const required = ['headline', 'summary', 'thumbnail', 'content']
 		required.forEach(section => {
 			// Field must exist and not be empty.
-			if(!article.hasOwnProperty(section) || article[section].length === 0)
+			if(!article.hasOwnProperty(section) || article[section] === undefined || article[section].length === 0)
 				throw new Error(`missing article ${section}`)
 		})
 		return true

@@ -48,6 +48,7 @@ const update = async function(userId, articleId, newArticle) {
 		if(modified === false) return false
 		// Check that the request is made by the author.
 		await byAuthor(userId, article.author_id)
+		await this.isValid(newArticle)
 		const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
 		await this.db.query(sql, [articleId, newArticle])
 		return true
