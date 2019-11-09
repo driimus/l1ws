@@ -41,7 +41,7 @@ describe('add()', () => {
 		done()
 	})
 
-	test('error if blank article headline', async done => {
+	test('error if invalid article', async done => {
 		expect.assertions(1)
 		// Article object with no headline.
 		const {summary, thumbnail, content} = dummy
@@ -50,11 +50,24 @@ describe('add()', () => {
 		done()
 	})
 
+})
+
+describe('isValid()', () => {
+
+	test('error if blank article headline', async done => {
+		expect.assertions(1)
+		// Article object with no headline.
+		const {summary, thumbnail, content} = dummy
+		await expect( this.article.isValid({summary, thumbnail, content, headline: ''}) )
+			.rejects.toEqual( Error('missing article headline') )
+		done()
+	})
+
 	test('error if blank article summary', async done => {
 		expect.assertions(1)
 		// Article object with no summary.
-		const { headline, thumbnail, content } = dummy
-		await expect( this.article.add(1, {headline, thumbnail, content, summary: ''}) )
+		const {headline, thumbnail, content} = dummy
+		await expect( this.article.isValid({headline, thumbnail, content, summary: ''}) )
 			.rejects.toEqual( Error('missing article summary') )
 		done()
 	})
@@ -62,8 +75,8 @@ describe('add()', () => {
 	test('error if blank article thumbnail', async done => {
 		expect.assertions(1)
 		// Article object with no summary.
-		const { headline, summary, content } = dummy
-		await expect( this.article.add(1, {headline, summary, content, thumbnail: ''}) )
+		const {headline, summary, content} = dummy
+		await expect( this.article.isValid({headline, summary, content, thumbnail: ''}) )
 			.rejects.toEqual( Error('missing article thumbnail') )
 		done()
 	})
@@ -71,8 +84,9 @@ describe('add()', () => {
 	test('error if blank article content', async done => {
 		expect.assertions(1)
 		// Article object with no content.
-		const { headline, summary, thumbnail } = dummy
-		await expect( this.article.add(1, {headline, summary, thumbnail, content: ''}) )
+		const {headline, summary, thumbnail} = dummy
+		console.log(headline)
+		await expect( this.article.isValid({headline, summary, thumbnail, content: ''}) )
 			.rejects.toEqual( Error('missing article content') )
 		done()
 	})
@@ -341,6 +355,162 @@ describe('setStatus()', () => {
 		await this.article.add(1, dummy)
 		await expect( this.article.setStatus('horse', 'approved') )
 			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
+})
+
+describe('update()', () => {
+
+	test('update a valid article', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = {
+			headline: 'Updated article title',
+			summary: 'Updated article summary that is reasonably short',
+			thumbnail: 'mockdir/fixtures/updated.png',
+			content: `Updated article body. All the multi-line content
+		that is definitely not identical to the dummy article's goes here.`
+		}
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article headline', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.headline = 'Updated headline'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article summary', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.summary = 'Updated summary'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article thumbnail', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.thumbnail = 'Updated thumbnail'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('update article content', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = 'Updated content'
+		const update = await this.article.update(1, 1, updated)
+		const {status} = await this.article.get(1, true)
+		// Article should be flagged as 'pending' again.
+		expect(update).toBe(true)
+		expect(status).toBe('pending')
+		done()
+	})
+
+	test('skip update if unmodified', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		const update = await this.article.update(1, 1, dummy)
+		expect(update).toBe(false)
+		done()
+	})
+
+	test('error if article does not exist', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		const invalidId = 999
+		await expect( this.article.update(1, invalidId, dummy) )
+			.rejects.toEqual( Error(`article with ID "${invalidId}" not found`) )
+		done()
+	})
+
+	test('error if invalid article changes', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = undefined
+		await expect( this.article.update(1, 1, updated) )
+			.rejects.toEqual( Error('missing article content') )
+		done()
+	})
+
+	test('error if article ID is not numeric', async done => {
+		expect.assertions(1)
+		await expect( this.article.update(1, 'horse', dummy) )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
+	test('requester is not the author', async done => {
+		expect.assertions(1)
+		const authorId = 1, scammerId = 99
+		await this.article.add(authorId, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = 'Updated content'
+		await expect( this.article.update(scammerId, 1, updated) )
+			.rejects.toEqual( Error(`user with ID "${scammerId}" is not the author`) )
+		done()
+	})
+
+	test('requester ID is numeric string', async done => {
+		expect.assertions(1)
+		const authorId = '1'
+		await this.article.add(authorId, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = 'Updated content'
+		const update = await this.article.update(authorId, 1, updated)
+		expect(update).toBe(true)
 		done()
 	})
 
