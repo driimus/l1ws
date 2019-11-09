@@ -452,6 +452,19 @@ describe('update()', () => {
 		done()
 	})
 
+	test('error if invalid article changes', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		// Mark article as approved.
+		await this.article.setStatus(1, 'approved')
+		// Create modified article.
+		const updated = Object.assign({}, dummy)
+		updated.content = undefined
+		await expect( this.article.update(1, 1, updated) )
+			.rejects.toEqual( Error('missing article content') )
+		done()
+	})
+
 	test('error if article ID is not numeric', async done => {
 		expect.assertions(1)
 		await expect( this.article.update(1, 'horse', dummy) )
