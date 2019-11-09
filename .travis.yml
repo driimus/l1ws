@@ -29,6 +29,6 @@ deploy:
   on:
     branch: master
 
+  # Use decrypted keys.
   access_key_id: $ACCESS_KEY_ID
-  secret_access_key:
-    secure: $SECRET_ACCESS_KEY
+  secret_access_key: $SECRET_ACCESS_KEY
