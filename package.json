@@ -1,14 +1,14 @@
 {
   "name": "localnews",
-  "version": "1.0.0",
-  "description": "Coursework project with all the basic features",
+  "version": "1.2.0",
+  "description": "Coursework with all the basic and intermediate features",
   "main": "index.js",
   "engines": {
     "node": "12.x"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js --watch modules --watch routes --watch views",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
     "test": "jest --coverage --detectOpenHandles && codecov --token=$CODECOV",
@@ -18,6 +18,10 @@
     "projects": [
       "<rootDir>/jest-test.config.js"
     ]
+  },
+  "nodemonConfig": {
+    "ignore": ["*.spec.js", "docs/*", "coverage/*", "public/*"],
+    "delay": "2500"
   },
   "author": "petrec",
   "license": "ISC",
