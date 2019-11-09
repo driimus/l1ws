@@ -18,7 +18,6 @@ const wasModified = async(article, newArticle) =>
 /**
  * Compares two user IDs for equality.
  *
- * @private
  * @async
  * @param {number} thisId - The ID to compare.
  * @param {number} thatId - The ID to compare against.
