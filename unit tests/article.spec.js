@@ -41,7 +41,7 @@ describe('add()', () => {
 		done()
 	})
 
-	test('error if blank article headline', async done => {
+	test('error if invalid article', async done => {
 		expect.assertions(1)
 		// Article object with no headline.
 		const {summary, thumbnail, content} = dummy
@@ -50,11 +50,24 @@ describe('add()', () => {
 		done()
 	})
 
+})
+
+describe('isValid()', () => {
+
+	test('error if blank article headline', async done => {
+		expect.assertions(1)
+		// Article object with no headline.
+		const {summary, thumbnail, content} = dummy
+		await expect( this.article.isValid({summary, thumbnail, content, headline: ''}) )
+			.rejects.toEqual( Error('missing article headline') )
+		done()
+	})
+
 	test('error if blank article summary', async done => {
 		expect.assertions(1)
 		// Article object with no summary.
-		const { headline, thumbnail, content } = dummy
-		await expect( this.article.add(1, {headline, thumbnail, content, summary: ''}) )
+		const {headline, thumbnail, content} = dummy
+		await expect( this.article.isValid({headline, thumbnail, content, summary: ''}) )
 			.rejects.toEqual( Error('missing article summary') )
 		done()
 	})
@@ -62,8 +75,8 @@ describe('add()', () => {
 	test('error if blank article thumbnail', async done => {
 		expect.assertions(1)
 		// Article object with no summary.
-		const { headline, summary, content } = dummy
-		await expect( this.article.add(1, {headline, summary, content, thumbnail: ''}) )
+		const {headline, summary, content} = dummy
+		await expect( this.article.isValid({headline, summary, content, thumbnail: ''}) )
 			.rejects.toEqual( Error('missing article thumbnail') )
 		done()
 	})
@@ -71,8 +84,9 @@ describe('add()', () => {
 	test('error if blank article content', async done => {
 		expect.assertions(1)
 		// Article object with no content.
-		const { headline, summary, thumbnail } = dummy
-		await expect( this.article.add(1, {headline, summary, thumbnail, content: ''}) )
+		const {headline, summary, thumbnail} = dummy
+		console.log(headline)
+		await expect( this.article.isValid({headline, summary, thumbnail, content: ''}) )
 			.rejects.toEqual( Error('missing article content') )
 		done()
 	})
