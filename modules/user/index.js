@@ -15,9 +15,11 @@ class User {
 			const sql = `CREATE TABLE IF NOT EXISTS users (
 				id SERIAL PRIMARY KEY,
 				username TEXT NOT NULL,
-				password TEXT NOT NULL,
-				is_admin BOOLEAN DEFAULT FALSE
-			)`
+				password TEXT NOT NULL
+			);
+			ALTER TABLE users
+				ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE;
+			`
 			await this.db.query(sql)
 			return this
 		})()
