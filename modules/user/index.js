@@ -3,6 +3,15 @@
 
 const db = require('../../db')
 
+// Barebones user schema.
+const schema = `CREATE TABLE IF NOT EXISTS users (
+	id SERIAL PRIMARY KEY,
+	username TEXT NOT NULL,
+	password TEXT NOT NULL)`,
+	// User schema upgrades.
+	upgrade = `ALTER TABLE users
+	ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE`
+
 /** Class representing an user. */
 class User {
 
@@ -12,13 +21,8 @@ class User {
 	constructor() {
 		return (async() => {
 			this.db = new db()
-			const sql = `CREATE TABLE IF NOT EXISTS users (
-				id SERIAL PRIMARY KEY,
-				username TEXT NOT NULL,
-				password TEXT NOT NULL,
-				is_admin BOOLEAN DEFAULT FALSE
-			)`
-			await this.db.query(sql)
+			await this.db.query(schema)
+			await this.db.query(upgrade)
 			return this
 		})()
 	}

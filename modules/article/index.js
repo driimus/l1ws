@@ -3,6 +3,17 @@
 
 const db = require('../../db')
 
+// Barebones article schema.
+const schema = `CREATE TABLE IF NOT EXISTS article (
+	id SERIAL PRIMARY KEY,
+	author_id INTEGER,
+	data JSON NOT NULL,
+	created_at TIMESTAMPTZ DEFAULT now())`,
+	// Article schema upgrades.
+	upgrade = `ALTER TABLE article
+	ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending'
+		CHECK (status in ('pending','approved','rejected'))`
+
 /** Class representing an article. */
 class Article {
 
@@ -12,15 +23,8 @@ class Article {
 	constructor() {
 		return (async() => {
 			this.db = new db()
-			const sql = `CREATE TABLE IF NOT EXISTS article (
-				id SERIAL PRIMARY KEY,
-				author_id INTEGER,
-				data JSON NOT NULL,
-				created_at TIMESTAMPTZ DEFAULT now(),
-				status TEXT DEFAULT 'pending'
-					CHECK (status in ('pending','approved','rejected'))
-			)`
-			await this.db.query(sql)
+			await this.db.query(schema)
+			await this.db.query(upgrade)
 			return this
 		})()
 	}
