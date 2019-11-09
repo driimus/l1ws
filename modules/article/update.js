@@ -56,5 +56,7 @@ const update = async function(userId, articleId, newArticle) {
 	}
 }
 
-module.exports = Article => Article.prototype.update = update
-module.exports = Article => Article.prototype.byAuthor = byAuthor
+module.exports = Article => {
+	Article.prototype.update = update
+	Article.prototype.byAuthor = byAuthor
+}
