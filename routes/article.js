@@ -88,6 +88,11 @@ router.get('/:id([0-9]{1,})', async ctx => {
 		// Filter out hidden articles for non-admins.
 		const showHidden = await user.isAdmin(ctx.session.username)
 		const data = await article.get(ctx.params.id, showHidden)
+		try {
+			data.isAuthor = await article.byAuthor(ctx.session.userId, data.author_id)
+		}catch(e) {
+			data.isAuthor = false
+		}
 		data.isAdmin = showHidden
 		return ctx.render('article/', data)
 	}	catch(err) {
