@@ -15,6 +15,7 @@ const addOrUpdate = async function(userId, articleId, rating) {
 		const sql = `INSERT INTO rating (author_id, article_id, value) VALUES ($1, $2, $3)
 			ON CONFLICT ON CONSTRAINT unique_rating DO UPDATE SET value=$3
 		`
+		if(rating < 1 || rating > 5) throw new Error(`invalid rating value: ${rating}`)
 		await this.db.query(sql, [userId, articleId, rating])
 		return true
 	} catch(err) {
