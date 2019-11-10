@@ -28,7 +28,7 @@ router.get('/', async ctx => ctx.redirect('/article/new'))
 router.get('/new', async ctx => {
 	try {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
-		const data = {}
+		const data = {loggedIn: ctx.session.authorised}
 		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('article/new', data)
 	} catch(err) {
@@ -50,25 +50,26 @@ router.post('/new', koaBody, async ctx => {
 		const uId = ctx.session.userId
 		const article = await new Article()
 		await article.add(uId, {headline, summary, content, thumbnail})
-		return ctx.redirect('/article/new?msg=your article was successfully added')
+		return ctx.redirect('/article/new?msg=your article was successfully added', {loggedIn: true})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
 })
 
 /**
- * The article image upload script.
+ * The secure article image upload script.
  *
  * @name Upload Pictures
  * @route {POST} /upload
+ * @authentication This route requires cookie-based authentication.
  */
 router.post('/upload', koaBody, async ctx => {
 	try {
-		console.log(ctx.request.files)
+		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const {thumbnail: {path, type}} = ctx.request.files
 		const article = await new Article()
 		const thumbnail = await article.uploadPicture({path, type})
-		return ctx.render('article/new', {thumbnail})
+		return ctx.render('article/new', {thumbnail, loggedIn: true})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
@@ -94,6 +95,7 @@ router.get('/:id([0-9]{1,})', async ctx => {
 			data.isAuthor = false
 		}
 		data.isAdmin = showHidden
+		data.loggedIn = ctx.session.authorised
 		return ctx.render('article/', data)
 	}	catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -136,6 +138,7 @@ router.get('/:id([0-9]{1,})/edit', async ctx => {
 		const data = await article.get(ctx.params.id, true)
 		// Check that the author requested an edit.
 		await article.byAuthor(ctx.session.userId, data.author_id)
+		data.loggedIn = ctx.session.authorised
 		return ctx.render('article/new', data)
 	}	catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -155,7 +158,7 @@ router.post('/:id([0-9]{1,})/edit', koaBody, async ctx => {
 		const { body: {headline, summary, content, thumbnail} } = ctx.request
 		const article = await new Article()
 		await article.update(ctx.session.userId, ctx.params.id, {headline, summary, content, thumbnail})
-		return ctx.redirect('/?msg=your article was successfully edited')
+		return ctx.redirect(`/article/${ctx.params.id}?msg=your article was successfully edited`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}

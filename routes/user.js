@@ -60,7 +60,7 @@ router.post('/login', async ctx => {
 })
 
 router.get('/logout', async ctx => {
-	ctx.session.authorised = null
+	ctx.session = null
 	ctx.redirect('/?msg=you are now logged out')
 })
 
