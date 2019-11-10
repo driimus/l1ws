@@ -12,7 +12,9 @@
  */
 const addOrUpdate = async function(userId, articleId, value) {
 	try {
-		const sql = 'INSERT INTO rating (author_id, article_id, value) VALUES ($1, $2, $3)'
+		const sql = `INSERT INTO rating (author_id, article_id, value) VALUES ($1, $2, $3)
+			ON CONFLICT ON CONSTRAINT unique_rating DO UPDATE SET value=$3
+		`
 		await this.db.query(sql, [userId, articleId, value])
 		return true
 	} catch(err) {
