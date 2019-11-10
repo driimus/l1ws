@@ -24,6 +24,7 @@ const isValid = async rating => {
 const addOrUpdate = async function(userId, articleId, rating) {
 	try {
 		await utils.isId(userId, 'user')
+		await utils.isId(articleId, 'article')
 		await isValid(rating)
 		const sql = `INSERT INTO rating (author_id, article_id, value) VALUES ($1, $2, $3)
 			ON CONFLICT ON CONSTRAINT unique_rating DO UPDATE SET value=$3
