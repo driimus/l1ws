@@ -47,4 +47,11 @@ describe('addOrUpdate()', () => {
 		done()
 	})
 
+	test('error if invalid user ID', async done => {
+		expect.assertions(1)
+		await expect( this.rating.addOrUpdate('horse', 1, 5) )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
 })
