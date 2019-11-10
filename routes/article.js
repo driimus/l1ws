@@ -47,7 +47,7 @@ router.post('/new', koaBody, async ctx => {
 	try {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const {body: {headline, summary, content, thumbnail}} = ctx.request
-		const uId = 1	// REPLACE WITH USER ID
+		const uId = ctx.session.userId
 		const article = await new Article()
 		await article.add(uId, {headline, summary, content, thumbnail})
 		return ctx.redirect('/article/new?msg=your article was successfully added')
