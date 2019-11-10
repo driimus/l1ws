@@ -10,9 +10,34 @@
 				<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 			</li>
 		</ul>
-		<form class="form-inline" action="/search">
-			<input class="form-control mr-sm-2 bg-dark text-white" type="search" placeholder="Search..." name="q" aria-label="Search" />
-			<button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
+		<form class="form-inline flex-grow-1" action="/search">
+			<div class="input-group col-md-12 px-4">
+				<input class="form-control border border-right-0 bg-dark text-white" id="search-field" type="search" placeholder="Search..." name="q" aria-label="Search" />
+				<span class="input-group-append">
+					<button class="btn btn-outline-light border border-left-0" id="search-btn" type="submit">
+						<i class="fa fa-search"></i>
+					</button>
+				</span>
+			</div>
 		</form>
+		<ul class="navbar-nav ml-auto">
+			{{#if loggedIn}}
+			<li class="nav-item mx-1">
+				<a class="btn btn-outline-light my-2 my-sm-0" href="/article/new" title="Add a new artilce">
+					<i class="fa fa-pen"></i>
+				</a>
+			</li>
+			<li class="nav-item mx-1">
+				<a class="nav-link" href="/logout">Log out</a>
+			</li>
+			{{else}}
+			<li class="nav-item mx-1">
+				<a class="btn btn-light rounded-pill tempting-azure-gradient border-dark my-2 my-sm-0" href="/login" title="Log into your account">Log in</a>
+			</li>
+			<li class="nav-item mx-1">
+				<a class="btn btn-outline-light rounded-pill my-2 my-sm-0" href="/register" title="Create a new account">Sign up</a>
+			</li>
+			{{/if}}
+		</ul>
 	</div>
 </nav>

@@ -50,7 +50,7 @@ router.post('/login', async ctx => {
 	try {
 		const body = ctx.request.body
 		const user = await new User()
-		await user.login(body.user, body.pass)
+		ctx.session.userId = await user.login(body.user, body.pass)
 		ctx.session.authorised = true
 		ctx.session.username = body.user
 		return ctx.redirect('/?msg=you are now logged in...')
@@ -60,7 +60,7 @@ router.post('/login', async ctx => {
 })
 
 router.get('/logout', async ctx => {
-	ctx.session.authorised = null
+	ctx.session = null
 	ctx.redirect('/?msg=you are now logged out')
 })
 

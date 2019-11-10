@@ -40,6 +40,14 @@ input {
 	border-style: solid;
 }
 
+#search-field {
+	border-radius: 50rem 0rem 0rem 50rem;
+}
+
+#search-btn {
+	border-radius: 0rem 50rem 50rem 0rem;
+}
+
 img {
 	max-width: 100%;
 	height: auto;

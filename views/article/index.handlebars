@@ -9,6 +9,7 @@
 	<meta name="description" content="Full-view of a published article">
 	<meta name="author" content="Cristian Petre">
 	<link href="/style.css" type="text/css" rel="stylesheet">
+	<link href="/gradients.css" type="text/css" rel="stylesheet">
 	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
 	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
 	<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}"></script>
@@ -37,6 +38,9 @@
 			<article>
 				<h1 class="display-4 pt-4">{{data.headline}}</h1>
 				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
+				{{#if isAuthor }}
+				<a class="btn btn-dark rounded-pill" href="/article/{{id}}/edit">Edit</a></p>
+				{{/if}}
 				<p class="font-italic text-muted">{{data.summary}}</p>
 				<img src="/{{data.thumbnail}}" class="rounded">
 				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
