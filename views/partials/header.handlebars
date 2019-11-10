@@ -15,14 +15,21 @@
 			<button class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fa fa-search"></i></button>
 		</form>
 		<ul class="navbar-nav ml-auto">
-			<li class="nav-item">
+			{{#if loggedIn}}
+			<li class="nav-item mx-1">
 				<a class="btn btn-outline-light my-2 my-sm-0" href="/article/new" title="Add a new artilce">
 					<i class="fa fa-pen"></i>
 				</a>
 			</li>
-			{{#if loggedIn}}
-			<li class="nav-item">
+			<li class="nav-item mx-1">
 				<a class="nav-link" href="/logout">Log out</a>
+			</li>
+			{{else}}
+			<li class="nav-item mx-1">
+				<a class="btn btn-light my-2 my-sm-0" href="/login" title="Log into your account">Log in</a>
+			</li>
+			<li class="nav-item mx-1">
+				<a class="btn btn-outline-light my-2 my-sm-0" href="/register" title="Create a new account">Sign up</a>
 			</li>
 			{{/if}}
 		</ul>
