@@ -3,9 +3,12 @@
 
 const {isInt} = require('../utils')
 
+// Accepted rating value thresholds.
+const min = 1, max = 5
+
 const isValid = async rating => {
 	rating = await isInt(rating, 'rating')
-	if(rating < 1 || rating > 5) throw new Error(`invalid rating value: ${rating}`)
+	if(rating < min || rating > max) throw new Error(`invalid rating value: ${rating}`)
 	return true
 }
 
