@@ -1,7 +1,10 @@
 
 'use strict'
 
+const {isInt} = require('../utils')
+
 const isValid = async rating => {
+	rating = await isInt(rating, 'rating')
 	if(rating < 1 || rating > 5) throw new Error(`invalid rating value: ${rating}`)
 	return true
 }

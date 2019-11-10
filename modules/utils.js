@@ -7,4 +7,10 @@ const isId = async id => {
 	return id
 }
 
-module.exports = isId
+const isInt = async(value, model) => {
+	const int = parseInt(value)
+	if (Number.isInteger(int) === false) throw new Error(`${model} value "${value}" is not a number`)
+	return int
+}
+
+module.exports = {isId, isInt}
