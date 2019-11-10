@@ -17,8 +17,17 @@ describe('addOrUpdate()', () => {
 
 	test('create a new article rating', async done => {
 		expect.assertions(1)
-		const result = await this.rating.addOrUpdate(1, 1, 5)
-		expect(result).toBe(true)
+		const created = await this.rating.addOrUpdate(1, 1, 5)
+		expect(created).toBe(true)
+		done()
+	})
+
+	test('update an existing article rating', async done => {
+		expect.assertions(1)
+		await this.rating.addOrUpdate(1, 1, 5)
+		// Change the rating to 1.
+		const updated = await this.rating.addOrUpdate(1, 1, 1)
+		expect(updated).toBe(true)
 		done()
 	})
 
