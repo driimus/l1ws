@@ -16,20 +16,6 @@ const wasModified = async(article, newArticle) =>
 	Object.keys(article).some((attr) => newArticle[attr] !== article[attr])
 
 /**
- * Compares two user IDs for equality.
- *
- * @async
- * @param {number} thisId - The ID to compare.
- * @param {number} thatId - The ID to compare against.
- * @returns {boolean} If the two IDs match.
- */
-const byAuthor = async(thisId, thatId) => {
-	// Convert to number and compare.
-	if(+thisId !== +thatId) throw new Error(`user with ID "${thisId}" is not the author`)
-	return true
-}
-
-/**
  * Updates an existing article submission.
  *
  * @param {number} userId - The ID of the update's requester.
@@ -46,7 +32,7 @@ const update = async function(userId, articleId, newArticle) {
 		const modified = await wasModified(article.data, newArticle)
 		if(modified === false) return false
 		// Check that the request is made by the author.
-		await byAuthor(userId, article.author_id)
+		await this.byAuthor(userId, article.author_id)
 		await this.isValid(newArticle)
 		const sql = 'UPDATE article SET (data, created_at, status) = ($2, now(), \'pending\') WHERE id=$1'
 		await this.db.query(sql, [articleId, newArticle])
@@ -56,7 +42,4 @@ const update = async function(userId, articleId, newArticle) {
 	}
 }
 
-module.exports = Article => {
-	Article.prototype.update = update
-	Article.prototype.byAuthor = byAuthor
-}
+module.exports = Article => Article.prototype.update = update

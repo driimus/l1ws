@@ -40,5 +40,6 @@ require('./set-status')(Article)
 require('./is-valid')(Article)
 require('./upload-picture')(Article)
 require('./update')(Article)
+require('./by-author')(Article)
 
 module.exports = Article
