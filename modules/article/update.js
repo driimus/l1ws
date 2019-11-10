@@ -1,7 +1,7 @@
 
 'use strict'
 
-const isId = require('../utils')
+const {isId} = require('../utils')
 
 /**
  * Compares two article objects for equality.
@@ -26,7 +26,7 @@ const wasModified = async(article, newArticle) =>
  */
 const update = async function(userId, articleId, newArticle) {
 	try {
-		await isId(articleId)		// Validate given ID.
+		await isId(articleId, 'article')		// Validate given ID.
 		const article = await this.get(articleId)
 		// Skip if no changes were made.
 		const modified = await wasModified(article.data, newArticle)

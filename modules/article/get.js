@@ -1,7 +1,7 @@
 
 'use strict'
 
-const isId = require('../utils')
+const {isId} = require('../utils')
 
 /**
  * Retrieves all the stored articles in reverse chronological order.
@@ -14,7 +14,7 @@ const isId = require('../utils')
 const get = async function(id, showHidden=false) {
 	try {
 		if (typeof showHidden !== 'boolean') throw new Error(`invalid showHidden value: "${showHidden}"`)
-		await isId(id) 	// Validate given ID.
+		await isId(id, 'article') 	// Validate given ID.
 		const sql = `SELECT * FROM article WHERE id=$1
 			${showHidden === false ? 'AND status=\'approved\'' : ''}
 		`
