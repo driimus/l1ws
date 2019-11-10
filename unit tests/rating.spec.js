@@ -31,4 +31,12 @@ describe('addOrUpdate()', () => {
 		done()
 	})
 
+	test('invalid article rating value', async done => {
+		expect.assertions(1)
+		const value = 50
+		await expect( this.rating.addOrUpdate(1, 1, value) )
+			.rejects.toEqual( Error(`invalid rating value: ${value}`) )
+		done()
+	})
+
 })
