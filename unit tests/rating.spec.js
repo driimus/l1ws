@@ -41,8 +41,7 @@ describe('addOrUpdate()', () => {
 
 	test('non-numeric rating value', async done => {
 		expect.assertions(1)
-		const value = 'a'
-		await expect( this.rating.addOrUpdate(1, 1, value) )
+		await expect( this.rating.addOrUpdate(1, 1, 'a') )
 			.rejects.toEqual( Error('rating value "a" is not a number') )
 		done()
 	})
@@ -51,6 +50,13 @@ describe('addOrUpdate()', () => {
 		expect.assertions(1)
 		await expect( this.rating.addOrUpdate('horse', 1, 5) )
 			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+	test('error if invalid article ID', async done => {
+		expect.assertions(1)
+		await expect( this.rating.addOrUpdate(1, 'horse', 5) )
+			.rejects.toEqual( Error('invalid article ID') )
 		done()
 	})
 
