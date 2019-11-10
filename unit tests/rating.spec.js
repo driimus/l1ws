@@ -39,4 +39,12 @@ describe('addOrUpdate()', () => {
 		done()
 	})
 
+	test('non-numeric rating value', async done => {
+		expect.assertions(1)
+		const value = 'a'
+		await expect( this.rating.addOrUpdate(1, 1, value) )
+			.rejects.toEqual( Error('rating value "a" is not a number') )
+		done()
+	})
+
 })
