@@ -1,6 +1,8 @@
 
 'use strict'
 
+const {isId} = require('../utils')
+
 /**
  * Updates the email address of an user account.
  *
@@ -11,6 +13,7 @@
  */
 const setEmail = async function(id, newEmail) {
 	try {
+		await isId(id, 'user')
 		const sql = 'UPDATE users SET email=$2 WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [id, newEmail])
 		if (updates === 0) throw new Error(`user with ID "${id}" not found`)
