@@ -12,7 +12,9 @@
  * @returns {boolean} Whether the status was successfully changed.
  */
 const setEmail = async function(userId, newEmail) {
-	throw new Error('fn not implemented')
+	const sql = 'UPDATE users SET email=$2 WHERE id=$1'
+	await this.db.query(sql, [userId, newEmail])
+	return true
 }
 
 module.exports = User => User.prototype.setEmail = setEmail
