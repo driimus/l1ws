@@ -41,6 +41,15 @@ describe('send()', () => {
 		done()
 	})
 
+	test('send newsletter with some valid articles', async done => {
+		expect.assertions(1)
+		const recipients = ['this@test.com', 2]
+		const {headline: invalidArticle} = dummy
+		const sent = await this.newsletter.send(recipients, [dummy, {invalidArticle}])
+		expect(sent).toBe(true)
+		done()
+	})
+
 	test('send newsletter with invalid recipients', async done => {
 		expect.assertions(1)
 		const recipients = [1, 2]
@@ -53,6 +62,15 @@ describe('send()', () => {
 		expect.assertions(1)
 		const recipients = ['this@test.com', 2]
 		await expect( this.newsletter.send(recipients, []) )
+			.rejects.toEqual( Error('no articles to send via newsletter') )
+		done()
+	})
+
+	test('no valid newsletter articles', async done => {
+		expect.assertions(1)
+		const recipients = ['this@test.com', 2]
+		const {headline: invalidArticle} = dummy
+		await expect( this.newsletter.send(recipients, [{invalidArticle}]) )
 			.rejects.toEqual( Error('no articles to send via newsletter') )
 		done()
 	})
