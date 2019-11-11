@@ -1,6 +1,14 @@
 
 'use strict'
 
+/**
+ * Checks that a given value is an integer.
+ *
+ * @async
+ * @param {number} id - The value to be validated.
+ * @param {string} model - The identifier's corresponding model.
+ * @returns {number} The parsed value.
+ */
 const isId = async(id, model) => {
 	try {
 		id = await isInt(id, model)
