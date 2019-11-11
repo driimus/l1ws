@@ -11,10 +11,14 @@ const {isId} = require('../utils')
  * @returns {number} Value of the individual rating or NaN if not found.
  */
 const get = async function(userId, articleId) {
-	await isId(userId, 'user')
-	const sql = 'SELECT value FROM rating WHERE author_id=$1 AND article_id=$2'
-	const {rows: [rating]} = await this.db.query(sql, [userId, articleId])
-	return rating === undefined ? NaN : rating.value
+	try {
+		userId = await isId(userId, 'user')
+		const sql = 'SELECT value FROM rating WHERE author_id=$1 AND article_id=$2'
+		const {rows: [rating]} = await this.db.query(sql, [userId, articleId])
+		return rating === undefined ? NaN : rating.value
+	} catch(err) {
+		throw err
+	}
 }
 
 module.exports = Rating => Rating.prototype.get = get
