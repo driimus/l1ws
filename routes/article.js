@@ -76,33 +76,6 @@ router.post('/upload', koaBody, async ctx => {
 })
 
 /**
- * The published article full-view page.
- *
- * @name Published Article
- * @route {GET} /:id
- */
-router.get('/:id([0-9]{1,})', async ctx => {
-	try {
-
-	  const article = await new Article()
-		const user = await new User()
-		// Filter out hidden articles for non-admins.
-		const showHidden = await user.isAdmin(ctx.session.username)
-		const data = await article.get(ctx.params.id, showHidden)
-		try {
-			data.isAuthor = await article.byAuthor(ctx.session.userId, data.author_id)
-		}catch(e) {
-			data.isAuthor = false
-		}
-		data.isAdmin = showHidden
-		data.loggedIn = ctx.session.authorised
-		return ctx.render('article/', data)
-	}	catch(err) {
-		await ctx.render('error', {message: err.message})
-	}
-})
-
-/**
  * The secure article status update endpoint.
  *
  * @name Review Article
