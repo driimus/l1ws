@@ -30,5 +30,6 @@ class Newsletter {
 
 // Extend base class with custom functions.
 require('./send')(Newsletter)
+require('./get-timeleft')(Newsletter)
 
 module.exports = Newsletter
