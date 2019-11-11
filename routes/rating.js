@@ -36,4 +36,24 @@ router.get('/:id([0-9]{1,})', async ctx => {
 	}
 })
 
+/**
+ * The secure article rating update script.
+ *
+ * @name Rate Article
+ * @route {POST} /:id/rate
+ * @authentication This route requires cookie-based authentication.
+ */
+router.post('/:id([0-9]{1,})/rate', koaBody, async ctx => {
+	try {
+		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
+		const rating = await new Rating(),
+			{value} = JSON.parse(ctx.request.body),
+			_ = await rating.addOrUpdate(ctx.session.userId, ctx.params.id, value),
+			newAverage = await rating.mean(ctx.params.id)
+		return ctx.body = {newAverage, _}
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
 module.exports = router
