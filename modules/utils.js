@@ -1,7 +1,11 @@
 
 'use strict'
 
-const models = ['article', 'user', 'rating']
+const {readdirSync, lstatSync} = require('fs')
+const path = require('path')
+
+const models = readdirSync(__dirname).filter(
+	file => lstatSync(path.join(__dirname, file)).isDirectory())
 
 const isModel = async model => {
 	if (models.includes(model) === false)
