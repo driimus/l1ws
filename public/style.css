@@ -53,6 +53,7 @@ img {
 	height: auto;
 }
 
-.fa-star {
-	color: #B0B8C3;
+a {
+	text-decoration: none;
+	color: inherit;
 }
