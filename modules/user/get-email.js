@@ -2,17 +2,16 @@
 'use strict'
 
 /**
- * Updates the email address of an user account.
+ * Retrieves the email address of an user account.
  *
  * @param {number} id - Unique ID of the target account.
- * @param {string} newEmail - Updated e-mail address.
  * @async
- * @returns {boolean} Whether the email was successfully changed.
+ * @returns {string} The account's email address.
  */
 const getEmail = async function(id) {
 	const sql = 'SELECT email FROM users WHERE id=$1'
-	const {rows: [{email}]} = await this.db.query(sql, [id])
-	return email
+	const {rows: [result]} = await this.db.query(sql, [id])
+	return result.email
 }
 
 module.exports = User => User.prototype.getEmail = getEmail
