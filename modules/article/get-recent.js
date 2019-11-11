@@ -2,13 +2,13 @@
 'use strict'
 
 /**
- * Retrieves all the articles in reverse chronological order.
+ * Retrieves a summary of the articles published over the last 24 hours.
  *
- * @param {boolean} showHidden - Flag for filtering articles by status.
  * @async
- * @returns {Array} List of the requested articles as objects.
+ *
+ * @returns {object[]} List of the latest publications' summaries as objects.
  */
-const getRecent = async function(showHidden=false) {
+const getRecent = async function() {
 	const sql = 'SELECT data FROM article'
 	const {rows: articles} = await this.db.query(sql)
 	return articles.map(article => article.data)
