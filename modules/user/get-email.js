@@ -10,7 +10,9 @@
  * @returns {boolean} Whether the email was successfully changed.
  */
 const getEmail = async function(id) {
-	throw new Error('fn not implemented')
+	const sql = 'SELECT email FROM users WHERE id=$1'
+	const {rows: [{email}]} = await this.db.query(sql, [id])
+	return email
 }
 
 module.exports = User => User.prototype.getEmail = getEmail
