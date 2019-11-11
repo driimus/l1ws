@@ -2,6 +2,7 @@
 'use strict'
 
 const {isId} = require('../utils')
+
 /**
  * Retrieves an individual article rating.
  *
@@ -13,6 +14,7 @@ const {isId} = require('../utils')
 const get = async function(userId, articleId) {
 	try {
 		userId = await isId(userId, 'user')
+		articleId = await isId(articleId, 'article')
 		const sql = 'SELECT value FROM rating WHERE author_id=$1 AND article_id=$2'
 		const {rows: [rating]} = await this.db.query(sql, [userId, articleId])
 		return rating === undefined ? NaN : rating.value
