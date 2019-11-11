@@ -12,7 +12,7 @@ const {isId} = require('../utils')
  */
 const getEmail = async function(id) {
 	try {
-		await isId(id, 'user')
+		id = await isId(id, 'user')
 		const sql = 'SELECT id,email FROM users WHERE id=$1'
 		const {rows: [user]} = await this.db.query(sql, [id])
 		if (user === undefined) throw new Error(`user with ID "${id}" not found`)

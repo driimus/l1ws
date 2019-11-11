@@ -273,6 +273,14 @@ describe('getEmail()', () => {
 		done()
 	})
 
+	test('get missing user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const email = await this.account.getEmail(1)
+		expect(email).toBe(null)
+		done()
+	})
+
 	test('error if user does not exist', async done => {
 		expect.assertions(1)
 		await expect( this.account.getEmail(1) )
