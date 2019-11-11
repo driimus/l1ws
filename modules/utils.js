@@ -1,12 +1,21 @@
 
 'use strict'
 
+const models = ['article', 'user', 'rating']
+
+const isModel = async model => {
+	if (models.includes(model) === false)
+		throw new Error(`model "${model}" does not exist`)
+	return true
+}
+
 const isId = async(id, model) => {
 	try {
 		id = await isInt(id, model)
 		await isModel(model)
 		return id
 	} catch(err) {
+		if(err.message === `model "${model}" does not exist`) throw err
 		throw new Error(`invalid ${model} ID`)
 	}
 }
@@ -18,8 +27,5 @@ const isInt = async(value, model) => {
 	return int
 }
 
-const isModel = async model => {
-	throw new Error('function not implemented')
-}
 
 module.exports = {isId, isInt}
