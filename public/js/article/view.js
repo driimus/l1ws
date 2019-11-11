@@ -26,7 +26,7 @@ const setRating = (stars, rating) => {
 	// Reset current selection if there is one.
 	if (selected !== null) selected.classList.toggle('is-selected')
 	// Update selection to new rating.
-	if (Number.isInteger(rating))
+	if (Number.isInteger(+rating))
 		stars[starCount - parseInt(rating)].classList.toggle('is-selected')
 }
 
