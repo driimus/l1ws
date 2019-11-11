@@ -57,7 +57,7 @@ describe('addOrUpdate()', () => {
 		expect.assertions(1)
 		const value = -3
 		await expect( this.rating.addOrUpdate(1, 1, value) )
-			.rejects.toEqual( Error(`invalid rating value: ${value}`) )
+			.rejects.toEqual( Error(`number "${value}" is not positive`) )
 		done()
 	})
 
