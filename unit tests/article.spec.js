@@ -530,6 +530,16 @@ describe('getRecent()', () => {
 		done()
 	})
 
+	test('recent articles are summarized', async done => {
+		expect.assertions(1)
+		// Add an approved article.
+		await this.article.add(1,dummy)
+		await this.article.setStatus(1,'approved')
+		const articles = await this.article.getRecent()
+		expect(Object.keys(articles[0])).toEqual(['headline','summary'])
+		done()
+	})
+
 	test('filter unapproved articles', async done => {
 		expect.assertions(2)
 		// Add a pending article.
