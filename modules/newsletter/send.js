@@ -4,6 +4,7 @@
 const {isEmail} = require('../utils')
 
 const noRecipientsErr = Error('no valid email recipients found')
+const noArticlesErr = Error('no articles to send via newsletter')
 
 /**
  * Filters out the list of recipients.
@@ -32,10 +33,14 @@ const isString = str => typeof str === 'string' && str.length !== 0
  * @returns {string|Array} List of valid newsletter artciles.
  */
 const filteredArticles = async articles => {
-	if (Array.isArray(articles) === false || articles.length === 0) throw new Error('no articles to send via newsletter')
-	articles = articles.filter(article => isString(article.headline) && isString(article.summary))
-	if(articles.length === 0) throw new Error('no articles to send via newsletter')
-	return articles
+	try {
+		if (Array.isArray(articles) === false || articles.length === 0) throw noArticlesErr
+		articles = articles.filter(article => isString(article.headline) && isString(article.summary))
+		if(articles.length === 0) throw noArticlesErr
+		return articles
+	} catch(err) {
+		throw err
+	}
 }
 
 /**
