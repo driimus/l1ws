@@ -22,6 +22,20 @@ describe('addOrUpdate()', () => {
 		done()
 	})
 
+	test('add numeric rating', async done => {
+		expect.assertions(1)
+		const created = await this.rating.addOrUpdate(1, 1, '3')
+		expect(created).toBe(true)
+		done()
+	})
+
+	test('add rounded up rating', async done => {
+		expect.assertions(1)
+		const created = await this.rating.addOrUpdate(1, 1, 4.56)
+		expect(created).toBe(true)
+		done()
+	})
+
 	test('update an existing article rating', async done => {
 		expect.assertions(1)
 		await this.rating.addOrUpdate(1, 1, 5)
@@ -31,9 +45,17 @@ describe('addOrUpdate()', () => {
 		done()
 	})
 
-	test('invalid article rating value', async done => {
+	test('invalid article rating value - greater', async done => {
 		expect.assertions(1)
 		const value = 50
+		await expect( this.rating.addOrUpdate(1, 1, value) )
+			.rejects.toEqual( Error(`invalid rating value: ${value}`) )
+		done()
+	})
+
+	test('invalid article rating value - less', async done => {
+		expect.assertions(1)
+		const value = -3
 		await expect( this.rating.addOrUpdate(1, 1, value) )
 			.rejects.toEqual( Error(`invalid rating value: ${value}`) )
 		done()
