@@ -1,6 +1,26 @@
 
 'use strict'
 
+const {isEmail} = require('../utils')
+
+const noRecipientsErr = Error('no valid email recipients found')
+
+/**
+ * Filters out the list of recipients.
+ *
+ * @async
+ * @param {string|Array} recipients - List of newsletter recipients.
+ *
+ * @returns {string|Array} List of valid newsletter recipients.
+ */
+const filteredRecipients = async recipients => {
+	if(Array.isArray(recipients) === false) throw noRecipientsErr
+	// Filter out invalid recipient addresses.
+	recipients = recipients.filter(email => isEmail(email))
+	if(recipients.length === 0) throw noRecipientsErr
+	return recipients
+}
+
 /**
  * Sends a filled out newsletter template to a target user.
  *
@@ -10,23 +30,23 @@
  * @param {string} articles[].headline - The title of an article.
  * @param {string} articles[].thumbnail - The URL to an article's thumbnail.
  * @param {string} articles[].summary - The summary of an article.
+ *
  * @returns {number} Value of the individual rating or NaN if not found.
  */
 const send = async function(recipients, articles) {
-	if(Array.isArray(recipients) === false) throw new Error('no valid email recipients found')
-	// Regexp that matches valid email addresses.
-	const emailPattern = new RegExp('^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]' +
-		'{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$')
-	recipients = recipients.filter(email => emailPattern.test(email) === true)
-	if(recipients.length === 0) throw new Error('no valid email recipients found')
-	const mail = {
-		from: '"340CT Coursework" <local@news.com>',
-		to: recipients.join(', '),
-		subject: 'Don\'t miss out!',
-		html: this.template({articles})
+	try {
+		recipients = await filteredRecipients(recipients)
+		const mail = {
+			from: '"340CT Coursework" <local@news.com>',
+			to: recipients.join(', '),
+			subject: 'Don\'t miss out!',
+			html: this.template({articles})
+		}
+		await this.transporter.sendMail(mail)
+		return true
+	} catch(err) {
+		throw err
 	}
-	await this.transporter.sendMail(mail)
-	return true
 }
 
 module.exports = Newsletter => Newsletter.prototype.send = send
