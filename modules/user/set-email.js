@@ -1,19 +1,17 @@
 
 'use strict'
 
-
 /**
- * Updates the status of an user account.
+ * Updates the email address of an user account.
  *
- * @param {string} admin - Username of the request author.
- * @param {string} username - Identifier of the target account.
- * @param {boolean} toAdmin - New value for admin status.
+ * @param {number} id - Unique ID of the target account.
+ * @param {string} newEmail - Updated e-mail address.
  * @async
- * @returns {boolean} Whether the status was successfully changed.
+ * @returns {boolean} Whether the email was successfully changed.
  */
-const setEmail = async function(userId, newEmail) {
+const setEmail = async function(id, newEmail) {
 	const sql = 'UPDATE users SET email=$2 WHERE id=$1'
-	await this.db.query(sql, [userId, newEmail])
+	await this.db.query(sql, [id, newEmail])
 	return true
 }
 
