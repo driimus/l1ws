@@ -261,3 +261,16 @@ describe('setEmail()', () => {
 	})
 
 })
+
+describe('getEmail()', () => {
+
+	test('get valid user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.db.query('UPDATE users SET email=\'this@test.com\' where username=\'doej\'')
+		const email = await this.account.getEmail(1)
+		expect(email).toBe('this@test.com')
+		done()
+	})
+
+})
