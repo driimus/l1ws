@@ -13,7 +13,7 @@ const {isId} = require('../utils')
  */
 const setEmail = async function(id, newEmail) {
 	try {
-		await isId(id, 'user')
+		id = await isId(id, 'user')
 		const sql = 'UPDATE users SET email=$2 WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [id, newEmail])
 		if (updates === 0) throw new Error(`user with ID "${id}" not found`)
