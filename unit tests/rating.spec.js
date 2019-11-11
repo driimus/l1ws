@@ -61,3 +61,16 @@ describe('addOrUpdate()', () => {
 	})
 
 })
+
+describe('get()', () => {
+
+	test('get individual article rating', async done => {
+		expect.assertions(1)
+		const value = 4
+		await this.rating.addOrUpdate(1,1,value)
+		const result = await this.rating.get(1,1)
+		expect(result).toBe(value)
+		done()
+	})
+
+})
