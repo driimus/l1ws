@@ -84,3 +84,14 @@ describe('send()', () => {
 	})
 
 })
+
+describe('getTimeLeft()', () => {
+
+	test('get time left until next 8 a.m.', async done => {
+		expect.assertions(1)
+		const timeLeft = await this.newsletter.getTimeLeft()
+		expect(timeLeft).toBeGreaterThan(0)
+		done()
+	})
+
+})
