@@ -4,6 +4,7 @@
 const isId = async(id, model) => {
 	try {
 		id = await isInt(id, model)
+		if (id < 1) throw new Error()
 		return id
 	} catch(err) {
 		throw new Error(`invalid ${model} ID`)
