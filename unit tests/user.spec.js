@@ -235,3 +235,64 @@ describe('setAdmin()', () => {
 	})
 
 })
+
+describe('setEmail()', () => {
+
+	test('set valid user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const updated = await this.account.setEmail(1, 'this@test.com')
+		expect(updated).toBe(true)
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.setEmail(1, 'this@test.com') )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.setEmail('horse', 'this@test.com') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+})
+
+describe('getEmail()', () => {
+
+	test('get valid user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.db.query('UPDATE users SET email=\'this@test.com\' where username=\'doej\'')
+		const email = await this.account.getEmail(1)
+		expect(email).toBe('this@test.com')
+		done()
+	})
+
+	test('get missing user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const email = await this.account.getEmail(1)
+		expect(email).toBe(null)
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getEmail(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getEmail('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+})

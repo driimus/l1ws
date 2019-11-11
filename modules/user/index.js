@@ -10,7 +10,8 @@ const schema = `CREATE TABLE IF NOT EXISTS users (
 	password TEXT NOT NULL)`,
 	// User schema upgrades.
 	upgrade = `ALTER TABLE users
-	ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE`
+	ADD COLUMN IF NOT EXISTS is_admin BOOLEAN DEFAULT FALSE,
+	ADD COLUMN IF NOT EXISTS email TEXT`
 
 /** Class representing an user. */
 class User {
@@ -35,6 +36,8 @@ require('./login')(User)
 require('./upload-picture')(User)
 require('./is-admin')(User)
 require('./get-admin')(User)
+require('./get-email')(User)
 require('./set-admin')(User)
+require('./set-email')(User)
 
 module.exports = User
