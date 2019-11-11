@@ -13,6 +13,7 @@
  * @returns {number} Value of the individual rating or NaN if not found.
  */
 const send = async function(recipients, articles) {
+	if(recipients.length === 0) throw new Error('no valid email recipients found')
 	const mail = {
 		from: '"340CT Coursework" <local@news.com>',
 		to: recipients.join(', '),
