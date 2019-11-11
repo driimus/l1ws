@@ -11,7 +11,8 @@
 const getRecent = async function() {
 	try {
 		const sql = `SELECT data FROM article
-			WHERE status='approved'
+			WHERE created_at > now() - interval '24 hours'
+			AND status='approved'
 		`
 		const {rows: articles} = await this.db.query(sql)
 		if (articles.length === 0) throw new Error('no articles published in the last day')
