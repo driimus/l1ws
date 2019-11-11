@@ -7,6 +7,7 @@ const router = new Router()
 /* Import all the routes. */
 router.use(require('./article').routes())
 router.use(require('./user').routes())
+router.use(require('./rating').routes())
 
 /* Import custom modules. */
 const Article = require('../modules/article')

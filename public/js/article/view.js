@@ -4,8 +4,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 	const data = document.getElementById('articleView'),
 		starContainer = document.querySelector('.stars'),
-		stars = Array.prototype.slice.call(starContainer.children)
-	starContainer.addEventListener('click', async e => rate(e, stars))
+		stars = Array.prototype.slice.call(starContainer.children),
+		id = data.getAttribute('articleId')
+	starContainer.addEventListener('click', async e => rate(e, stars, id))
 	setDate(data.getAttribute('date'))
 	setRating(stars, data.getAttribute('rating'))
 })
@@ -29,9 +30,9 @@ const setRating = (stars, rating) => {
 		stars[starCount - parseInt(rating)].classList.toggle('is-selected')
 }
 
-const rate = async(e, stars) => {
+const rate = async(e, stars, articleId) => {
 	const newRating = starCount - stars.indexOf(e.target.parentElement),
-		res = await fetch('/article/{{id}}/rate', {
+		res = await fetch(`/article/${articleId}/rate`, {
 			method: 'POST',
 			body: JSON.stringify( {value: newRating} ),
 			credentials: 'include',
