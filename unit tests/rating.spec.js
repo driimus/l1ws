@@ -140,4 +140,11 @@ describe('mean()', () => {
 		done()
 	})
 
+	test('error if invalid article ID', async done => {
+		expect.assertions(1)
+		await expect( this.rating.mean('horse') )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
 })
