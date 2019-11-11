@@ -105,4 +105,12 @@ describe('getTimeLeft()', () => {
 		done()
 	})
 
+	test('error if today is not a date', async done => {
+		expect.assertions(1)
+		const targetHour=8, today = 'new Date very real'
+		await expect( this.newsletter.getTimeLeft(today, targetHour) )
+			.rejects.toEqual( Error(`not a valid date: ${today}`) )
+		done()
+	})
+
 })
