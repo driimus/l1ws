@@ -25,4 +25,11 @@ describe('isId()', () => {
 		done()
 	})
 
+	test('error if ID is negative', async done => {
+		const id = -5
+		await expect( utils.isId(id, 'article') )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
 })
