@@ -10,10 +10,14 @@
  * @returns {boolean} Whether the email was successfully changed.
  */
 const setEmail = async function(id, newEmail) {
-	const sql = 'UPDATE users SET email=$2 WHERE id=$1'
-	const {rowCount} = await this.db.query(sql, [id, newEmail])
-	if (rowCount === 0) throw new Error(`user with ID "${id}" not found`)
-	return true
+	try {
+		const sql = 'UPDATE users SET email=$2 WHERE id=$1'
+		const {rowCount: updates} = await this.db.query(sql, [id, newEmail])
+		if (updates === 0) throw new Error(`user with ID "${id}" not found`)
+		return true
+	} catch(err) {
+		throw err
+	}
 }
 
 module.exports = User => User.prototype.setEmail = setEmail
