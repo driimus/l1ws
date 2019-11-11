@@ -1,13 +1,13 @@
 
 'use strict'
 
-const {isInt} = require('../utils')
+const utils = require('../utils')
 
 // Accepted rating value thresholds.
 const min = 1, max = 5
 
 const isValid = async rating => {
-	rating = await isInt(rating, 'rating')
+	rating = await utils.isInt(rating, 'rating')
 	if(rating < min || rating > max) throw new Error(`invalid rating value: ${rating}`)
 	return true
 }
@@ -23,10 +23,11 @@ const isValid = async rating => {
  */
 const addOrUpdate = async function(userId, articleId, rating) {
 	try {
+		await utils.isId(userId, 'user')
+		await isValid(rating)
 		const sql = `INSERT INTO rating (author_id, article_id, value) VALUES ($1, $2, $3)
 			ON CONFLICT ON CONSTRAINT unique_rating DO UPDATE SET value=$3
 		`
-		await isValid(rating)
 		await this.db.query(sql, [userId, articleId, rating])
 		return true
 	} catch(err) {

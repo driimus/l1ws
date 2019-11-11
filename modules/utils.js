@@ -1,10 +1,13 @@
 
 'use strict'
 
-const isId = async id => {
-	id = parseInt(id)
-	if (isNaN(id)) throw new Error('invalid article ID')
-	return id
+const isId = async(id, model) => {
+	try {
+		id = await isInt(id, model)
+		return id
+	} catch(err) {
+		throw new Error(`invalid ${model} ID`)
+	}
 }
 
 const isInt = async(value, model) => {
