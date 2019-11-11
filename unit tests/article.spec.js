@@ -528,4 +528,13 @@ describe('getRecent()', () => {
 		done()
 	})
 
+	test('error if no approved articles found', async done => {
+		expect.assertions(1)
+		// Add a pending article.
+		await this.article.add(1,dummy)
+		await expect( this.article.getRecent() )
+			.rejects.toEqual( Error('no articles published in the last day') )
+		done()
+	})
+
 })
