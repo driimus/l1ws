@@ -36,5 +36,6 @@ require('./upload-picture')(User)
 require('./is-admin')(User)
 require('./get-admin')(User)
 require('./set-admin')(User)
+require('./set-email')(User)
 
 module.exports = User

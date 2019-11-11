@@ -235,3 +235,15 @@ describe('setAdmin()', () => {
 	})
 
 })
+
+describe('setEmail()', () => {
+
+	test('set valid user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const updated = await this.account.setEmail(1, 'this@test.com')
+		expect(updated).toBe(true)
+		done()
+	})
+
+})
