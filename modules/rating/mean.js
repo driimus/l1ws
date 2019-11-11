@@ -1,6 +1,8 @@
 
 'use strict'
 
+const {isId} = require('../utils')
+
 const precision = 2
 
 /**
@@ -11,6 +13,7 @@ const precision = 2
  * @returns {number} Arithmetic mean of the article's ratings.
  */
 const mean = async function(articleId) {
+	await isId(articleId, 'article')
 	const sql = 'SELECT AVG(value) FROM rating WHERE article_id=$1'
 	const { rows: [{avg: rating}] } = await this.db.query(sql, [articleId])
 	// Round up the average to fixed decimals.
