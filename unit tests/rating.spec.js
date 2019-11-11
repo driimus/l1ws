@@ -73,4 +73,11 @@ describe('get()', () => {
 		done()
 	})
 
+	test('get inexistent rating value', async done => {
+		expect.assertions(1)
+		const result = await this.rating.get(1,1)
+		expect(result).toBe(NaN)
+		done()
+	})
+
 })
