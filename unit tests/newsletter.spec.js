@@ -57,4 +57,12 @@ describe('send()', () => {
 		done()
 	})
 
+	test('articles is not an array', async done => {
+		expect.assertions(1)
+		const recipients = ['this@test.com', 2]
+		await expect( this.newsletter.send(recipients, 'not array') )
+			.rejects.toEqual( Error('no articles to send via newsletter') )
+		done()
+	})
+
 })
