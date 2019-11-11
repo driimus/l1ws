@@ -87,9 +87,20 @@ describe('send()', () => {
 
 describe('getTimeLeft()', () => {
 
-	test('get time left until next 8 a.m.', async done => {
+	test('get time left until today 8 a.m.', async done => {
 		expect.assertions(1)
-		const timeLeft = await this.newsletter.getTimeLeft()
+		const targetHour=8, today = new Date()
+		today.setHours(targetHour-1)
+		const timeLeft = await this.newsletter.getTimeLeft(today, targetHour)
+		expect(timeLeft).toBeGreaterThan(0)
+		done()
+	})
+
+	test('get time left until tomorrow 8 a.m.', async done => {
+		expect.assertions(1)
+		const targetHour=8, today = new Date()
+		today.setHours(targetHour+1)
+		const timeLeft = await this.newsletter.getTimeLeft(today, targetHour)
 		expect(timeLeft).toBeGreaterThan(0)
 		done()
 	})
