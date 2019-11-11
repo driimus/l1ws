@@ -10,16 +10,13 @@
  */
 const getRecent = async function() {
 	try {
-		const sql = `SELECT data FROM article
-			WHERE created_at > now() - interval '24 hours'
-			AND status='approved'
+		const sql = `SELECT data->'headline' as headline, data->'summary' as summary
+			FROM article
+			WHERE created_at > now() - interval '24 hours' AND status='approved'
 		`
 		const {rows: articles} = await this.db.query(sql)
 		if (articles.length === 0) throw new Error('no articles published in the last day')
-		return articles.map(article => ( {
-			headline: article.data.headline,
-			summary: article.data.summary
-		} ))
+		return articles
 	} catch(err) {
 		throw err
 	}
