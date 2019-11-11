@@ -543,11 +543,37 @@ describe('getRecent()', () => {
 		done()
 	})
 
+	test('filter out articles older than 24h', async done => {
+		expect.assertions(2)
+		// Add an old article.
+		await this.article.add(1,dummy)
+		await this.article.setStatus(1,'approved')
+		await this.article.db.query('UPDATE article SET created_at = created_at - interval \'25 hours\'')
+		// Add an approved article.
+		await this.article.add(1,newDummy)
+		await this.article.setStatus(2,'approved')
+		const articles = await this.article.getRecent()
+		expect(articles.length).toBe(1)
+		expect(articles[0].headline).toBe(newDummy.headline)
+		done()
+	})
+
 	test('error if only articles are rejected', async done => {
 		expect.assertions(1)
 		// Add a pending article.
 		await this.article.add(1,dummy)
 		await this.article.setStatus(1,'rejected')
+		await expect( this.article.getRecent() )
+			.rejects.toEqual( Error('no articles published in the last day') )
+		done()
+	})
+
+	test('error if no new articles', async done => {
+		expect.assertions(1)
+		// Add an old article.
+		await this.article.add(1,dummy)
+		await this.article.setStatus(1,'approved')
+		await this.article.db.query('UPDATE article SET created_at = created_at - interval \'25 hours\'')
 		await expect( this.article.getRecent() )
 			.rejects.toEqual( Error('no articles published in the last day') )
 		done()
