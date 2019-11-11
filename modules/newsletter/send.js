@@ -36,6 +36,7 @@ const filteredRecipients = async recipients => {
 const send = async function(recipients, articles) {
 	try {
 		recipients = await filteredRecipients(recipients)
+		if (articles.length === 0) throw new Error('no articles to send via newsletter')
 		const mail = {
 			from: '"340CT Coursework" <local@news.com>',
 			to: recipients.join(', '),
