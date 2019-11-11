@@ -12,6 +12,7 @@
 const get = async function(userId, articleId) {
 	const sql = 'SELECT value FROM rating WHERE author_id=$1 AND article_id=$2'
 	const {rows: [rating]} = await this.db.query(sql, [userId, articleId])
+	if (rating === undefined) return NaN
 	return rating.value
 }
 
