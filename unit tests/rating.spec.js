@@ -87,4 +87,11 @@ describe('get()', () => {
 		done()
 	})
 
+	test('error if invalid article ID', async done => {
+		expect.assertions(1)
+		await expect( this.rating.get(1, 'horse') )
+			.rejects.toEqual( Error('invalid article ID') )
+		done()
+	})
+
 })
