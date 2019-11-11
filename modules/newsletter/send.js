@@ -13,7 +13,12 @@
  * @returns {number} Value of the individual rating or NaN if not found.
  */
 const send = async function(recipients, articles) {
-	if(typeof recipients !== 'object' || recipients.length === 0) throw new Error('no valid email recipients found')
+	if(Array.isArray(recipients) === false) throw new Error('no valid email recipients found')
+	// Regexp that matches valid email addresses.
+	const emailPattern = new RegExp('^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]' +
+		'{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$')
+	recipients = recipients.filter(email => emailPattern.test(email) === true)
+	if(recipients.length === 0) throw new Error('no valid email recipients found')
 	const mail = {
 		from: '"340CT Coursework" <local@news.com>',
 		to: recipients.join(', '),
