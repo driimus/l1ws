@@ -9,7 +9,10 @@
  * @returns {number} Arithmetic mean of the article's ratings.
  */
 const mean = async function(articleId) {
-	throw new Error('function not implemented')
+	const sql = 'SELECT AVG(value) FROM rating WHERE article_id=$1'
+	const {rows: [{avg: rating}]} = await this.db.query(sql, [articleId])
+	// Return result rounded up to 2 decimals.
+	return +parseFloat(rating).toFixed(2)
 }
 
 module.exports = Rating => Rating.prototype.mean = mean
