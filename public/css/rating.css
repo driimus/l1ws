@@ -1,0 +1,30 @@
+
+.stars {
+  display: flex;
+  flex-flow: row-reverse;
+  justify-content: flex-end;
+  font-size: 1.5rem;
+}
+
+.star i,
+.star ~ .star i {
+  color: #B0B8C3;
+}
+
+.star:hover i,
+.star:hover ~ .star i {
+  color: #8FD3F4 !important;
+}
+
+.star.is-selected i,
+.star.is-selected ~ .star i {
+  color: #F2AF29;
+}
+
+#rated {
+  margin-top: 1em;
+}
+
+[dir="rtl"] {
+  direction: rtl;
+}

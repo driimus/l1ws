@@ -8,11 +8,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="Full-view of a published article">
 	<meta name="author" content="Cristian Petre">
-	<link href="/style.css" type="text/css" rel="stylesheet">
-	<link href="/gradients.css" type="text/css" rel="stylesheet">
+	<link href="/css/style.css" type="text/css" rel="stylesheet">
+	<link href="/css/gradients.css" type="text/css" rel="stylesheet">
 	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
 	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
-	<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}"></script>
+	<link href="/css/rating.css" type="text/css" rel="stylesheet">
+	<script type="text/javascript" src="/js/article/view.js" id="articleView" date="{{created_at}}" rating="{{rating}}" articleId="{{id}}"></script>
 </head>
 <body class="pb-4">
 	{{> header }}
@@ -38,9 +39,16 @@
 			<article>
 				<h1 class="display-4 pt-4">{{data.headline}}</h1>
 				<p>Posted by {{author_id}} on <strong id="date" class="font-weight-light"></strong></p>
-				{{#if isAuthor }}
-				<a class="btn btn-dark rounded-pill" href="/article/{{id}}/edit">Edit</a></p>
-				{{/if}}
+				<div class="row m-0">
+					<div class="col-xs-12 col-md-auto p-0 pb-2">
+						{{> rating }}
+					</div>
+					{{#if isAuthor }}
+					<div class="col-xs-12 col-md-4 p-0 my-md-auto ml-md-auto pb-2">
+						<a class="btn btn-block btn-dark rounded-pill" href="/article/{{id}}/edit">Edit</a></p>
+					</div>
+					{{/if}}
+				</div>
 				<p class="font-italic text-muted">{{data.summary}}</p>
 				<img src="/{{data.thumbnail}}" class="rounded">
 				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>

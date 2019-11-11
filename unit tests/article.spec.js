@@ -85,7 +85,6 @@ describe('isValid()', () => {
 		expect.assertions(1)
 		// Article object with no content.
 		const {headline, summary, thumbnail} = dummy
-		console.log(headline)
 		await expect( this.article.isValid({headline, summary, thumbnail, content: ''}) )
 			.rejects.toEqual( Error('missing article content') )
 		done()

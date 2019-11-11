@@ -1,7 +1,7 @@
 
 'use strict'
 
-const isId = require('../utils')
+const {isId} = require('../utils')
 
 /**
  * Updates the status of an article submission.
@@ -14,7 +14,7 @@ const isId = require('../utils')
 const setStatus = async function(id, newStatus) {
 	try {
 		// Validate given ID first.
-		await isId(id)
+		await isId(id, 'article')
 		if (!['pending', 'approved', 'rejected'].includes(newStatus))
 			throw new Error(`new status "${newStatus}" is not allowed`)
 		const sql = 'UPDATE article SET status=$2 WHERE id=$1'
