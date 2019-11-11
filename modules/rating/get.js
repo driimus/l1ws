@@ -11,8 +11,8 @@
  */
 const get = async function(userId, articleId) {
 	const sql = 'SELECT value FROM rating WHERE author_id=$1 AND article_id=$2'
-	const {rows: [{value}]} = await this.db.query(sql, [userId, articleId])
-	return value
+	const {rows: [rating]} = await this.db.query(sql, [userId, articleId])
+	return rating.value
 }
 
 module.exports = Rating => Rating.prototype.get = get
