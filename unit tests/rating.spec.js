@@ -132,6 +132,20 @@ describe('mean()', () => {
 		done()
 	})
 
+	test('get rounded up average rating', async done => {
+		expect.assertions(1)
+		const [r1, r2, r3] = [1, 2, 5]
+		const expected = +((r1+r2+r3)/3).toFixed(2)
+		// Give ratings as 3 different users.
+		await this.rating.addOrUpdate(1,1,r1)
+		await this.rating.addOrUpdate(2,1,r2)
+		await this.rating.addOrUpdate(3,1,r3)
+		// Get the average of the three.
+		const average = await this.rating.mean(1)
+		expect(average).toBe(expected)
+		done()
+	})
+
 	test('get average rating for inexistent article', async done => {
 		expect.assertions(1)
 		await this.rating.addOrUpdate(1,1,5)
