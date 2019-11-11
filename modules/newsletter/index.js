@@ -12,8 +12,12 @@ const {transporter: settings} = require('../../config')[process.env.NODE_ENV],
 	templateFile = fs.readFileSync(path.join(__dirname,'../../views/newsletter.handlebars'), 'utf8'),
 	template = handlebars.compile(templateFile)
 
+/** Class representing a newsletter. */
 class Newsletter {
 
+	/**
+	 * Create a mail transporter and assign pre-compiled HTML template.
+	 */
 	constructor() {
 		return (() => {
 			this.transporter = nodemailer.createTransport(settings)

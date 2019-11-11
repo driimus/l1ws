@@ -23,4 +23,12 @@ describe('send()', () => {
 		done()
 	})
 
+	test('no newsletter recipients', async done => {
+		expect.assertions(1)
+		const recipients = []
+		await expect( this.newsletter.send(recipients, [dummy]) )
+			.rejects.toEqual( Error('no valid email recipients found') )
+		done()
+	})
+
 })
