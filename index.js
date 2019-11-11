@@ -28,7 +28,8 @@ app.use(views(`${__dirname}/views`, {
 	options: {
 		partials: {
 			header: `${__dirname}/views/partials/header`,
-			footer: `${__dirname}/views/partials/footer`
+			footer: `${__dirname}/views/partials/footer`,
+			rating: `${__dirname}/views/partials/rating`
 		}
 	}
 }))

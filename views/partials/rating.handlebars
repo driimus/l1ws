@@ -1,0 +1,14 @@
+<div class="d-flex">
+	<div class="stars text-dark">
+	<a class="star pl-1" href="#"><i class="fa fa-star"></i></a>
+	<a class="star px-1" href="#"><i class="fa fa-star"></i></a>
+	<a class="star px-1" href="#"><i class="fa fa-star"></i></a>
+	<a class="star px-1" href="#"><i class="fa fa-star"></i></a>
+	<a class="star pr-1" href="#"><i class="fa fa-star"></i></a>
+	</div>
+	{{#if average}}
+		<small class="m-auto pl-2">rated <span id="rating">{{average}}</span>/5 on average</small>
+	{{else}}
+		<small class="m-auto pl-2">be the first to rate this article</small>
+	{{/if}}
+</div>
