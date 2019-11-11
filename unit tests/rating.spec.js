@@ -117,3 +117,19 @@ describe('get()', () => {
 	})
 
 })
+
+describe('mean()', () => {
+
+	test('get average article rating', async done => {
+		expect.assertions(1)
+		const [r1, r2] = [1, 5]
+		// Give ratings as 2 different users.
+		await this.rating.addOrUpdate(1,1,r1)
+		await this.rating.addOrUpdate(2,1,r2)
+		// Get the average of the two.
+		const average = await this.rating.mean(1)
+		expect(average).toBe((r1+r2)/2)
+		done()
+	})
+
+})

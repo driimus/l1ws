@@ -29,7 +29,8 @@ class Rating {
 }
 
 // Extend base class with custom functions.
-require('./get')(Rating)
 require('./add-or-update')(Rating)
+require('./get')(Rating)
+require('./mean')(Rating)
 
 module.exports = Rating
