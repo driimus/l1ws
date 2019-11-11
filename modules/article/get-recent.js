@@ -9,8 +9,9 @@
  * @returns {object[]} List of the latest publications' summaries as objects.
  */
 const getRecent = async function() {
-	const sql = 'SELECT data FROM article'
+	const sql = 'SELECT data FROM article WHERE status=\'approved\''
 	const {rows: articles} = await this.db.query(sql)
+	if (articles.length === 0) throw new Error('no articles published in the last day')
 	return articles.map(article => article.data)
 }
 
