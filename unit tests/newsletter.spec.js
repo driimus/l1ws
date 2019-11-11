@@ -49,4 +49,12 @@ describe('send()', () => {
 		done()
 	})
 
+	test('no newsletter articles', async done => {
+		expect.assertions(1)
+		const recipients = ['this@test.com', 2]
+		await expect( this.newsletter.send(recipients, []) )
+			.rejects.toEqual( Error('no articles to send via newsletter') )
+		done()
+	})
+
 })
