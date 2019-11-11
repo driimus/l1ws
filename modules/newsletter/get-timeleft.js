@@ -10,6 +10,7 @@
  */
 const getTimeLeft = async(today=new Date(), targetHour) => {
 	const now = new Date(today)
+	if (isNaN(now) === true) throw new Error(`not a valid date: ${today}`)
 	// Get time left until target hour.
 	let timeLeft = today.setHours(targetHour, 0, 0, 0) - now
 	// Use next day if current time is past targetHour.
