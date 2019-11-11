@@ -132,4 +132,12 @@ describe('mean()', () => {
 		done()
 	})
 
+	test('get average rating for inexistent article', async done => {
+		expect.assertions(1)
+		await this.rating.addOrUpdate(1,1,5)
+		const average = await this.rating.mean(2)
+		expect(average).toBe(NaN)
+		done()
+	})
+
 })
