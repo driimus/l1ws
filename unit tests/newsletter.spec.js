@@ -33,4 +33,20 @@ describe('send()', () => {
 		done()
 	})
 
+	test('send newsletter with some valid recipients', async done => {
+		expect.assertions(1)
+		const recipients = ['this@test.com', 2]
+		const sent = await this.newsletter.send(recipients, [dummy])
+		expect(sent).toBe(true)
+		done()
+	})
+
+	test('send newsletter with invalid recipients', async done => {
+		expect.assertions(1)
+		const recipients = [1, 2]
+		await expect( this.newsletter.send(recipients, [dummy]) )
+			.rejects.toEqual( Error('no valid email recipients found') )
+		done()
+	})
+
 })
