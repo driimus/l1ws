@@ -246,4 +246,11 @@ describe('setEmail()', () => {
 		done()
 	})
 
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.setEmail(1, 'this@test.com') )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
 })
