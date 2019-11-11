@@ -35,6 +35,7 @@ class Article {
 require('./add')(Article)
 require('./get')(Article)
 require('./get-all')(Article)
+require('./get-recent')(Article)
 require('./get-status')(Article)
 require('./set-status')(Article)
 require('./is-valid')(Article)

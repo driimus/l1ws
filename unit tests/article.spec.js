@@ -514,3 +514,18 @@ describe('update()', () => {
 	})
 
 })
+
+describe('getRecent()', () => {
+
+	test('get latest approved articles', async done => {
+		expect.assertions(2)
+		// Add an approved article.
+		await this.article.add(1,dummy)
+		await this.article.setStatus(1,'approved')
+		const articles = await this.article.getRecent()
+		expect(articles.length).toBe(1)
+		expect(articles[0].headline).toBe(dummy.headline)
+		done()
+	})
+
+})
