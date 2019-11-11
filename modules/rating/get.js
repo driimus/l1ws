@@ -10,7 +10,9 @@
  * @returns {number} Value of the individual rating.
  */
 const get = async function(userId, articleId) {
-	throw new Error('function not implemented')
+	const sql = 'SELECT value FROM rating WHERE author_id=$1 AND article_id=$2'
+	const {rows: [{value}]} = await this.db.query(sql, [userId, articleId])
+	return value
 }
 
 module.exports = Rating => Rating.prototype.get = get
