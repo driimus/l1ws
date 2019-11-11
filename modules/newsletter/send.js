@@ -21,6 +21,23 @@ const filteredRecipients = async recipients => {
 	return recipients
 }
 
+const isString = str => typeof str === 'string' && str.length !== 0
+
+/**
+ * Filters out the list of artciles.
+ *
+ * @async
+ * @param {string|Array} artciles - List of newsletter artciles.
+ *
+ * @returns {string|Array} List of valid newsletter artciles.
+ */
+const filteredArticles = async articles => {
+	if (Array.isArray(articles) === false || articles.length === 0) throw new Error('no articles to send via newsletter')
+	articles = articles.filter(article => isString(article.headline) && isString(article.summary))
+	if(articles.length === 0) throw new Error('no articles to send via newsletter')
+	return articles
+}
+
 /**
  * Sends a filled out newsletter template to a target user.
  *
@@ -36,8 +53,7 @@ const filteredRecipients = async recipients => {
 const send = async function(recipients, articles) {
 	try {
 		recipients = await filteredRecipients(recipients)
-		if (Array.isArray(articles) === false || articles.length === 0)
-			throw new Error('no articles to send via newsletter')
+		articles = await filteredArticles(articles)
 		const mail = {
 			from: '"340CT Coursework" <local@news.com>',
 			to: recipients.join(', '),
