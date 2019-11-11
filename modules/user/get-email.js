@@ -9,10 +9,14 @@
  * @returns {string} The account's email address.
  */
 const getEmail = async function(id) {
-	const sql = 'SELECT id,email FROM users WHERE id=$1'
-	const {rows: [result]} = await this.db.query(sql, [id])
-	if (result === undefined) throw new Error(`user with ID "${id}" not found`)
-	return result.email
+	try {
+		const sql = 'SELECT id,email FROM users WHERE id=$1'
+		const {rows: [user]} = await this.db.query(sql, [id])
+		if (user === undefined) throw new Error(`user with ID "${id}" not found`)
+		return user.email
+	} catch(err) {
+		throw err
+	}
 }
 
 module.exports = User => User.prototype.getEmail = getEmail
