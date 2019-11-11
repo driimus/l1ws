@@ -517,6 +517,8 @@ describe('update()', () => {
 
 describe('getRecent()', () => {
 
+	const newDummy = {headline: 'Test',summary: 'summary',thumbnail: 'some.png',content: 't'}
+
 	test('get latest approved articles', async done => {
 		expect.assertions(2)
 		// Add an approved article.
@@ -525,6 +527,29 @@ describe('getRecent()', () => {
 		const articles = await this.article.getRecent()
 		expect(articles.length).toBe(1)
 		expect(articles[0].headline).toBe(dummy.headline)
+		done()
+	})
+
+	test('filter unapproved articles', async done => {
+		expect.assertions(2)
+		// Add a pending article.
+		await this.article.add(1,dummy)
+		// Add an approved article.
+		await this.article.add(1,newDummy)
+		await this.article.setStatus(2,'approved')
+		const articles = await this.article.getRecent()
+		expect(articles.length).toBe(1)
+		expect(articles[0].headline).toBe(newDummy.headline)
+		done()
+	})
+
+	test('error if only articles are rejected', async done => {
+		expect.assertions(1)
+		// Add a pending article.
+		await this.article.add(1,dummy)
+		await this.article.setStatus(1,'rejected')
+		await expect( this.article.getRecent() )
+			.rejects.toEqual( Error('no articles published in the last day') )
 		done()
 	})
 
