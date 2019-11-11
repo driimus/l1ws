@@ -80,4 +80,11 @@ describe('get()', () => {
 		done()
 	})
 
+	test('error if invalid user ID', async done => {
+		expect.assertions(1)
+		await expect( this.rating.get('horse', 1) )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
 })
