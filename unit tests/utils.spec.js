@@ -19,6 +19,22 @@ describe('isId()', () => {
 		done()
 	})
 
+	test('convert a valid user ID', async done => {
+		expect.assertions(1)
+		const id = '3'
+		const isValid = await utils.isId(id, 'user')
+		expect(isValid).toBe(3)
+		done()
+	})
+
+	test('convert a valid rating ID', async done => {
+		expect.assertions(1)
+		const id = '3'
+		const isValid = await utils.isId(id, 'rating')
+		expect(isValid).toBe(3)
+		done()
+	})
+
 	test('error if missing ID', async done => {
 		expect.assertions(1)
 		const id = undefined
