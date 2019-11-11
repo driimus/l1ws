@@ -13,11 +13,6 @@ beforeEach(async done => {
 	done()
 })
 
-afterEach(async done => {
-	this.newsletter.db.end()
-	done()
-})
-
 describe('send()', () => {
 
 	test('send newsletter to recipients', async done => {
