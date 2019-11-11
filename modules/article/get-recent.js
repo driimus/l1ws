@@ -16,7 +16,10 @@ const getRecent = async function() {
 		`
 		const {rows: articles} = await this.db.query(sql)
 		if (articles.length === 0) throw new Error('no articles published in the last day')
-		return articles.map(article => article.data)
+		return articles.map(article => ( {
+			headline: article.data.headline,
+			summary: article.data.summary
+		} ))
 	} catch(err) {
 		throw err
 	}
