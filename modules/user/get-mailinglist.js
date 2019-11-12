@@ -2,11 +2,10 @@
 'use strict'
 
 /**
- * Retrieves the email address of an user account.
+ * Retrieves the email address of users subscribed to the newsletter.
  *
- * @param {number} id - Unique ID of the target account.
  * @async
- * @returns {string} The account's email address.
+ * @returns {string[]} The list of email addresses for subscribed users.
  */
 const getMailingList = async function() {
 	const sql = 'SELECT email FROM users WHERE is_subscribed'
