@@ -404,4 +404,13 @@ describe('getMailingList()', () => {
 		done()
 	})
 
+	test('error if no users are subscribed', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.setEmail(1, 'valid@test.com')
+		await expect( this.account.getMailingList() )
+			.rejects.toEqual( Error('no subscriber emails found'))
+		done()
+	})
+
 })
