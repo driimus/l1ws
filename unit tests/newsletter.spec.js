@@ -113,4 +113,12 @@ describe('getTimeLeft()', () => {
 		done()
 	})
 
+	test('error if delivery hour is not valid', async done => {
+		expect.assertions(1)
+		const targetHour='horse', today = new Date()
+		await expect( this.newsletter.getTimeLeft(today, targetHour) )
+			.rejects.toEqual( Error(`hour value "${targetHour}" is not a number`) )
+		done()
+	})
+
 })
