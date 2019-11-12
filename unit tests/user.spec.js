@@ -388,3 +388,20 @@ describe('getSubscription()', () => {
 	})
 
 })
+
+describe('getMailingList()', () => {
+
+	test('get list of newsletter recipients', async done => {
+		expect.assertions(2)
+		// Add a subscribed and unsubscribed user.
+		await this.account.register('doej', 'password')
+		await this.account.setEmail(1, 'valid@test.com')
+		await this.account.setSubscription(1, true)
+		await this.account.register('roej', 'password')
+		const recipients = await this.account.getMailingList()
+		expect(recipients.length).toBe(1)
+		expect(recipients[0]).toBe('valid@test.com')
+		done()
+	})
+
+})
