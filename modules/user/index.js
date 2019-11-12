@@ -39,5 +39,6 @@ require('./get-admin')(User)
 require('./get-email')(User)
 require('./set-admin')(User)
 require('./set-email')(User)
+require('./set-subscription')(User)
 
 module.exports = User

@@ -310,3 +310,15 @@ describe('getEmail()', () => {
 	})
 
 })
+
+describe('setSubscription()', () => {
+
+	test('subscribe user to emails', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const subscribed = await this.account.setSubscription(1, true)
+		expect(subscribed).toBe(true)
+		done()
+	})
+
+})
