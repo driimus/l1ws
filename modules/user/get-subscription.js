@@ -1,6 +1,8 @@
 
 'use strict'
 
+const {isId} = require('../utils')
+
 /**
  * Retrieves the subscription status of an user account.
  *
@@ -10,6 +12,7 @@
  */
 const getSubscription = async function(id) {
 	try {
+		await isId(id, 'user')	//Check that the user ID is valid.
 		const sql = 'SELECT is_subscribed FROM users WHERE id=$1'
 		const {rows: [user]} = await this.db.query(sql, [id])
 		// Every record must have a status.
