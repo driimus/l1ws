@@ -1,6 +1,8 @@
 
 'use strict'
 
+const {isInt} = require('../utils')
+
 /**
  * Determines the time left until sending out a newsletter.
  *
@@ -12,6 +14,7 @@
  */
 const getTimeLeft = async(today=new Date(), targetHour) => {
 	try {
+		targetHour = await isInt(targetHour, 'hour')
 		const now = new Date(today)
 		if (isNaN(now) === true) throw new Error(`not a valid date: ${today}`)
 		// Get time left until target hour.
