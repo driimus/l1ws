@@ -13,6 +13,7 @@ const {isId} = require('../utils')
 const setSubscription = async function(id, newStatus) {
 	try {
 		id = await isId(id, 'user')	//Check that the user ID is valid.
+		if (typeof newStatus !== 'boolean') throw new Error(`invalid status value: "${newStatus}"`)
 		const sql = 'UPDATE users SET is_subscribed=$2 WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [id, newStatus])
 		if (updates === 0) throw new Error(`user with ID "${id}" not found`)
