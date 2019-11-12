@@ -246,6 +246,20 @@ describe('setEmail()', () => {
 		done()
 	})
 
+	test('error if address is invalid', async done => {
+		expect.assertions(1)
+		await expect( this.account.setEmail(1, 'not@valid@mail.:addr') )
+			.rejects.toEqual( Error('invalid email address format') )
+		done()
+	})
+
+	test('error if missing email address', async done => {
+		expect.assertions(1)
+		await expect( this.account.setEmail(1, '') )
+			.rejects.toEqual( Error('invalid email address format') )
+		done()
+	})
+
 	test('error if user does not exist', async done => {
 		expect.assertions(1)
 		await expect( this.account.setEmail(1, 'this@test.com') )
