@@ -344,3 +344,16 @@ describe('setSubscription()', () => {
 	})
 
 })
+
+describe('getSubscription()', () => {
+
+	test('get subscribed user status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.setSubscription(1, true)
+		const status = await this.account.getSubscription(1)
+		expect(status).toBe(true)
+		done()
+	})
+
+})
