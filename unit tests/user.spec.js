@@ -321,4 +321,11 @@ describe('setSubscription()', () => {
 		done()
 	})
 
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.setSubscription(1, true) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
 })
