@@ -105,6 +105,14 @@ describe('getTimeLeft()', () => {
 		done()
 	})
 
+	test('get time left until numeric target hour', async done => {
+		expect.assertions(1)
+		const targetHour='22', today = new Date()
+		const timeLeft = await this.newsletter.getTimeLeft(today, targetHour)
+		expect(timeLeft).toBeGreaterThan(0)
+		done()
+	})
+
 	test('error if today is not a date', async done => {
 		expect.assertions(1)
 		const targetHour=8, today = 'new Date very real'

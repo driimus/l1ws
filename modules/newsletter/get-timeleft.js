@@ -12,10 +12,11 @@ const {isInt} = require('../utils')
  *
  * @returns {number} Time left in ms until next occurrence of 8AM.
  */
-const getTimeLeft = async(today=new Date(), targetHour) => {
+const getTimeLeft = async(today, targetHour) => {
 	try {
 		targetHour = await isInt(targetHour, 'hour')
 		const now = new Date(today)
+		// Invalid date objects never convert to numbers.
 		if (isNaN(now) === true) throw new Error(`not a valid date: ${today}`)
 		// Get time left until target hour.
 		let timeLeft = today.setHours(targetHour, 0, 0, 0) - now
