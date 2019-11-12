@@ -1,6 +1,8 @@
 
 'use strict'
 
+const {isId} = require('../utils')
+
 /**
  * Updates the newsletter subscription status of an user account.
  * @async
@@ -10,6 +12,7 @@
  */
 const setSubscription = async function(id, newStatus) {
 	try {
+		await isId(id, 'user')	//Check that the user ID is valid.
 		const sql = 'UPDATE users SET is_subscribed=$2 WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [id, newStatus])
 		if (updates === 0) throw new Error(`user with ID "${id}" not found`)
