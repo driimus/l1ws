@@ -10,7 +10,9 @@
  * @returns {boolean} Whether the email was successfully changed.
  */
 const setSubscription = async function(id, newStatus) {
-	throw new Error('fn not implemented')
+	const sql = 'UPDATE users SET is_subscribed=$2 WHERE id=$1'
+	await this.db.query(sql, [id, newStatus])
+	return true
 }
 
 module.exports = User => User.prototype.setSubscription = setSubscription
