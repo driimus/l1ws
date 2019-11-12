@@ -356,4 +356,21 @@ describe('getSubscription()', () => {
 		done()
 	})
 
+	test('get default user status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const status = await this.account.getSubscription(1)
+		expect(status).toBe(false)
+		done()
+	})
+
+	test('get unsubscribed user status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.setSubscription(1, false)
+		const status = await this.account.getSubscription(1)
+		expect(status).toBe(false)
+		done()
+	})
+
 })
