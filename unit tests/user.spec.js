@@ -58,6 +58,25 @@ describe('register()', () => {
 
 })
 
+describe('isAvailable()', () => {
+
+	test('availalbe account username', async done => {
+		expect.assertions(1)
+		const available = await this.account.isAvailable('username', 'doej')
+		expect(available).toBe(true)
+		done()
+	})
+
+	test('duplicate account username', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		await expect( this.account.isAvailable('username', 'doej') )
+			.rejects.toEqual( Error('username "doej" already in use') )
+		done()
+	})
+
+})
+
 describe('uploadPicture()', () => {
 	test('upload a valid PNG picture', async done => {
 		expect.assertions(1)

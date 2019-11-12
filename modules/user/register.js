@@ -11,6 +11,7 @@ const {isEmail} = require('../utils')
  *
  * @param {string} username - Identifier of the user.
  * @param {string} password - The plaintext password.
+ * @param {string=} email - The user's email address.
  * @async
  * @returns {boolean} Whether the operation was successful.
  */
@@ -19,13 +20,10 @@ const register = async function(username, password, email) {
 		email = isEmail(email) === true ? email : null
 		if(username.length === 0) throw new Error('missing username')
 		if(password.length === 0) throw new Error('missing password')
-		// Check that the username is not taken.
-		let sql = 'SELECT id FROM users WHERE username=$1 LIMIT 1'
-		const { rows: {length: exists} } = await this.db.query(sql, [username])
-		if(exists !== 0) throw new Error(`username "${username}" already in use`)
+		await this.isAvailable('username', username)
 		// Save username and encrypted password.
 		password = await bcrypt.hash(password, saltRounds)
-		sql = 'INSERT INTO users(username, password, email) VALUES($1, $2, $3)'
+		const sql = 'INSERT INTO users(username, password, email) VALUES($1, $2, $3)'
 		await this.db.query(sql, [username, password, email])
 		return true
 	} catch(err) {
