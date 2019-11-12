@@ -335,4 +335,12 @@ describe('setSubscription()', () => {
 		done()
 	})
 
+	test('error if status is not boolean', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await expect( this.account.setSubscription(1, 'such boolean') )
+			.rejects.toEqual( Error('invalid status value "such boolean"') )
+		done()
+	})
+
 })
