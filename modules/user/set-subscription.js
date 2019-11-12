@@ -10,7 +10,8 @@
  */
 const setSubscription = async function(id, newStatus) {
 	const sql = 'UPDATE users SET is_subscribed=$2 WHERE id=$1'
-	await this.db.query(sql, [id, newStatus])
+	const {rowCount} = await this.db.query(sql, [id, newStatus])
+	if(rowCount === 0) throw new Error(`user with ID "${id}" not found`)
 	return true
 }
 
