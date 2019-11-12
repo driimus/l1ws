@@ -10,6 +10,7 @@
 const getMailingList = async function() {
 	const sql = 'SELECT email FROM users WHERE is_subscribed'
 	const {rows: recipients} = await this.db.query(sql)
+	if (recipients.length === 0) throw new Error('no subscriber emails found')
 	return recipients.map(user => user.email)
 }
 
