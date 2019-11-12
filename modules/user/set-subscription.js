@@ -2,12 +2,11 @@
 'use strict'
 
 /**
- * Updates the email address of an user account.
- *
- * @param {number} id - Unique ID of the target account.
- * @param {string} newEmail - Updated e-mail address.
+ * Updates the newsletter subscription status of an user account.
  * @async
- * @returns {boolean} Whether the email was successfully changed.
+ * @param {number} id - Unique ID of the target account.
+ * @param {boolean} newStatus - New subscription status.
+ * @returns {boolean} Whether the status was successfully changed.
  */
 const setSubscription = async function(id, newStatus) {
 	const sql = 'UPDATE users SET is_subscribed=$2 WHERE id=$1'
