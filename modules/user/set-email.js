@@ -13,7 +13,8 @@ const {isId, isEmail} = require('../utils')
  */
 const setEmail = async function(id, newEmail) {
 	try {
-		id = await isId(id, 'user')
+		id = await isId(id, 'user')	//Check that the user ID is valid.
+		// Updated email address must have a valid email format.
 		if(isEmail(newEmail) === false) throw new Error('invalid email address format')
 		const sql = 'UPDATE users SET email=$2 WHERE id=$1'
 		const {rowCount: updates} = await this.db.query(sql, [id, newEmail])
