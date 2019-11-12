@@ -11,6 +11,8 @@
 const getSubscription = async function(id) {
 	const sql = 'SELECT is_subscribed FROM users WHERE id=$1'
 	const {rows: [user]} = await this.db.query(sql, [id])
+	// Every record must have a status.
+	if (user === undefined) throw new Error(`user with ID "${id}" not found`)
 	return user.is_subscribed
 }
 
