@@ -310,3 +310,81 @@ describe('getEmail()', () => {
 	})
 
 })
+
+describe('setSubscription()', () => {
+
+	test('subscribe user to emails', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const subscribed = await this.account.setSubscription(1, true)
+		expect(subscribed).toBe(true)
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.setSubscription(1, true) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.setSubscription('horse', true) )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+	test('error if status is not boolean', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await expect( this.account.setSubscription(1, 'such boolean') )
+			.rejects.toEqual( Error('invalid status value: "such boolean"') )
+		done()
+	})
+
+})
+
+describe('getSubscription()', () => {
+
+	test('get subscribed user status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.setSubscription(1, true)
+		const status = await this.account.getSubscription(1)
+		expect(status).toBe(true)
+		done()
+	})
+
+	test('get default user status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		const status = await this.account.getSubscription(1)
+		expect(status).toBe(false)
+		done()
+	})
+
+	test('get unsubscribed user status', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password')
+		await this.account.setSubscription(1, false)
+		const status = await this.account.getSubscription(1)
+		expect(status).toBe(false)
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getSubscription(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getSubscription('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+})
