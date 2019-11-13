@@ -86,7 +86,7 @@ describe('isAvailable()', () => {
 		expect.assertions(1)
 		await this.account.register('doej', 'password', 'doej@test.com')
 		await expect( this.account.isAvailable('email', 'doej@test.com') )
-			.rejects.toEqual( Error('email address "doej@test.com" already in use') )
+			.rejects.toEqual( Error('email "doej@test.com" already in use') )
 		done()
 	})
 
