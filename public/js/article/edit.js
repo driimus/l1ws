@@ -20,15 +20,18 @@ document.addEventListener('DOMContentLoaded', () => {
 	$('#editor').submit(e => {
 		const [,,, ...rest] = $('#editor').serializeArray()
 		$('<input />').attr('type', 'hidden')
-			.attr('name', 'contents')
+			.attr('name', 'content')
 			.attr('value', JSON.stringify(rest))
 			.appendTo('#editor')
 		return true
 	})
+
 })
+
+// Enable remove button for every manually added content field.
 const toggleChildBtn = container => {
-	container.firstElementChild.disabled = !container.firstElementChild.disabled
-	container.hidden = !container.hidden
+	container.firstElementChild.disabled = false
+	container.hidden = false
 }
 
 const loadPreview = (e, target) => {
@@ -39,7 +42,7 @@ const loadPreview = (e, target) => {
 const uploadImage = async(src, target) => {
 	const data = new FormData()
 	const [img] = document.getElementById(src).files,
-	url = document.getElementById(target)
+		url = document.getElementById(target)
 	data.append('thumbnail', img)
 	try {
 		const res = await fetch('/article/upload', {
@@ -51,13 +54,13 @@ const uploadImage = async(src, target) => {
 		const {thumbnail} = await res.json()
 		url.value = thumbnail
 	} catch(err) {
-		console.log(err.message)
+		alert(err.message)
 	}
 }
 
 const attachImage = () => {
 	const url = document.getElementById('image-url-container').cloneNode(true),
-	editor = document.getElementById('content')
+		editor = document.getElementById('content')
 	toggleChildBtn(url.lastElementChild)
 	editor.insertBefore(url, editor.lastChild.nextSibling)
 	$('#exampleModal').modal('toggle')
@@ -75,7 +78,7 @@ const submitArticle = async(e) => {
 		thumbnail,
 		headline,
 		summary,
-		contents: rest
+		content: rest
 	}
 	const res = await fetch(e.target.action, {
 		method: 'POST',
@@ -84,6 +87,5 @@ const submitArticle = async(e) => {
 		redirect: 'follow',
 		mode: 'cors'
 	})
-	console.log(res)
 	if (res.redirected) window.location.href = res.url
 }
