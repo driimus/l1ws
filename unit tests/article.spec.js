@@ -655,4 +655,12 @@ describe('find()', () => {
 		done()
 	})
 
+	test('error if invalid hidden article flag', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.find('keyword', 'notbool') )
+			.rejects.toEqual( Error('invalid showHidden value: "notbool"') )
+		done()
+	})
+
 })
