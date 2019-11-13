@@ -21,16 +21,32 @@
 		{{#if msg}}
 		<p class="msg">{{msg}}</p>
 		{{/if}}
-		<!-- TO-DO: turn the upload form into a modal -->
-		<form action="/article/upload" enctype="multipart/form-data" method="post">
-			<label for="thumbnail">Thumbnail</label>
+		<label for="thumbnail">Thumbnail</label>
+		<div class="input-group">
 			<div class="custom-file">
-				<input type="file" accept="image/*" name="thumbnail" class="custom-file-input" id="thumbnailImg" required>
 				<label class="custom-file-label" for="customFile">Choose file</label>
+				<input type="file" accept="image/*" name="thumbnail" class="custom-file-input" aria-describedby="uploadHelp" id="thumbnailImg" required onchange="loadPreview(event, 'tn-preview')">
 			</div>
-			<p><input type="submit" value="Upload"></p>
-		</form>
-		<form action="/article/new" enctype="multipart/form-data" method="post">
+			<div class="input-group-append">
+				<input type="submit" class="input-group-text" value="Upload" onclick="uploadImage('thumbnailImg', 'thumbnailUrl')">
+			</div>
+		</div>
+		<div class="card col col-md-6 mx-auto border-0 mt-2 mb-2" style="width: 80vw;">
+			<img class="card-img-top" id="tn-preview">
+		</div>
+		{{#if id}}
+		<form id="editor" action="/article/{{id}}/edit" enctype="multipart/form-data" method="post">
+		{{else}}
+		<form id="editor" action="/article/new" enctype="multipart/form-data" method="post">
+		{{/if}}
+			<div class="form-group">
+				<small id="uploadHelp" class="form-text text-muted">or enter an URL below</small>
+				{{#if data.thumbnail}}
+					<input type="text" class="form-control" id="thumbnailUrl" name="thumbnail" placeholder="thumbnail url" value="{{data.thumbnail}}" required>
+				{{else}}
+					<input type="text" class="form-control" id="thumbnailUrl" name="thumbnail" placeholder="thumbnail url" value="{{thumbnail}}" required>
+				{{/if}}
+			</div>
 			<div class="form-group">
 				<label for="headline">Title</label>
 				<input type="text" class="form-control" name="headline" placeholder="Enter a title" value="" required>
@@ -38,10 +54,6 @@
 			<div class="form-group">
 				<label for="summary">Summary</label>
 				<input type="text" class="form-control" name="summary" placeholder="article summary goes here..." value="" required>
-			</div>
-			<div class="form-group">
-				<label for="summary">Summary</label>
-				<input type="text" class="form-control" name="thumbnail" placeholder="thumbnail url" value="{{thumbnail}}" required>
 			</div>
 			<div class="form-group" id="content" name="content">
 				<label for="content">Content</label>
@@ -83,6 +95,7 @@
 			<input type="submit" class="btn btn-lg btn-dark mt-2 mb-2" value="Add article">
 		</form>
 	</div>
+	{{> modal }}
 	{{> footer }}
 	<script type="text/javascript" src="/jquery.js"></script>
 	<script type="text/javascript" src="/bootstrap.min.js"></script>

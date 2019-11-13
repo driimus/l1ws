@@ -69,7 +69,7 @@ router.post('/upload', koaBody, async ctx => {
 		const {thumbnail: {path, type}} = ctx.request.files
 		const article = await new Article()
 		const thumbnail = await article.uploadPicture({path, type})
-		return ctx.render('article/new', {thumbnail, loggedIn: true})
+		return ctx.body = {thumbnail}
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
