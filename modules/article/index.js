@@ -33,6 +33,7 @@ class Article {
 
 // Extend base class with custom functions.
 require('./add')(Article)
+require('./find')(Article)
 require('./get')(Article)
 require('./get-all')(Article)
 require('./get-recent')(Article)
