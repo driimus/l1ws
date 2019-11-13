@@ -637,4 +637,14 @@ describe('find()', () => {
 		done()
 	})
 
+	test('error if no search results', async done => {
+		expect.assertions(1)
+		// Add pending article.
+		await this.article.add(1, dummy)
+		// Only search approved articles.
+		await expect( this.article.find('article title') )
+			.rejects.toEqual( Error('the search generated no results') )
+		done()
+	})
+
 })
