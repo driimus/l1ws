@@ -49,7 +49,7 @@ router.post('/new', koaBody, async ctx => {
 		const {body: {headline, summary, content, thumbnail}} = ctx.request
 		const uId = ctx.session.userId
 		const article = await new Article()
-		await article.add(uId, {headline, summary, content, thumbnail})
+		await article.add(uId, {headline, summary, content: JSON.parse(content), thumbnail})
 		return ctx.redirect('/article/new?msg=your article was successfully added', {loggedIn: true})
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
@@ -130,7 +130,12 @@ router.post('/:id([0-9]{1,})/edit', koaBody, async ctx => {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const { body: {headline, summary, content, thumbnail} } = ctx.request
 		const article = await new Article()
-		await article.update(ctx.session.userId, ctx.params.id, {headline, summary, content, thumbnail})
+		await article.update(ctx.session.userId, ctx.params.id, {
+			headline,
+			summary,
+			content: JSON.parse(content),
+			thumbnail}
+		)
 		return ctx.redirect(`/article/${ctx.params.id}?msg=your article was successfully edited`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
