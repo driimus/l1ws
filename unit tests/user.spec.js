@@ -92,9 +92,25 @@ describe('isAvailable()', () => {
 
 	test('invalid field', async done => {
 		expect.assertions(1)
-		// try to check is_admin, an invalid attribute
+		// try to check an invalid attribute
 		await expect( this.account.isAvailable('*', 'doej@test.com') )
 			.rejects.toEqual( Error('invalid field "*"') )
+		done()
+	})
+
+	test('error if missing username', async done => {
+		expect.assertions(1)
+		// try to check an invalid attribute
+		await expect( this.account.isAvailable('username', '') )
+			.rejects.toEqual( Error('missing username') )
+		done()
+	})
+
+	test('error if invalid email', async done => {
+		expect.assertions(1)
+		// try to check an invalid attribute
+		await expect( this.account.isAvailable('email', '') )
+			.rejects.toEqual( Error('invalid email address format') )
 		done()
 	})
 
