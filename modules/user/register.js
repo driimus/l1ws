@@ -18,9 +18,8 @@ const {isEmail} = require('../utils')
 const register = async function(username, password, email) {
 	try {
 		email = isEmail(email) === true ? email : null
-		if(username.length === 0) throw new Error('missing username')
-		if(password.length === 0) throw new Error('missing password')
 		await this.isAvailable('username', username)
+		if(password.length === 0) throw new Error('missing password')
 		// Save username and encrypted password.
 		password = await bcrypt.hash(password, saltRounds)
 		const sql = 'INSERT INTO users(username, password, email) VALUES($1, $2, $3)'
