@@ -75,6 +75,21 @@ describe('isAvailable()', () => {
 		done()
 	})
 
+	test('availalbe account email', async done => {
+		expect.assertions(1)
+		const available = await this.account.isAvailable('username', 'doej')
+		expect(available).toBe(true)
+		done()
+	})
+
+	test('duplicate email address', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		await expect( this.account.isAvailable('email', 'doej@test.com') )
+			.rejects.toEqual( Error('email address "doej@test.com" already in use') )
+		done()
+	})
+
 })
 
 describe('uploadPicture()', () => {
