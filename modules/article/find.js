@@ -7,7 +7,10 @@ const parsed = {
 		// Format the keyphrase into a valid Postgres value.
 		return phrase.split(' ').join(' & ')
 	},
-	showHidden: flag => flag === false ? 'AND status=\'approved\'' : ''
+	showHidden: flag => {
+		if (typeof flag !== 'boolean') throw new Error(`invalid showHidden value: "${flag}"`)
+		return flag === false ? 'AND status=\'approved\'' : ''
+	}
 }
 
 /**
