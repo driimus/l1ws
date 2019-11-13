@@ -2,7 +2,11 @@
 'use strict'
 
 const formatted = {
-	keyphrase: phrase => phrase.split(' ').join(' & '),
+	keyphrase: phrase => {
+		if (typeof phrase !== 'string' || phrase.length === 0) throw new Error('missing search keyphrase')
+		// Format the keyphrase into a valid Postgres value.
+		return phrase.split(' ').join(' & ')
+	},
 	showHidden: flag => flag === false ? 'AND status=\'approved\'' : ''
 }
 
