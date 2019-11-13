@@ -647,4 +647,12 @@ describe('find()', () => {
 		done()
 	})
 
+	test('error if missing search keyphrase', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.find('', true) )
+			.rejects.toEqual( Error('missing search keyphrase') )
+		done()
+	})
+
 })
