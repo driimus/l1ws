@@ -21,37 +21,30 @@ describe('register()', () => {
 
 	test('register a valid account', async done => {
 		expect.assertions(1)
-		const register = await this.account.register('doej', 'password')
+		const register = await this.account.register('doej', 'password', 'doej@test.com')
 		expect(register).toBe(true)
-		done()
-	})
-
-	test('register a valid account with email', async done => {
-		expect.assertions(1)
-		const registered = await this.account.register('doej', 'password', 'doej@test.com')
-		expect(registered).toBe(true)
 		done()
 	})
 
 	test('register a duplicate username', async done => {
 		expect.assertions(1)
 		const [user, pass] = ['doej', 'password']
-		await this.account.register(user, pass)
-		await expect( this.account.register(user, pass) )
+		await this.account.register(user, pass, 'doej@test.com')
+		await expect( this.account.register(user, pass, 'doej@test.com') )
 			.rejects.toEqual( Error(`username "${user}" already in use`) )
 		done()
 	})
 
 	test('error if blank username', async done => {
 		expect.assertions(1)
-		await expect( this.account.register('', 'password') )
+		await expect( this.account.register('', 'password', 'doej@test.com') )
 			.rejects.toEqual( Error('missing username') )
 		done()
 	})
 
 	test('error if blank password', async done => {
 		expect.assertions(1)
-		await expect( this.account.register('doej', '') )
+		await expect( this.account.register('doej', '', 'doej@test.com') )
 			.rejects.toEqual( Error('missing password') )
 		done()
 	})
@@ -160,7 +153,7 @@ describe('login()', () => {
 
 	test('log in with valid credentials', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		const uId = await this.account.login('doej', 'password')
 		expect(uId).toBe(1)
 		done()
@@ -168,7 +161,7 @@ describe('login()', () => {
 
 	test('invalid username', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await expect( this.account.login('roej', 'password') )
 			.rejects.toEqual( Error('username "roej" not found') )
 		done()
@@ -176,7 +169,7 @@ describe('login()', () => {
 
 	test('invalid password', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await expect( this.account.login('doej', 'bad') )
 			.rejects.toEqual( Error('invalid password for account "doej"') )
 		done()
@@ -188,7 +181,7 @@ describe('isAdmin()', () => {
 
 	test('account has admin status', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		// Manually promote user to admin.
 		await this.account.db.query('update users set is_admin=true where username=\'doej\'')
 		const isAdmin = await this.account.isAdmin('doej')
@@ -198,7 +191,7 @@ describe('isAdmin()', () => {
 
 	test('normal user is not an admin', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		const admin = await this.account.isAdmin('doej')
 		expect(admin).toBe(false)
 		done()
@@ -225,7 +218,7 @@ describe('getAdmin()', () => {
 
 	test('account has admin status', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		// Manually promote user to admin.
 		await this.account.db.query('update users set is_admin=true where username=\'doej\'')
 		const isAdmin = await this.account.getAdmin('doej')
@@ -235,7 +228,7 @@ describe('getAdmin()', () => {
 
 	test('error if account is not admin', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await expect( this.account.getAdmin('doej') )
 			.rejects.toEqual( Error('user "doej" is not an admin') )
 		done()
@@ -259,7 +252,7 @@ describe('setAdmin()', () => {
 
 	test('error if flag is done by user', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await this.account.register('roej', 'password')
 		await expect( this.account.setAdmin('doej', 'roej', true) )
 			.rejects.toEqual( Error('user "doej" is not an admin') )
@@ -305,7 +298,7 @@ describe('setEmail()', () => {
 
 	test('set valid user email', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		const updated = await this.account.setEmail(1, 'this@test.com')
 		expect(updated).toBe(true)
 		done()
@@ -345,18 +338,10 @@ describe('getEmail()', () => {
 
 	test('get valid user email', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await this.account.db.query('UPDATE users SET email=\'this@test.com\' where username=\'doej\'')
 		const email = await this.account.getEmail(1)
 		expect(email).toBe('this@test.com')
-		done()
-	})
-
-	test('get missing user email', async done => {
-		expect.assertions(1)
-		await this.account.register('doej', 'password')
-		const email = await this.account.getEmail(1)
-		expect(email).toBe(null)
 		done()
 	})
 
@@ -380,7 +365,7 @@ describe('setSubscription()', () => {
 
 	test('subscribe user to emails', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		const subscribed = await this.account.setSubscription(1, true)
 		expect(subscribed).toBe(true)
 		done()
@@ -402,7 +387,7 @@ describe('setSubscription()', () => {
 
 	test('error if status is not boolean', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await expect( this.account.setSubscription(1, 'such boolean') )
 			.rejects.toEqual( Error('invalid status value: "such boolean"') )
 		done()
@@ -414,7 +399,7 @@ describe('getSubscription()', () => {
 
 	test('get subscribed user status', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await this.account.setSubscription(1, true)
 		const status = await this.account.getSubscription(1)
 		expect(status).toBe(true)
@@ -423,7 +408,7 @@ describe('getSubscription()', () => {
 
 	test('get default user status', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		const status = await this.account.getSubscription(1)
 		expect(status).toBe(false)
 		done()
@@ -431,7 +416,7 @@ describe('getSubscription()', () => {
 
 	test('get unsubscribed user status', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await this.account.setSubscription(1, false)
 		const status = await this.account.getSubscription(1)
 		expect(status).toBe(false)

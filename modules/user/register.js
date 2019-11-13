@@ -4,7 +4,6 @@
 const bcrypt = require('bcrypt-promise')
 
 const {saltRounds} = require('../../config')[process.env.NODE_ENV]
-const {isEmail} = require('../utils')
 
 /**
  * Creates a new user with the given credentials.
@@ -17,7 +16,6 @@ const {isEmail} = require('../utils')
  */
 const register = async function(username, password, email) {
 	try {
-		email = isEmail(email) === true ? email : null
 		await this.isAvailable('username', username)
 		if(password.length === 0) throw new Error('missing password')
 		// Save username and encrypted password.
