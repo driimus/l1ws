@@ -46,6 +46,7 @@ const Article = require('./modules/article')
 const Newsletter = require('./modules/newsletter')
 const newsletter = new Newsletter()
 
+const rolloutHour = 8
 /**
  * Sends out a newsletter to all subscribed users at 8.a.m. every morning.
  * @async
@@ -61,7 +62,7 @@ const sendNewsletter = async() => {
 		console.log(`ERR: ${err.message}`)
 	}
 	// Wait until next occurrence of 8 a.m. to send next newsletter.
-	const timeLeft = await newsletter.getTimeLeft(new Date(), 8)
+	const timeLeft = await newsletter.getTimeLeft(new Date(), rolloutHour)
 	setTimeout(sendNewsletter, timeLeft)
 }
 
