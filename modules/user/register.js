@@ -10,21 +10,18 @@ const {saltRounds} = require('../../config')[process.env.NODE_ENV]
  *
  * @param {string} username - Identifier of the user.
  * @param {string} password - The plaintext password.
+ * @param {string=} email - The user's email address.
  * @async
  * @returns {boolean} Whether the operation was successful.
  */
-const register = async function(username, password) {
+const register = async function(username, password, email) {
 	try {
-		if(username.length === 0) throw new Error('missing username')
+		await this.isAvailable('username', username)
 		if(password.length === 0) throw new Error('missing password')
-		// Check that the username is not taken.
-		let sql = 'SELECT id FROM users WHERE username=$1 LIMIT 1'
-		const { rows: {length: exists} } = await this.db.query(sql, [username])
-		if(exists !== 0) throw new Error(`username "${username}" already in use`)
 		// Save username and encrypted password.
 		password = await bcrypt.hash(password, saltRounds)
-		sql = 'INSERT INTO users(username, password) VALUES($1, $2)'
-		await this.db.query(sql, [username, password])
+		const sql = 'INSERT INTO users(username, password, email) VALUES($1, $2, $3)'
+		await this.db.query(sql, [username, password, email])
 		return true
 	} catch(err) {
 		throw err

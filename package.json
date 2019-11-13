@@ -1,7 +1,7 @@
 {
   "name": "localnews",
-  "version": "1.2.0",
-  "description": "Coursework with all the basic and intermediate features",
+  "version": "1.4.0",
+  "description": "Coursework with all the features except full-text search",
   "main": "index.js",
   "engines": {
     "node": "12.x"
@@ -20,7 +20,12 @@
     ]
   },
   "nodemonConfig": {
-    "ignore": ["*.spec.js", "docs/*", "coverage/*", "public/*"],
+    "ignore": [
+      "*.spec.js",
+      "docs/*",
+      "coverage/*",
+      "public/*"
+    ],
     "delay": "2500"
   },
   "author": "petrec",
@@ -44,6 +49,7 @@
     "markdownlint-cli": "^0.18.0",
     "mime-types": "^2.1.24",
     "mock-fs": "^4.10.3",
+    "nodemailer": "^6.3.1",
     "pg": "^7.12.1",
     "remark-cli": "^7.0.0",
     "remark-lint": "^6.0.5",
