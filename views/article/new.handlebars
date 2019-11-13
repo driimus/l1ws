@@ -16,7 +16,7 @@
 </head>
 <body class="pb-4">
 	{{> header }}
-	<div class="container col-xs-12 col-md-6 py-5">
+	<div class="container col-xs-12 col-md-6 py-5 mb-5">
 		<h1 class="text-center">Add an article</h1>
 		{{#if msg}}
 		<p class="msg">{{msg}}</p>
@@ -65,7 +65,7 @@
 						</div>
 					</div>
 				{{else}}
-					{{#each data.contents as |field index|}}
+					{{#each data.content as |field index|}}
 						{{#isText field}}
 							<div class="content-field input-group mb-2">
 								<textarea class="content form-control" name="text" placeholder="article content goes here..." value="{{field.value}}" required>{{field.value}}</textarea>
@@ -86,7 +86,7 @@
 			</div>
 			<div class="row m-0 mb-4">
 				<a class="col mr-1 border-0 btn dusty-grass-gradient" id="add-content">
-					<i class="fa fa-fw pt-2 pb-2 fa-pencil"></i> Add paragraph
+					<i class="fa fa-fw pt-2 pb-2 fa-pen"></i> Add paragraph
 				</a>
 				<a class="col ml-1 border-0 btn morpheus-den-gradient text-white" id="add-image" data-toggle="modal" data-target="#exampleModal">
 					<i class="fa fa-fw pt-2 pb-2 fa-upload"></i> Attach image
