@@ -8,11 +8,11 @@ const {saltRounds} = require('../../config')[process.env.NODE_ENV]
 /**
  * Creates a new user with the given credentials.
  *
+ * @async
  * @param {string} username - Identifier of the user.
  * @param {string} password - The plaintext password.
- * @param {string=} email - The user's email address.
- * @async
- * @returns {boolean} Whether the operation was successful.
+ * @param {string} email - The user's email address.
+ * @returns {number} The new account's unique identifier.
  */
 const register = async function(username, password, email) {
 	try {
@@ -20,9 +20,9 @@ const register = async function(username, password, email) {
 		if(password.length === 0) throw new Error('missing password')
 		// Save username and encrypted password.
 		password = await bcrypt.hash(password, saltRounds)
-		const sql = 'INSERT INTO users(username, password, email) VALUES($1, $2, $3)'
-		await this.db.query(sql, [username, password, email])
-		return true
+		const sql = 'INSERT INTO users(username, password, email) VALUES($1, $2, $3) RETURNING id'
+		const { rows: [user] } = await this.db.query(sql, [username, password, email])
+		return user.id
 	} catch(err) {
 		throw err
 	}
