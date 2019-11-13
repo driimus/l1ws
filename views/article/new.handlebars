@@ -12,24 +12,41 @@
 	<link href="/css/gradients.css" type="text/css" rel="stylesheet">
 	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
 	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
+	<script src="/js/article/edit.js" type="text/javascript"></script>
 </head>
 <body class="pb-4">
 	{{> header }}
-	<div class="container col-xs-12 col-md-6 py-5">
+	<div class="container col-xs-12 col-md-6 py-5 mb-5">
 		<h1 class="text-center">Add an article</h1>
 		{{#if msg}}
 		<p class="msg">{{msg}}</p>
 		{{/if}}
-		<!-- TO-DO: turn the upload form into a modal -->
-		<form action="/article/upload" enctype="multipart/form-data" method="post">
-			<label for="thumbnail">Thumbnail</label>
+		<label for="thumbnail">Thumbnail</label>
+		<div class="input-group">
 			<div class="custom-file">
-				<input type="file" accept="image/*" name="thumbnail" class="custom-file-input" id="thumbnailImg" required>
 				<label class="custom-file-label" for="customFile">Choose file</label>
+				<input type="file" accept="image/*" name="thumbnail" class="custom-file-input" aria-describedby="uploadHelp" id="thumbnailImg" required onchange="loadPreview(event, 'tn-preview')">
 			</div>
-			<p><input type="submit" value="Upload"></p>
-		</form>
-		<form action="/article/new" enctype="multipart/form-data" method="post">
+			<div class="input-group-append">
+				<input type="submit" class="input-group-text" value="Upload" onclick="uploadImage('thumbnailImg', 'thumbnailUrl')">
+			</div>
+		</div>
+		<div class="card col col-md-6 mx-auto border-0 mt-2 mb-2" style="width: 80vw;">
+			<img class="card-img-top" id="tn-preview">
+		</div>
+		{{#if id}}
+		<form id="editor" action="/article/{{id}}/edit" enctype="multipart/form-data" method="post">
+		{{else}}
+		<form id="editor" action="/article/new" enctype="multipart/form-data" method="post">
+		{{/if}}
+			<div class="form-group">
+				<small id="uploadHelp" class="form-text text-muted">or enter an URL below</small>
+				{{#if data.thumbnail}}
+					<input type="text" class="form-control" id="thumbnailUrl" name="thumbnail" placeholder="thumbnail url" value="{{data.thumbnail}}" required>
+				{{else}}
+					<input type="text" class="form-control" id="thumbnailUrl" name="thumbnail" placeholder="thumbnail url" value="{{thumbnail}}" required>
+				{{/if}}
+			</div>
 			<div class="form-group">
 				<label for="headline">Title</label>
 				<input type="text" class="form-control" name="headline" placeholder="Enter a title" value="" required>
@@ -38,17 +55,47 @@
 				<label for="summary">Summary</label>
 				<input type="text" class="form-control" name="summary" placeholder="article summary goes here..." value="" required>
 			</div>
-			<div class="form-group">
-				<label for="summary">Summary</label>
-				<input type="text" class="form-control" name="thumbnail" placeholder="thumbnail url" value="{{thumbnail}}" required>
-			</div>
 			<div class="form-group" id="content" name="content">
 				<label for="content">Content</label>
-				<textarea class="content" name="content" placeholder="article content goes here..." value="" required></textarea>
+				{{#unless id}}
+					<div class="content-field input-group mb-2">
+						<textarea class="content form-control" name="text" placeholder="article content goes here..." value="" required></textarea>
+						<div class="input-group-append" hidden>
+							<button class="input-group-text bg-danger text-white border-danger" id="basic-addon1" onclick="remove(this)" disabled>-</button>
+						</div>
+					</div>
+				{{else}}
+					{{#each data.content as |field index|}}
+						{{#isText field}}
+							<div class="content-field input-group mb-2">
+								<textarea class="content form-control" name="text" placeholder="article content goes here..." value="{{field.value}}" required>{{field.value}}</textarea>
+								<div class="input-group-append" {{ifRequired index label="hidden"}}>
+									<button class="input-group-text bg-danger text-white border-danger" id="basic-addon1" onclick="remove(this)" {{ifRequired index label="disabled"}}>-</button>
+								</div>
+							</div>
+						{{else}}
+							<div class="input-group mb-2" id="image-url-container">
+								<input type="text" class="form-control" name="image" placeholder="image url" id="image-url" value="{{value}}" required>
+								<div class="input-group-append" {{ifRequired index label="hidden"}}>
+									<button class="input-group-text bg-danger text-white border-danger" id="basic-addon1" onclick="remove(this)" {{ifRequired index label="disabled"}}>-</button>
+								</div>
+							</div>
+						{{/isText}}
+					{{/each}}
+				{{/unless}}
+			</div>
+			<div class="row m-0 mb-4">
+				<a class="col mr-1 border-0 btn dusty-grass-gradient" id="add-content">
+					<i class="fa fa-fw pt-2 pb-2 fa-pen"></i> Add paragraph
+				</a>
+				<a class="col ml-1 border-0 btn morpheus-den-gradient text-white" id="add-image" data-toggle="modal" data-target="#exampleModal">
+					<i class="fa fa-fw pt-2 pb-2 fa-upload"></i> Attach image
+				</a>
 			</div>
 			<input type="submit" class="btn btn-lg btn-dark mt-2 mb-2" value="Add article">
 		</form>
 	</div>
+	{{> modal }}
 	{{> footer }}
 	<script type="text/javascript" src="/jquery.js"></script>
 	<script type="text/javascript" src="/bootstrap.min.js"></script>
