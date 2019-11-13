@@ -52,6 +52,13 @@
 				<p class="font-italic text-muted">{{data.summary}}</p>
 				<img src="/{{data.thumbnail}}" class="rounded">
 				<p class="text-justify mt-3" style="white-space: pre-line;">{{data.content}}</p>
+				{{#each data.content}}
+					{{#isText this}}
+						<p class="content" style="white-space: pre-line;">{{value}}</p>
+					{{else}}
+						<img src="{{toUrl value}}" class="rounded">
+					{{/isText}}
+				{{/each}}
 			</article>
 		</div>
 	</div>

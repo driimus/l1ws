@@ -26,6 +26,11 @@ app.use(session(app))
 app.use(views(`${__dirname}/views`, {
 	extension: 'handlebars', map: {handlebars: 'handlebars'},
 	options: {
+		helpers: {
+			isText: (field, opts) => field.name === 'text' ? opts.fn(field) : opts.inverse(field),
+			toUrl: (str) => str.indexOf('https') === 0 ? str : `/${str}`,
+			ifRequired: (i, opts) => i === 0 ? opts.hash.label : ''
+		},
 		partials: {
 			header: `${__dirname}/views/partials/header`,
 			footer: `${__dirname}/views/partials/footer`,
