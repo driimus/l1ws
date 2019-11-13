@@ -90,6 +90,14 @@ describe('isAvailable()', () => {
 		done()
 	})
 
+	test('invalid field', async done => {
+		expect.assertions(1)
+		// try to check is_admin, an invalid attribute
+		await expect( this.account.isAvailable('*', 'doej@test.com') )
+			.rejects.toEqual( Error('invalid field "*"') )
+		done()
+	})
+
 })
 
 describe('uploadPicture()', () => {
