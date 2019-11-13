@@ -1,6 +1,7 @@
 
 'use strict'
 
+// Helper for validating and parsing the search function's parameters.
 const parsed = {
 	keyphrase: phrase => {
 		if (typeof phrase !== 'string' || phrase.length === 0) throw new Error('missing search keyphrase')
@@ -9,6 +10,7 @@ const parsed = {
 	},
 	showHidden: flag => {
 		if (typeof flag !== 'boolean') throw new Error(`invalid showHidden value: "${flag}"`)
+		// Return the hidden article filter as SQL.
 		return flag === false ? 'AND status=\'approved\'' : ''
 	}
 }
