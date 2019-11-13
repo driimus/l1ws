@@ -1,7 +1,7 @@
 
 'use strict'
 
-const fields = ['username']
+const fields = ['username','email']
 
 /**
  * Checks whether the username is not already taken.

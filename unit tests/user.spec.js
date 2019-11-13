@@ -60,7 +60,7 @@ describe('register()', () => {
 
 describe('isAvailable()', () => {
 
-	test('availalbe account username', async done => {
+	test('available account username', async done => {
 		expect.assertions(1)
 		const available = await this.account.isAvailable('username', 'doej')
 		expect(available).toBe(true)
@@ -75,7 +75,7 @@ describe('isAvailable()', () => {
 		done()
 	})
 
-	test('availalbe account email', async done => {
+	test('available account email', async done => {
 		expect.assertions(1)
 		const available = await this.account.isAvailable('username', 'doej')
 		expect(available).toBe(true)
