@@ -599,3 +599,68 @@ describe('getRecent()', () => {
 	})
 
 })
+
+describe('find()', () => {
+
+	const dummy2 = {
+		headline: 'Some relatively rare headline',
+		summary: 'Totally different and short article summary',
+		thumbnail: 'thumb.png',
+		content: 'very real article'
+	}
+
+	test('find article by headline keyword', async done => {
+		expect.assertions(2)
+		await this.article.add(1, dummy)
+		await this.article.add(1, dummy2)
+		const res = await this.article.find('Some rare', true)
+		expect(res).toHaveLength(1)
+		expect(res[0].data.headline).toBe(dummy2.headline)
+		done()
+	})
+
+	test('find article by summary keyword', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await this.article.add(1, dummy2)
+		const res = await this.article.find('short summary', true)
+		expect(res).toHaveLength(2)
+		done()
+	})
+
+	test('find article by content keyword', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await this.article.add(1, dummy2)
+		const res = await this.article.find('very real', true)
+		expect(res).toHaveLength(1)
+		done()
+	})
+
+	test('error if no search results', async done => {
+		expect.assertions(1)
+		// Add pending article.
+		await this.article.add(1, dummy)
+		// Only search approved articles.
+		await expect( this.article.find('article title') )
+			.rejects.toEqual( Error('the search generated no results') )
+		done()
+	})
+
+	test('error if missing search keyphrase', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.find('', true) )
+			.rejects.toEqual( Error('missing search keyphrase') )
+		done()
+	})
+
+	test('error if invalid hidden article flag', async done => {
+		expect.assertions(1)
+		await this.article.add(1, dummy)
+		await expect( this.article.find('keyword', 'notbool') )
+			.rejects.toEqual( Error('invalid showHidden value: "notbool"') )
+		done()
+	})
+
+})

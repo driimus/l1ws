@@ -1,28 +1,31 @@
 
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Oops!</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Error message page">
-	<meta name="author" content="Cristian Petre">
-	<link href="/css/style.css" type="text/css" rel="stylesheet">
-	<link href="/css/gradients.css" type="text/css" rel="stylesheet">
-	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
-	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
-</head>
-<body class="pb-4">
-	{{> header }}
-	<div class="jumbotron jumbotron-fluid alert-danger">
-		<div class="container">
-			<h1 class="display-4">An Error Has Occurred</h1>
-			<p class="lead">{{message}}</p>
+	<head>
+		<meta charset="utf-8">
+		<title>Oops!</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="description" content="Error message page">
+		<meta name="author" content="Cristian Petre">
+		<link href="/css/style.css" type="text/css" rel="stylesheet">
+		<link href="/css/gradients.css" type="text/css" rel="stylesheet">
+		<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
+		<link href="/fontawesome-free/css/all.css" rel="stylesheet">
+	</head>
+	<body class="pb-4">
+		{{> header }}
+		<div class="jumbotron jumbotron-fluid alert-danger">
+			<div class="container">
+				<h1 class="display-4">An Error Has Occurred</h1>
+				<p class="lead">{{message}}</p>
+			</div>
 		</div>
-	</div>
-	{{> footer }}
-	<script type="text/javascript" src="/jquery.js"></script>
-	<script type="text/javascript" src="/bootstrap.min.js"></script>
-</body>
+		{{> footer }}
+		<script type="text/javascript" src="/jquery.js"></script>
+		<script type="text/javascript" src="/bootstrap.min.js"></script>
+	</body>
 </html>

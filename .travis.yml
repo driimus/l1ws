@@ -3,17 +3,32 @@ services:
   - docker
   - postgresql
 
+addons:
+  postgresql: "11"
+  apt:
+    packages:
+    - postgresql-11
+    - postgresql-client-11
+
 # Build the image before running scripts.
 before_install:
   - docker build -t petrec/localnews -f Dockerfile .
 
+install:
+  # Remove the new cluster.
+  - sudo pg_dropcluster 11 main --stop
+  - sudo service postgresql stop
+  # Upgrade the in-RAM cluster to the latest version.
+  - sudo pg_upgradecluster -m upgrade 9.6 main
+  - sudo service postgresql restart
+
 # Set up the test database
 before_script:
-  - psql -c "CREATE USER petest WITH PASSWORD 'secretpassword';"
-  - psql -c "CREATE DATABASE cwtests;"
-  - psql -c "GRANT ALL PRIVILEGES ON DATABASE cwtests TO petest;"
+  - psql -c "CREATE USER petest WITH PASSWORD 'secretpassword';" -U postgres
+  - psql -c "CREATE DATABASE cwtests;" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE cwtests TO petest;" -U postgres
   # Use a temporary, per-session schema for isolated tests.
-  - psql -c "ALTER ROLE petest SET search_path = pg_temp;"
+  - psql -c "ALTER ROLE petest SET search_path = pg_temp;" -U postgres
 
 # Execute tests
 script:
