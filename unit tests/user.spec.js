@@ -21,8 +21,8 @@ describe('register()', () => {
 
 	test('register a valid account', async done => {
 		expect.assertions(1)
-		const register = await this.account.register('doej', 'password', 'doej@test.com')
-		expect(register).toBe(true)
+		const id = await this.account.register('doej', 'password', 'doej@test.com')
+		expect(id).toBe(1)
 		done()
 	})
 
