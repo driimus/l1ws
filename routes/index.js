@@ -28,7 +28,7 @@ router.get('/', async ctx => {
 		const articles = await article.getAll(showHidden)
 		await ctx.render('index', {articles, loggedIn: ctx.session.authorised})
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		await ctx.render('error', {message: err.message, loggedIn: ctx.session.authorised})
 	}
 })
 
@@ -42,10 +42,10 @@ router.get('/search', async ctx => {
 	try {
 		const article = await new Article(), user = await new User(),
 			showHidden = await user.isAdmin(ctx.session.username)
-		const results = await article.find(ctx.query.q, showHidden)
-		return ctx.render('index', {results})
+		const articles = await article.find(ctx.query.q, showHidden)
+		return ctx.render('search', {articles, loggedIn: ctx.session.authorised})
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		await ctx.render('search', {message: err.message, loggedIn: ctx.session.authorised})
 	}
 })
 
