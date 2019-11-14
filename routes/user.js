@@ -36,7 +36,7 @@ router.post('/register', koaBody, async ctx => {
 			await user.uploadPicture(body.user, path, type)
 		}
 		// redirect to the home page
-		ctx.redirect(`/?msg=new user "${body.name}" added`)
+		ctx.redirect(`/?msg=new user "${body.user}" added`)
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}
