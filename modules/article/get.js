@@ -4,7 +4,7 @@
 const {isId} = require('../utils')
 
 /**
- * Retrieves all the stored articles in reverse chronological order.
+ * Retrieves a single article submission.
  *
  * @param {number} id - The ID of the requested article.
  * @param {boolean} showHidden - Flag for filtering articles by status.
