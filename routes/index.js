@@ -32,4 +32,21 @@ router.get('/', async ctx => {
 	}
 })
 
+/**
+ * The full-text search endpoint.
+ *
+ * @name Article Search
+ * @route {POST} /search
+ */
+router.get('/search', async ctx => {
+	try {
+		const article = await new Article(), user = await new User(),
+			showHidden = await user.isAdmin(ctx.session.username)
+		const results = await article.find(ctx.query.q, showHidden)
+		return ctx.render('index', {results})
+	} catch(err) {
+		await ctx.render('error', {message: err.message})
+	}
+})
+
 module.exports = router
