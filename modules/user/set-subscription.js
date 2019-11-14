@@ -4,8 +4,12 @@
 const {isId} = require('../utils')
 
 const isStatus = status => {
-	if (typeof status !== 'boolean') throw new Error(`invalid status value: "${status}"`)
-	return true
+	try {
+		status = JSON.parse(status)
+	} finally {
+		if (typeof status !== 'boolean') throw new Error(`invalid status value: "${status}"`)
+		return true
+	}
 }
 
 /**

@@ -30,8 +30,10 @@
 					</div>
 					<div class="form-group">
 						<label for="email">E-mail</label>
-						<input type="email" class="form-control" aria-describedby="emailHelp" name="email" placeholder="Enter an email address" value="" required>
-				    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+						<input type="email" class="form-control" aria-describedby="emailHelp" name="email"
+							placeholder="Enter an email address" value="" required
+						>
+						<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
 					</div>
 					<div class="form-group">
 						<label for="avatar">Profile picture <small>(optional)</small></label>
@@ -40,6 +42,14 @@
 							<label class="custom-file-label" for="avatar">Choose file</label>
 						</div>
 					</div>
+					<div class="custom-control custom-checkbox my-1 mr-sm-2">
+				    <input type="checkbox" class="custom-control-input" id="customControlInline"
+					    name="subscribed" value="false" onclick="this.value=this.checked"
+			    	>
+				    <label class="custom-control-label" for="customControlInline">
+				    	I wish to receive daily newsletters.
+				    </label>
+				  </div>
 					<input type="submit" class="btn btn-lg btn-outline-dark mt-2" value="Sign up">
 				</div>
 			</form>
