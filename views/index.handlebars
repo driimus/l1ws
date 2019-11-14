@@ -1,37 +1,39 @@
 
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Home Page</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Page that lists published articles">
-	<meta name="author" content="Cristian Petre">
-	<link href="/css/style.css" type="text/css" rel="stylesheet">
-	<link href="/css/gradients.css" type="text/css" rel="stylesheet">
-	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
-	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
-</head>
-
-<body class="pb-4">
-	{{> header }}
-	<div class="container col-xs-12 col-md-6 pb-5">
-		<h1 class="display-2 mt-2">Recent news</h1>
-		{{#each articles}}
-		<a href="article/{{id}}" style="text-decoration: none">
-			<div class="card bg-dark text-white mb-3">
-				<img src="/{{data.thumbnail}}" class="card-img-top">
-				<div class="card-body">
-					<h5 class="card-title">{{data.headline}}</h5>
-					<p class="card-text">{{data.summary}}</p>
+	<head>
+		<meta charset="utf-8" />
+		<title>Home Page</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		/>
+		<meta name="description" content="Page that lists published articles" />
+		<meta name="author" content="Cristian Petre" />
+		<link href="/css/style.css" type="text/css" rel="stylesheet" />
+		<link href="/css/gradients.css" type="text/css" rel="stylesheet" />
+		<link href="/bootstrap.min.css" type="text/css" rel="stylesheet" />
+		<link href="/fontawesome-free/css/all.css" rel="stylesheet" />
+	</head>
+	<body class="pb-4">
+		{{> header }}
+		<div class="container col-xs-12 col-md-6 pb-5">
+			<h1 class="display-2 mt-2">Recent news</h1>
+			{{#each articles}}
+			<a href="article/{{id}}" style="text-decoration: none">
+				<div class="card bg-dark text-white mb-3">
+					<img src="/{{data.thumbnail}}" class="card-img-top" />
+					<div class="card-body">
+						<h5 class="card-title">{{data.headline}}</h5>
+						<p class="card-text">{{data.summary}}</p>
+					</div>
 				</div>
-			</div>
-		</a>
-		{{/each}}
-	</div>
-	{{> footer }}
-	<script type="text/javascript" src="/jquery.js"></script>
-	<script type="text/javascript" src="/bootstrap.min.js"></script>
-</body>
+			</a>
+			{{/each}}
+		</div>
+		{{> footer }}
+		<script type="text/javascript" src="/jquery.js"></script>
+		<script type="text/javascript" src="/bootstrap.min.js"></script>
+	</body>
 </html>

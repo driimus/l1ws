@@ -1,49 +1,63 @@
-
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Search Articles</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Page that lists search results">
-	<meta name="author" content="Cristian Petre">
-	<link href="/css/style.css" type="text/css" rel="stylesheet">
-	<link href="/css/gradients.css" type="text/css" rel="stylesheet">
-	<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
-	<link href="/fontawesome-free/css/all.css" rel="stylesheet">
-</head>
-
-<body class="pb-4">
-	{{> header }}
-	<div class="container col-xs-12 col-md-10 pb-5">
-		{{#if message}}
-		<div class="jumbotron alert-danger mt-4 py-5">
-			<h2 class="">Looks like {{message}}.</h2>
-			<p class="lead">Note that submitted articles are subject to moderation by the administrators.
-				This means that the article you're looking for might not be available yet.</p>
-			<hr class="my-4">
-			<p>Try again later, or refine your query for optimal search results.</p>
-			<a class="btn btn-outline-danger btn-block btn-lg" href="#search-field" role="button">Back to search</a>
-		</div>
-		{{else}}
-		<h1 class="display-4 mt-2">Search results</h1>
-		{{#each articles}}
-			<div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+	<head>
+		<meta charset="utf-8">
+		<title>Search Articles</title>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		>
+		<meta name="description" content="Page that lists search results">
+		<meta name="author" content="Cristian Petre">
+		<link href="/css/style.css" type="text/css" rel="stylesheet">
+		<link href="/css/gradients.css" type="text/css" rel="stylesheet">
+		<link href="/bootstrap.min.css" type="text/css" rel="stylesheet">
+		<link href="/fontawesome-free/css/all.css" rel="stylesheet">
+	</head>
+	<body class="pb-4">
+		{{> header }}
+		<div class="container col-xs-12 col-md-10 pb-5">
+			{{#if message}}
+			<div class="jumbotron alert-danger mt-4 py-5">
+				<h2 class="">Looks like {{message}}.</h2>
+				<p class="lead">
+					Note that submitted articles are subject to moderation by the
+					administrators. This means that the article you're looking for might
+					not be available yet.
+				</p>
+				<hr class="my-4" />
+				<p>Try again later, or refine your query for optimal search results.</p>
+				<a
+					class="btn btn-outline-danger btn-block btn-lg"
+					href="#search-field"
+					role="button"
+					>Back to search</a
+				>
+			</div>
+			{{else}}
+			<h1 class="display-4 mt-2">Search results</h1>
+			{{#each articles}}
+			<div
+				class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative"
+			>
 				<div class="col-3 d-none d-lg-block">
-					<img src="/{{data.thumbnail}}" width="200" height="250" style="object-fit: cover;">
+					<img src="/{{data.thumbnail}}" style="object-fit: cover;" />
 				</div>
 				<div class="col px-3 py-2 d-flex flex-column position-static">
 					<h3 class="mb-0 font-weight-normal">{{data.headline}}</h3>
 					<p class="card-text mb-auto text-muted">{{data.summary}}</p>
-					<a href="article/{{id}}" class="btn btn-outline-dark my-2 stretched-link">Continue reading</a>
+					<a
+						href="article/{{id}}"
+						class="btn btn-outline-dark my-2 stretched-link"
+						>Continue reading</a
+					>
 				</div>
 			</div>
-		{{/each}}
-		{{/if}}
-	</div>
-	{{> footer }}
-	<script type="text/javascript" src="/jquery.js"></script>
-	<script type="text/javascript" src="/bootstrap.min.js"></script>
-</body>
+			{{/each}} {{/if}}
+		</div>
+		{{> footer }}
+		<script type="text/javascript" src="/jquery.js"></script>
+		<script type="text/javascript" src="/bootstrap.min.js"></script>
+	</body>
 </html>
