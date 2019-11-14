@@ -52,7 +52,13 @@ const Article = require('./modules/article')
 const Newsletter = require('./modules/newsletter')
 const newsletter = new Newsletter()
 
-const rolloutHour = 8
+// Waits until next occurrence of 8 a.m. to send next newsletter.
+const rolloutHour = 8,
+	wait = async() => {
+		const timeLeft = await newsletter.getTimeLeft(new Date(), rolloutHour)
+		setTimeout(sendNewsletter, timeLeft)
+	}
+
 /**
  * Sends out a newsletter to all subscribed users at 8.a.m. every morning.
  * @async
@@ -63,17 +69,15 @@ const sendNewsletter = async() => {
 			recipients = await user.getMailingList(),
 			articles = await article.getRecent()
 		await newsletter.send(recipients, articles)
+		await wait()
 	} catch(err) {
 		// Notify if there are no new articles or no recipients.
 		console.log(`ERR: ${err.message}`)
 	}
-	// Wait until next occurrence of 8 a.m. to send next newsletter.
-	const timeLeft = await newsletter.getTimeLeft(new Date(), rolloutHour)
-	setTimeout(sendNewsletter, timeLeft)
 }
 
 module.exports = app.listen(port, async() => {
 	// Initialize newsletter scheduler.
-	await sendNewsletter()
+	await wait()
 	console.log(`listening on port ${port}`)
 })
