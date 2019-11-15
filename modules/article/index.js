@@ -3,32 +3,8 @@
 
 const db = require('../../db')
 
-// Barebones article schema.
-const schema = `CREATE TABLE IF NOT EXISTS article (
-	id SERIAL PRIMARY KEY,
-	author_id INTEGER,
-	data JSON NOT NULL,
-	created_at TIMESTAMPTZ DEFAULT now());
-	`,
-	// Article schema upgrades.
-	upgrade = `ALTER TABLE article
-	ADD COLUMN IF NOT EXISTS searchable_indices TSVECTOR,
-	ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending'
-		CHECK (status in ('pending','approved','rejected'));
-	CREATE INDEX IF NOT EXISTS searchable_idx ON article USING GIN(searchable_indices);
-	`,
-	trigger = schema => `CREATE OR REPLACE FUNCTION ${schema}.indices_update_trigger()
-	RETURNS TRIGGER AS $$
-	BEGIN
-		NEW.searchable_indices := to_tsvector('english', NEW.data);
-		RETURN NEW;
-	END;
-	$$ LANGUAGE plpgsql;
-	DROP TRIGGER IF EXISTS tsvectorupdate ON article;
-	CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
-	ON article FOR EACH ROW EXECUTE PROCEDURE ${schema}.indices_update_trigger();`
-
-const scope = {
+// Database schema holding the artilce table.
+const schema = {
 	development: 'public',
 	production: 'public',
 	test: 'pg_temp'
@@ -43,14 +19,41 @@ class Article {
 	constructor() {
 		return (async() => {
 			this.db = new db()
-			await this.db.query(schema)
-			await this.db.query(upgrade)
-			await this.db.query(trigger(scope[process.env.NODE_ENV]))
+			await this.db.query(Article.schema)
+			await this.db.query(Article.upgrades)
+			await this.db.query(Article.trigger(schema[process.env.NODE_ENV]))
 			return this
 		})()
 	}
 
 }
+
+// Barebones article schema.
+Article.schema = `CREATE TABLE IF NOT EXISTS article (
+	id SERIAL PRIMARY KEY,
+	author_id INTEGER,
+	data JSON NOT NULL,
+	created_at TIMESTAMPTZ DEFAULT now());`
+
+// Article schema upgrades.
+Article.upgrades = `ALTER TABLE article
+	ADD COLUMN IF NOT EXISTS searchable_indices TSVECTOR,
+	ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending'
+		CHECK (status in ('pending','approved','rejected'));
+	UPDATE article SET searchable_indices = to_tsvector(\'english\', data)
+		WHERE searchable_indices IS NULL;
+	CREATE INDEX IF NOT EXISTS searchable_idx ON article USING GIN(searchable_indices);`
+// Automatically update searchable indices for new and edited articles.
+Article.trigger = schema => `CREATE OR REPLACE FUNCTION ${schema}.indices_update_trigger()
+	RETURNS TRIGGER AS $$
+	BEGIN
+		NEW.searchable_indices := to_tsvector('english', NEW.data);
+		RETURN NEW;
+	END;
+	$$ LANGUAGE plpgsql;
+	DROP TRIGGER IF EXISTS tsvectorupdate ON article;
+	CREATE TRIGGER tsvectorupdate BEFORE INSERT OR UPDATE
+	ON article FOR EACH ROW EXECUTE PROCEDURE ${schema}.indices_update_trigger();`
 
 // Extend base class with custom functions.
 require('./add')(Article)
