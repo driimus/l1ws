@@ -1,23 +1,9 @@
 
 'use strict'
 
-const nodemailer = jest.requireActual('nodemailer')
-
+/* Import real transporter and validation helpers. */
+const {createTransport: createActualTransport} = jest.requireActual('nodemailer')
 const addressparser = require('../node_modules/nodemailer/lib/addressparser')
-
-const mockmailer = jest.genMockFromModule('nodemailer')
-
-let transport, sentMail = []
-
-const __resetMock = () => {
-	transport = null, sentMail = []
-}
-
-function createTransport(options) {
-	// Use the real module's transporter.
-	transport = nodemailer.createTransport(options)
-	return {sendMail}
-}
 
 // Use modified versions of the real module's.
 const Mail = {
@@ -46,12 +32,11 @@ const Mail = {
 	 * Parses addresses. Takes in a single address or an array or an
 	 * array of address arrays (eg. To: [[first group], [second group],...])
 	 *
-	 * @param {Mixed} addresses Addresses to be parsed
-	 * @return {Array} An array of address objects
+	 * @param {Mixed} addresses - Addresses to be parsed.
+	 * @returns {Array} An array of address objects.
 	 */
 	_parseAddresses: addresses => [].concat.apply([],
 		[].concat(addresses).map(address => {
-			// eslint-disable-line prefer-spread
 			if (address && address.address) {
 				address.address = Mail._normalizeAddress(address.address)
 				address.name = address.name || ''
@@ -76,6 +61,29 @@ const Mail = {
 
 }
 
+/* Create auto-generated mock. */
+const nodemailer = jest.genMockFromModule('nodemailer')
+
+let transport, sentMail = []
+
+/**
+ * Debug helper for resetting the mock to its initial state.
+ */
+const __resetMock = () => {
+	transport = null, sentMail = []
+}
+
+/**
+ * Mocked transport creation function.
+ */
+function createTransport(options) {
+	// Use the real module's transporter.
+	transport = createActualTransport(options)
+	// Return the mocked
+	return {sendMail}
+}
+
+
 const sendMail = (email, callback) => {
 	// support either callback or promise api
 	const isPromise = !callback && typeof Promise === 'function'
@@ -94,7 +102,7 @@ const sendMail = (email, callback) => {
 	}
 }
 
-mockmailer.__resetMock = __resetMock
-mockmailer.createTransport = createTransport
+nodemailer.__resetMock = __resetMock
+nodemailer.createTransport = createTransport
 
-module.exports = mockmailer
+module.exports = nodemailer
