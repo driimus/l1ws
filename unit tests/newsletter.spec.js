@@ -1,5 +1,6 @@
 'use strict'
 
+jest.mock('nodemailer')
 const Newsletters = require('../modules/newsletter')
 
 // valid article template to be used
