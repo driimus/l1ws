@@ -12,7 +12,7 @@ const schema = `CREATE TABLE IF NOT EXISTS article (
 	`,
 	// Article schema upgrades.
 	upgrade = `ALTER TABLE article
-	ADD COLUMN IF NOT EXISTS searchable_indices TSVECTOR DEFAULT to_tsvector(\'english\', data),
+	ADD COLUMN IF NOT EXISTS searchable_indices TSVECTOR,
 	ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'pending'
 		CHECK (status in ('pending','approved','rejected'));
 	CREATE INDEX IF NOT EXISTS searchable_idx ON article USING GIN(searchable_indices);
