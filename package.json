@@ -59,6 +59,7 @@
   "devDependencies": {
     "codecov": "^3.6.1",
     "cross-env": "^6.0.3",
+    "cucumber": "^6.0.5",
     "eslint": "^5.15.2",
     "eslint-plugin-html": "^6.0.0",
     "faker": "^4.1.0",
