@@ -11,9 +11,9 @@
     "dev": "cross-env NODE_ENV=development nodemon index.js",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
-    "test": "jest --coverage --detectOpenHandles && codecov --token=$CODECOV",
+    "test": "jest --coverage --detectOpenHandles",
     "acceptance-test": "NODE_ENV=test ./node_modules/.bin/cucumber-js ",
-    "unit": "./node_modules/.bin/jest --coverage 'unit tests/'"
+    "unit": "./node_modules/.bin/jest --coverage 'unit tests/' && codecov --token=$CODECOV"
   },
   "jest": {
     "projects": [
