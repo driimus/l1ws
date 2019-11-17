@@ -484,4 +484,11 @@ describe('getAvatar()', () => {
 		done()
 	})
 
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getAvatar(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
 })
