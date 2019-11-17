@@ -464,3 +464,16 @@ describe('getMailingList()', () => {
 	})
 
 })
+
+describe('getAvatar()', () => {
+
+	test('get default user avatar', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		await this.account.setSubscription(1, true)
+		const avi = await this.account.getAvatar(1)
+		expect(avi).toBe('/avatars/avatar.png')
+		done()
+	})
+
+})
