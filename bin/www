@@ -1,0 +1,45 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const app = require('../')
+
+/* Import custom modules for scheduled newsletter rollout. */
+const User = require('../modules/user')
+const Article = require('../modules/article')
+const Newsletter = require('../modules/newsletter')
+const newsletter = new Newsletter()
+
+// Waits until next occurrence of 8 a.m. to send next newsletter.
+const rolloutHour = 8,
+	scheduleNewsletter = async() => {
+		const timeLeft = await newsletter.getTimeLeft(new Date(), rolloutHour)
+		setTimeout(sendNewsletter, timeLeft)
+	}
+
+/**
+ * Sends out a newsletter to all subscribed users at 8.a.m. every morning.
+ * @async
+ */
+const sendNewsletter = async() => {
+	try {
+		const user = await new User(), article = await new Article(),
+			recipients = await user.getMailingList(),
+			articles = await article.getRecent()
+		await newsletter.send(recipients, articles)
+		// Schedule next day's newsletter.
+		await scheduleNewsletter()
+	} catch(err) {
+		// Notify if there are no new articles or no recipients.
+		console.log(`ERR: ${err.message}`)
+	}
+}
+
+const defaultPort = 8080
+const port = process.env.PORT || defaultPort
+
+module.exports = app.listen(port, async() => {
+	// Initialize newsletter scheduler.
+	await scheduleNewsletter()
+	console.log(`listening on port ${port}`)
+})
