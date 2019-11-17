@@ -8,6 +8,8 @@ const Router = require('koa-router')
 const Article = require('../modules/article')
 const User = require('../modules/user')
 
+const getUserInfo = require('./helpers')
+
 const router = new Router({prefix: '/article'})
 
 /**
@@ -28,11 +30,13 @@ router.get('/', async ctx => ctx.redirect('/article/new'))
 router.get('/new', async ctx => {
 	try {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
-		const data = {loggedIn: ctx.session.authorised}
+		const data = await getUserInfo(ctx.session)
 		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('article/new', data)
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		const data = await getUserInfo(ctx.session)
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 
@@ -50,9 +54,11 @@ router.post('/new', koaBody, async ctx => {
 		const uId = ctx.session.userId
 		const article = await new Article()
 		await article.add(uId, {headline, summary, content: JSON.parse(content), thumbnail})
-		return ctx.redirect('/article/new?msg=your article was successfully added', {loggedIn: true})
+		return ctx.redirect('/article/new?msg=your article was successfully added')
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		const data = await getUserInfo(ctx.session)
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 
@@ -71,7 +77,9 @@ router.post('/upload', koaBody, async ctx => {
 		const thumbnail = await article.uploadPicture({path, type})
 		return ctx.body = {thumbnail}
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		const data = await getUserInfo(ctx.session)
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 
@@ -93,7 +101,9 @@ router.post('/:id([0-9]{1,})', koaBody, async ctx => {
 		await article.setStatus(ctx.params.id, ctx.request.body.status)
 		return ctx.redirect(`/article/${ctx.params.id}`)
 	}	catch(err) {
-		await ctx.render('error', {message: err.message})
+		const data = await getUserInfo(ctx.session)
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 
@@ -108,13 +118,15 @@ router.get('/:id([0-9]{1,})/edit', async ctx => {
 	try {
 		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
 		const article = await new Article()
-		const data = await article.get(ctx.params.id, true)
+		let data = await article.get(ctx.params.id, true)
 		// Check that the author requested an edit.
 		await article.byAuthor(ctx.session.userId, data.author_id)
-		data.loggedIn = ctx.session.authorised
+		data = Object.assign(data, getUserInfo(ctx.session))
 		return ctx.render('article/new', data)
 	}	catch(err) {
-		await ctx.render('error', {message: err.message})
+		const data = await getUserInfo(ctx.session)
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 
@@ -138,7 +150,9 @@ router.post('/:id([0-9]{1,})/edit', koaBody, async ctx => {
 		)
 		return ctx.redirect(`/article/${ctx.params.id}?msg=your article was successfully edited`)
 	} catch(err) {
-		await ctx.render('error', {message: err.message})
+		const data = await getUserInfo(ctx.session)
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 
