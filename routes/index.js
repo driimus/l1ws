@@ -11,7 +11,6 @@ router.use(require('./rating').routes())
 
 /* Import custom modules. */
 const Article = require('../modules/article')
-const User = require('../modules/user')
 
 const getUserInfo = require('./helpers')
 
@@ -22,16 +21,14 @@ const getUserInfo = require('./helpers')
  * @route {GET} /
  */
 router.get('/', async ctx => {
+	const data = await getUserInfo(ctx.session)
 	try {
-	  const article = await new Article(), user = await new User()
-		const data = await getUserInfo(ctx.session)
+		const article = await new Article()
 		// Filter out hidden articles for non-admins.
-		const showHidden = await user.isAdmin(data.username)
-		data.articles= await article.getAll(showHidden)
+		data.articles= await article.getAll(data.isAdmin)
 		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('index', data)
 	} catch(err) {
-		const data = await getUserInfo(ctx.session)
 		data.message = err.message
 		await ctx.render('error', data)
 	}
@@ -44,13 +41,12 @@ router.get('/', async ctx => {
  * @route {POST} /search
  */
 router.get('/search', async ctx => {
+	const data = await getUserInfo(ctx.session)
 	try {
-		const article = await new Article(), user = await new User(),
-			showHidden = await user.isAdmin(ctx.session.username)
-		const articles = await article.find(ctx.query.q, showHidden)
-		return ctx.render('search', {articles, loggedIn: ctx.session.authorised})
+		const article = await new Article()
+		data.articles = await article.find(ctx.query.q, data.isAdmin)
+		return ctx.render('search', data)
 	} catch(err) {
-		const data = await getUserInfo(ctx.session)
 		data.message = err.message
 		await ctx.render('error', data)
 	}
