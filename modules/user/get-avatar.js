@@ -11,6 +11,7 @@
 async function getAvatar(id) {
 	const sql = 'SELECT avatar FROM users WHERE id=$1'
 	const {rows: [user]} = await this.db.query(sql, [id])
+	if (user === undefined) throw new Error(`user with ID "${id}" not found`)
 	return user.avatar
 }
 
