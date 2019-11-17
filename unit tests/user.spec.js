@@ -491,4 +491,11 @@ describe('getAvatar()', () => {
 		done()
 	})
 
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getAvatar('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
 })
