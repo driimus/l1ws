@@ -56,6 +56,7 @@ router.post('/login', async ctx => {
 		ctx.session.userId = await user.login(body.user, body.pass)
 		ctx.session.authorised = true
 		ctx.session.username = body.user
+		ctx.session.avatar = await user.getAvatar(ctx.session.userId)
 		return ctx.redirect('/?msg=you are now logged in...')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
