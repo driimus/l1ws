@@ -470,9 +470,17 @@ describe('getAvatar()', () => {
 	test('get default user avatar', async done => {
 		expect.assertions(1)
 		await this.account.register('doej', 'password', 'doej@test.com')
-		await this.account.setSubscription(1, true)
 		const avi = await this.account.getAvatar(1)
 		expect(avi).toBe('/avatars/avatar.png')
+		done()
+	})
+
+	test('get custom user avatar', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		await this.account.db.query('UPDATE users set avatar=\'/avatars/doej.png\' WHERE id=1')
+		const avi = await this.account.getAvatar(1)
+		expect(avi).toBe('/avatars/doej.png')
 		done()
 	})
 
