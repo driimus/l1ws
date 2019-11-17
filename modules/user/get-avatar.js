@@ -12,7 +12,7 @@ const {isId} = require('../utils')
  */
 async function getAvatar(id) {
 	try {
-		await isId(id, 'user')
+		id = await isId(id, 'user')
 		const sql = 'SELECT avatar FROM users WHERE id=$1'
 		const {rows: [user]} = await this.db.query(sql, [id])
 		if (user === undefined) throw new Error(`user with ID "${id}" not found`)
