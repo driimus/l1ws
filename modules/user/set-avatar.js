@@ -24,6 +24,16 @@ const uploadPicture = async(username, image) => {
 	}
 }
 
+const userExsits = async(user, username) => {
+	try {
+		const missing = await user.isAvailable('username', username)
+		if (missing === true) throw new Error(`username "${username}" not found`)
+	} catch(err) {
+		if(err.message === `username "${username}" already in use`) return true
+		throw err
+	}
+}
+
 /**
  * Updates the user's avatar.
  *
@@ -33,6 +43,7 @@ const uploadPicture = async(username, image) => {
  * @returns {boolean} If the image was successfully updated.
  */
 const setAvatar = async function(username, image) {
+	await userExsits(this, username)
 	const path = await uploadPicture(username, image)
 	const sql = 'UPDATE users SET avatar=$2 WHERE username=$1'
 	await this.db.query(sql, [username, path])
