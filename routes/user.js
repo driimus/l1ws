@@ -17,7 +17,10 @@ const router = new Router()
  * @name Register Page
  * @route {GET} /register
  */
-router.get('/register', async ctx => await ctx.render('register'))
+router.get('/register', async ctx => {
+	if(ctx.session.authorised === true) return ctx.redirect('/?msg=you\'re already logged in')
+	await ctx.render('register')
+})
 
 /**
  * The script to process new user registrations.
@@ -45,6 +48,7 @@ router.post('/register', koaBody, async ctx => {
 })
 
 router.get('/login', async ctx => {
+	if(ctx.session.authorised === true) return ctx.redirect('/?msg=you\'re already logged in')
 	const data = {}
 	if(ctx.query.msg) data.msg = ctx.query.msg
 	if(ctx.query.user) data.user = ctx.query.user
@@ -81,7 +85,7 @@ router.get('/account', async ctx => {
 	}
 })
 
-router.post('/account', async ctx => {
+router.post('/account', koaBody, async ctx => {
 	const data = await getUserInfo(ctx.session)
 	try {
 		if(data.loggedIn !== true) return ctx.redirect('/login?msg=you need to log in')
