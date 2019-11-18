@@ -5,8 +5,9 @@ const Router = require('koa-router')
 
 /* IMPORT CUSTOM MODULE */
 const Article = require('../modules/article')
-const User = require('../modules/user')
 const Rating = require('../modules/rating')
+
+const {getUserInfo} = require('./helpers')
 
 const router = new Router({prefix: '/article'})
 
@@ -17,22 +18,22 @@ const router = new Router({prefix: '/article'})
  * @route {GET} /:id
  */
 router.get('/:id([0-9]{1,})', async ctx => {
+	let data = await getUserInfo(ctx.session)
 	try {
-		const article = await new Article(), user = await new User(), rating = await new Rating(),
-			showHidden = await user.isAdmin(ctx.session.username),
-			data = await article.get(ctx.params.id, showHidden)
+		const article = await new Article(), rating = await new Rating()
+		const result = await article.get(ctx.params.id, data.isAdmin)
+		data = Object.assign(data, result)
 		try {
-			data.isAdmin = showHidden
 			data.rating = await rating.get(ctx.session.userId, ctx.params.id)
 			data.average = await rating.mean(ctx.params.id)
-			data.loggedIn = ctx.session.authorised
 			data.isAuthor = await article.byAuthor(ctx.session.userId, data.author_id)
 		}catch(e) {
 			data.isAuthor = false
 		}
 		return ctx.render('article/', data)
 	}	catch(err) {
-		await ctx.render('error', {message: err.message})
+		data.message = err.message
+		await ctx.render('error', data)
 	}
 })
 

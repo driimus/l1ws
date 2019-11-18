@@ -487,3 +487,38 @@ describe('getMailingList()', () => {
 	})
 
 })
+
+describe('getAvatar()', () => {
+
+	test('get default user avatar', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const avi = await this.account.getAvatar(1)
+		expect(avi).toBe('/avatars/avatar.png')
+		done()
+	})
+
+	test('get custom user avatar', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		await this.account.db.query('UPDATE users set avatar=\'/avatars/doej.png\' WHERE id=1')
+		const avi = await this.account.getAvatar(1)
+		expect(avi).toBe('/avatars/doej.png')
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getAvatar(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getAvatar('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+})
