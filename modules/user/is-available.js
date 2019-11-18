@@ -1,7 +1,7 @@
 
 'use strict'
 
-const {isEmail} = require('../utils')
+const {isEmail, isId} = require('../utils')
 
 // User arrtibutes for which availability checks are enabled.
 const FIELDS = {
@@ -20,14 +20,15 @@ const FIELDS = {
  * @param {string} field - Name of the user attribute.
  * @param value - Value to be searched for.
  */
-const isAvailable = async function(field, value) {
+const isAvailable = async function(field, value, id) {
+	if(id) id = await isId(id, 'user')
 	if(Object.keys(FIELDS).includes(field) === false) throw new Error(`invalid field "${field}"`)
 	// Validate the given value.
 	FIELDS[field](value)
 	// Check that the username is not taken.
 	const sql = `SELECT id FROM users WHERE ${field}=$1 LIMIT 1`
-	const { rows: {length: exists} } = await this.db.query(sql, [value])
-	if(exists !== 0) throw new Error(`${field} "${value}" already in use`)
+	const { rows: [res] } = await this.db.query(sql, [value])
+	if(res && res.id !== id) throw new Error(`${field} "${value}" already in use`)
 	return true
 }
 

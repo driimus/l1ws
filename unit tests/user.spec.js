@@ -70,7 +70,15 @@ describe('isAvailable()', () => {
 
 	test('available account email', async done => {
 		expect.assertions(1)
-		const available = await this.account.isAvailable('username', 'doej')
+		const available = await this.account.isAvailable('email', 'doej@test.com')
+		expect(available).toBe(true)
+		done()
+	})
+
+	test('available own account email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const available = await this.account.isAvailable('email', 'doej@test.com', 1)
 		expect(available).toBe(true)
 		done()
 	})
@@ -107,11 +115,18 @@ describe('isAvailable()', () => {
 		done()
 	})
 
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.isAvailable('email', 'doej@test.com', 'not an iD') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
 })
 
-describe('uploadPicture()', () => {
+describe('setAvatar()', () => {
 	test('upload a valid PNG picture', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		const [user, pass] = ['doej', 'password']
 		const exp = `public/avatars/${user}.png`
 		await this.account.register(user, pass)
@@ -123,7 +138,8 @@ describe('uploadPicture()', () => {
 				}
 			}
 		})
-		await this.account.uploadPicture(user, image)
+		const updated = await this.account.setAvatar(user, image)
+		expect(updated).toBe(true)
 		expect(fs.existsSync(exp)).toBe(true)
 		await mock.restore()
 		done()
@@ -141,9 +157,16 @@ describe('uploadPicture()', () => {
 				}
 			}
 		})
-		await expect( this.account.uploadPicture(user, soundFile) )
+		await expect( this.account.setAvatar(user, soundFile) )
 			.rejects.toEqual( Error('invalid image MIME type') )
 		await mock.restore()
+		done()
+	})
+
+	test('invalid username', async done => {
+		expect.assertions(1)
+		await expect( this.account.setAvatar('roej', 'some/random/file.png') )
+			.rejects.toEqual( Error('username "roej" not found') )
 		done()
 	})
 
@@ -304,6 +327,14 @@ describe('setEmail()', () => {
 		done()
 	})
 
+	test('set same user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const updated = await this.account.setEmail(1, 'doej@test.com')
+		expect(updated).toBe(true)
+		done()
+	})
+
 	test('error if address is invalid', async done => {
 		expect.assertions(1)
 		await expect( this.account.setEmail(1, 'not@valid@mail.:addr') )
@@ -460,6 +491,41 @@ describe('getMailingList()', () => {
 		await this.account.setEmail(1, 'valid@test.com')
 		await expect( this.account.getMailingList() )
 			.rejects.toEqual( Error('no subscriber emails found'))
+		done()
+	})
+
+})
+
+describe('getAvatar()', () => {
+
+	test('get default user avatar', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const avi = await this.account.getAvatar(1)
+		expect(avi).toBe('/avatars/avatar.png')
+		done()
+	})
+
+	test('get custom user avatar', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		await this.account.db.query('UPDATE users set avatar=\'/avatars/doej.png\' WHERE id=1')
+		const avi = await this.account.getAvatar(1)
+		expect(avi).toBe('/avatars/doej.png')
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getAvatar(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getAvatar('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
 		done()
 	})
 
