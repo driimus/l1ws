@@ -163,6 +163,13 @@ describe('setAvatar()', () => {
 		done()
 	})
 
+	test('invalid username', async done => {
+		expect.assertions(1)
+		await expect( this.account.setAvatar('roej', 'some/random/file.png') )
+			.rejects.toEqual( Error('username "roej" not found') )
+		done()
+	})
+
 })
 
 describe('login()', () => {
