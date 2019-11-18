@@ -12,7 +12,7 @@
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
     "test": "jest --coverage --detectOpenHandles && codecov --token=$CODECOV",
-    "unit": "./node_modules/.bin/jest --coverage 'unit tests/'"
+    "unit": "./node_modules/.bin/jest --coverage -c jest-test.config.js 'unit tests/'"
   },
   "jest": {
     "projects": [
