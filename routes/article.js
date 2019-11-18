@@ -29,7 +29,7 @@ router.get('/', async ctx => ctx.redirect('/article/new'))
 router.get('/new', async ctx => {
 	const data = await getUserInfo(ctx.session)
 	try {
-		if(ctx.session.authorised !== true) return ctx.redirect('/login?msg=you need to log in')
+		if(data.loggedIn !== true) return ctx.redirect('/login?msg=you need to log in')
 		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('article/new', data)
 	} catch(err) {

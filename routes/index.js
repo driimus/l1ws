@@ -12,7 +12,7 @@ router.use(require('./rating').routes())
 /* Import custom modules. */
 const Article = require('../modules/article')
 
-const getUserInfo = require('./helpers')
+const {getUserInfo} = require('./helpers')
 
 /**
  * The home page where published articles are listed.
