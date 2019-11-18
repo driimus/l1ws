@@ -12,7 +12,7 @@ const mime = require('mime-types')
  * @async
  * @returns {string} Relative path to the public uploaded image.
  */
-const uploadPicture = async function(username, image) {
+const uploadPicture = async(username, image) => {
 	try {
 		if(image.type.split('/')[0] !== 'image') throw new Error('invalid image MIME type')
 		const extension = mime.extension(image.type)
@@ -24,6 +24,14 @@ const uploadPicture = async function(username, image) {
 	}
 }
 
+/**
+ * Updates the user's avatar.
+ *
+ * @async
+ * @param {string} username - User the picture will be linked to.
+ * @param {object} image - The submitted profile picture.
+ * @returns {boolean} If the image was successfully updated.
+ */
 const setAvatar = async function(username, image) {
 	const path = await uploadPicture(username, image)
 	const sql = 'UPDATE users SET avatar=$2 WHERE username=$1'
