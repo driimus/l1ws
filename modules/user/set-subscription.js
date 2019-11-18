@@ -19,7 +19,7 @@ const isStatus = status => {
  * @param {boolean} newStatus - New subscription status.
  * @returns {boolean} Whether the status was successfully changed.
  */
-const setSubscription = async function(id, newStatus) {
+const setSubscription = async function(id, newStatus=false) {
 	try {
 		id = await isId(id, 'user')	// Check that the user ID is valid.
 		isStatus(newStatus)	// Validate the subscription status.

@@ -85,7 +85,7 @@ router.get('/account', async ctx => {
 	}
 })
 
-router.post('/account', async ctx => {
+router.post('/account', koaBody, async ctx => {
 	const data = await getUserInfo(ctx.session)
 	try {
 		if(data.loggedIn !== true) return ctx.redirect('/login?msg=you need to log in')
