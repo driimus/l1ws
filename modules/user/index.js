@@ -35,7 +35,6 @@ class User {
 // Extend base class with custom functions.
 require('./register')(User)
 require('./login')(User)
-require('./upload-picture')(User)
 require('./is-admin')(User)
 require('./is-available')(User)
 require('./get-admin')(User)
@@ -44,6 +43,7 @@ require('./get-email')(User)
 require('./get-subscription')(User)
 require('./get-mailinglist')(User)
 require('./set-admin')(User)
+require('./set-avatar')(User)
 require('./set-email')(User)
 require('./set-subscription')(User)
 

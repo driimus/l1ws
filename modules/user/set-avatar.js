@@ -16,10 +16,19 @@ const uploadPicture = async function(username, image) {
 	try {
 		if(image.type.split('/')[0] !== 'image') throw new Error('invalid image MIME type')
 		const extension = mime.extension(image.type)
-		await fs.copy(image.path, `public/avatars/${username}.${extension}`)
+		const newPath = `public/avatars/${username}.${extension}`
+		await fs.copy(image.path, newPath)
+		return newPath
 	} catch(err) {
 		throw err
 	}
 }
 
-module.exports = User => User.prototype.uploadPicture = uploadPicture
+const setAvatar = async function(username, image) {
+	const path = await uploadPicture(username, image)
+	const sql = 'UPDATE users SET avatar=$2 WHERE username=$1'
+	await this.db.query(sql, [username, path])
+	return true
+}
+
+module.exports = User => User.prototype.setAvatar = setAvatar
