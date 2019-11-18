@@ -70,7 +70,15 @@ describe('isAvailable()', () => {
 
 	test('available account email', async done => {
 		expect.assertions(1)
-		const available = await this.account.isAvailable('username', 'doej')
+		const available = await this.account.isAvailable('email', 'doej@test.com')
+		expect(available).toBe(true)
+		done()
+	})
+
+	test('available own account email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const available = await this.account.isAvailable('email', 'doej@test.com', 1)
 		expect(available).toBe(true)
 		done()
 	})
@@ -300,6 +308,14 @@ describe('setEmail()', () => {
 		expect.assertions(1)
 		await this.account.register('doej', 'password', 'doej@test.com')
 		const updated = await this.account.setEmail(1, 'this@test.com')
+		expect(updated).toBe(true)
+		done()
+	})
+
+	test('set same user email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const updated = await this.account.setEmail(1, 'doej@test.com')
 		expect(updated).toBe(true)
 		done()
 	})
