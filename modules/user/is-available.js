@@ -21,6 +21,7 @@ const FIELDS = {
  * @param value - Value to be searched for.
  */
 const isAvailable = async function(field, value, id) {
+	if(id) id = await isId(id, 'user')
 	if(Object.keys(FIELDS).includes(field) === false) throw new Error(`invalid field "${field}"`)
 	// Validate the given value.
 	FIELDS[field](value)
