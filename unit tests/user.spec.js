@@ -124,9 +124,9 @@ describe('isAvailable()', () => {
 
 })
 
-describe('uploadPicture()', () => {
+describe('setAvatar()', () => {
 	test('upload a valid PNG picture', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		const [user, pass] = ['doej', 'password']
 		const exp = `public/avatars/${user}.png`
 		await this.account.register(user, pass)
@@ -138,7 +138,8 @@ describe('uploadPicture()', () => {
 				}
 			}
 		})
-		await this.account.uploadPicture(user, image)
+		const updated = await this.account.setAvatar(user, image)
+		expect(updated).toBe(true)
 		expect(fs.existsSync(exp)).toBe(true)
 		await mock.restore()
 		done()
@@ -156,7 +157,7 @@ describe('uploadPicture()', () => {
 				}
 			}
 		})
-		await expect( this.account.uploadPicture(user, soundFile) )
+		await expect( this.account.setAvatar(user, soundFile) )
 			.rejects.toEqual( Error('invalid image MIME type') )
 		await mock.restore()
 		done()
