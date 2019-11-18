@@ -8,6 +8,8 @@
 ## Quick links
 
 - [Assignment Topic](https://github.coventry.ac.uk/web/assignment-topics/blob/master/11%20Local%20News.md)
+- [v1.6.1](https://github.coventry.ac.uk/petrec/petrec/releases/tag/v1.6.1) - Adds account details page
+- [v1.5.1](https://github.coventry.ac.uk/petrec/petrec/releases/tag/v1.5.1) - Adds article full-text search support
 - [v1.4.0](https://github.coventry.ac.uk/petrec/petrec/releases/tag/v1.4.0) - Adds automated newsletter rollout to subscribed users
 - [v1.3.0](https://github.coventry.ac.uk/petrec/petrec/releases/tag/v1.3.0) - Adds support for rating published articles
 - [v1.2.0](https://github.coventry.ac.uk/petrec/petrec/releases/tag/v1.2.0) - Covers the intermediate features
