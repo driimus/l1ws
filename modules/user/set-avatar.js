@@ -24,12 +24,21 @@ const uploadPicture = async(username, image) => {
 	}
 }
 
+/**
+ * Checks that an account with the given username exists.
+ *
+ * @async
+ * @param {object} user - The module handing the check.
+ * @param {string} username - Target username.
+ * @returns {boolean} If an account with the given username exists.
+ */
 const userExsits = async(user, username) => {
 	try {
-		const missing = await user.isAvailable('username', username)
-		if (missing === true) throw new Error(`username "${username}" not found`)
+		await user.isAvailable('username', username)
+		throw new Error(`username "${username}" not found`)
 	} catch(err) {
 		if(err.message === `username "${username}" already in use`) return true
+		// Throw any invalid username error.
 		throw err
 	}
 }
@@ -43,6 +52,7 @@ const userExsits = async(user, username) => {
  * @returns {boolean} If the image was successfully updated.
  */
 const setAvatar = async function(username, image) {
+	// Username must be in use.
 	await userExsits(this, username)
 	const path = await uploadPicture(username, image)
 	const sql = 'UPDATE users SET avatar=$2 WHERE username=$1'
