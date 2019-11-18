@@ -28,14 +28,14 @@ router.get('/register', async ctx => await ctx.render('register'))
 router.post('/register', koaBody, async ctx => {
 	try {
 		// extract the data from the request
-		const body = ctx.request.body
+		const {body, files} = ctx.request.body
 		// call the functions in the module
 		const user = await new User()
 		const userId = await user.register(body.user, body.pass, body.email)
 		await user.setSubscription(userId, body.subscribed)
-		if(ctx.request.files.avatar.size !== 0) {
-			const {path, type} = ctx.request.files.avatar
-			await user.uploadPicture(body.user, path, type)
+		if(files && files.avatar.size !== 0) {
+			const {avatar} = ctx.request.files
+			await user.setAvatar(body.user, avatar)
 		}
 		// redirect to the home page
 		ctx.redirect(`/?msg=new user "${body.user}" added`)
@@ -91,8 +91,8 @@ router.post('/account', async ctx => {
 		await user.setEmail(ctx.session.userId, email)
 		await user.setSubscription(ctx.session.userId, subscribed)
 		if(files && files.avatar.size !== 0) {
-			const {path, type} = ctx.request.files.avatar
-			await user.uploadPicture(data.username, path, type)
+			const {avatar} = ctx.request.files
+			await user.setAvatar(data.username, avatar)
 			ctx.session.avatar = await user.getAvatar(ctx.session.userId)
 		}
 		await ctx.redirect('/account?msg=your account details were updated')
