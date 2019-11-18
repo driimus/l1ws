@@ -402,6 +402,15 @@ describe('setSubscription()', () => {
 		done()
 	})
 
+	test('unsubscribe user from emails', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		// new status is false by default
+		const subscribed = await this.account.setSubscription(1)
+		expect(subscribed).toBe(true)
+		done()
+	})
+
 	test('error if user does not exist', async done => {
 		expect.assertions(1)
 		await expect( this.account.setSubscription(1, true) )
