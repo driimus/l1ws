@@ -115,6 +115,13 @@ describe('isAvailable()', () => {
 		done()
 	})
 
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.isAvailable('email', 'doej@test.com', 'not an iD') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
 })
 
 describe('uploadPicture()', () => {
