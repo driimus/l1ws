@@ -1,6 +1,6 @@
 {
   "name": "localnews",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Coursework with all the required features",
   "main": "index.js",
   "engines": {
