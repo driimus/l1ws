@@ -45,7 +45,7 @@ router.get('/search', async ctx => {
 	try {
 		const article = await new Article(), user = await new User(),
 			showHidden = await user.isAdmin(ctx.session.username)
-		const articles = await article.find(ctx.query.q, showHidden)
+		const articles = await article.find(ctx.query.search, showHidden)
 		return ctx.render('search', {articles, loggedIn: ctx.session.authorised})
 	} catch(err) {
 		await ctx.render('search', {message: err.message, loggedIn: ctx.session.authorised})

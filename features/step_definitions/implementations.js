@@ -2,6 +2,7 @@
 'use strict'
 
 const pages = require('../support/pages')
+const {buttons, links} = require('../support/selectors')
 const scope = require('../support/scope')
 
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
@@ -29,10 +30,52 @@ const visitPage = async page => {
 }
 
 const shouldSeeText = async text => {
-	const { currentPage } = scope.context
+	const {currentPage} = scope.context
 	const content = await currentPage.content()
-	if (!content.includes(text))
+	if (content.includes(text) === false)
 		throw new Error(`Page does not contain text: "${text}"`)
 }
 
-module.exports = {visitPage, shouldSeeText, wait}
+const shouldNotSeeText = async text => {
+	const {currentPage} = scope.context
+	const content = await currentPage.content()
+	if (content.includes(text) === true)
+		throw new Error(`Page contains unexpected text: "${text}"`)
+}
+
+const typeInput = async(input, field) => {
+	const {currentPage} = scope.context
+	await currentPage.waitForSelector(`input[name="${field}"]`)
+	await currentPage.focus(`input[name="${field}"]`)
+	await currentPage.type(`input[name="${field}"]`, input, { delay: 1 })
+}
+
+const pressButton = async button => {
+	const {currentPage} = scope.context
+	return await currentPage.click(buttons[button])
+}
+
+const clickLink = async button => {
+	const {currentPage} = scope.context
+	return await currentPage.click(links[button])
+}
+
+const shouldBeOnPage = async pageName => {
+	const {currentPage} = scope.context
+	const url = scope.host + pages[pageName]
+	return await currentPage.waitForFunction(
+		`window.location.href === '${url}'`,
+		{mutation: true}
+	)
+}
+
+module.exports = {
+	visitPage,
+	shouldSeeText,
+	shouldNotSeeText,
+	wait,
+	typeInput,
+	pressButton,
+	clickLink,
+	shouldBeOnPage
+}
