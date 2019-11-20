@@ -3,6 +3,13 @@
 
 const {isId} = require('../utils')
 
+/**
+ * Retrieves the username of an user account.
+ *
+ * @async
+ * @param {number} id - Unique ID of the target account.
+ * @returns {string} The account's username.
+ */
 const getUsername = async function(id) {
 	try {
 		id = await isId(id, 'user')
