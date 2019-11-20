@@ -4,6 +4,21 @@
 
 const app = require('../')
 
+const {administrator} = require('../config')[process.env.NODE_ENV]
+
+// Ensures an admin account exists.
+const generateAdmin = async() => {
+	try {
+		const user = await new User()
+		await user.register(administrator.username, administrator.password, administrator.email)
+		const sql = 'UPDATE users SET is_admin=true WHERE username=$1'
+		await user.db.query(sql, [administrator.username])
+	} catch(e) {
+		// Do nothing since admin account exists.
+	}
+	return true
+}
+
 /* Import custom modules for scheduled newsletter rollout. */
 const User = require('../modules/user')
 const Article = require('../modules/article')
@@ -39,6 +54,7 @@ const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 
 module.exports = app.listen(port, async() => {
+	await generateAdmin()
 	// Initialize newsletter scheduler.
 	await scheduleNewsletter()
 	console.log(`listening on port ${port}`)

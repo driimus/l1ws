@@ -78,15 +78,12 @@ const login = async user => {
 
 const loginAsAdmin = async() => await login(scope.context.admin)
 
-const loginAsUser = async username => {
+const loginAsUser = async() => {
 	const {accounts} = scope.context
-	const user = username
-		? accounts.find(u => u.username === username)
-		: accounts[accounts.length - 1]
-	return await login(user)
+	return await login(accounts[accounts.length - 1])
 }
 
-const newAccount = async(type, username) => {
+const newAccount = async username => {
 	await visitPage('signup')
 	const user = {
 		username,

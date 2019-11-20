@@ -31,7 +31,7 @@ router.get('/register', async ctx => {
 router.post('/register', koaBody, async ctx => {
 	try {
 		// extract the data from the request
-		const {body, files} = ctx.request.body
+		const {body, files} = ctx.request
 		// call the functions in the module
 		const user = await new User()
 		const userId = await user.register(body.user, body.pass, body.email)
