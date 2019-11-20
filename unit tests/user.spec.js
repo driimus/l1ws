@@ -557,4 +557,11 @@ describe('getUsername()', () => {
 		done()
 	})
 
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getUsername('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
 })
