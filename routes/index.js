@@ -44,11 +44,11 @@ router.get('/search', async ctx => {
 	const data = await getUserInfo(ctx.session)
 	try {
 		const article = await new Article()
-		data.articles = await article.find(ctx.query.q, data.isAdmin)
+		data.articles = await article.find(ctx.query.search, data.isAdmin)
 		return ctx.render('search', data)
 	} catch(err) {
 		data.message = err.message
-		await ctx.render('error', data)
+		await ctx.render('search', data)
 	}
 })
 
