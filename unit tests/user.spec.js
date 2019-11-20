@@ -539,3 +539,29 @@ describe('getAvatar()', () => {
 	})
 
 })
+
+describe('getUsername()', () => {
+
+	test('get valid account username', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const uname = await this.account.getUsername(1)
+		expect(uname).toBe('doej')
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getUsername(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getUsername('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+})

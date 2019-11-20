@@ -9,6 +9,11 @@ const getAdmin = async session => {
 	return true
 }
 
+const getAuthor = async id => {
+	const user = await new User()
+	return await user.getUsername(id)
+}
+
 const getUserInfo = async session => {
 	const user = await new User()
 	const {authorised: loggedIn, username, avatar} = session
@@ -16,4 +21,4 @@ const getUserInfo = async session => {
 	return {loggedIn, username, avatar, isAdmin}
 }
 
-module.exports = {getAdmin, getUserInfo}
+module.exports = {getAdmin, getUserInfo, getAuthor}
