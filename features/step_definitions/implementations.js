@@ -64,7 +64,7 @@ const shouldBeOnPage = async pageName => {
 	const {currentPage} = scope.context
 	const url = scope.host + pages[pageName]
 	return await currentPage.waitForFunction(
-		`window.location.href === '${url}'`,
+		`window.location.href.split('?')[0] === '${url}'`,
 		{mutation: true}
 	)
 }
