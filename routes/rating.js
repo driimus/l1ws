@@ -7,7 +7,7 @@ const Router = require('koa-router')
 const Article = require('../modules/article')
 const Rating = require('../modules/rating')
 
-const {getUserInfo} = require('./helpers')
+const {getUserInfo, getAuthor} = require('./helpers')
 
 const router = new Router({prefix: '/article'})
 
@@ -26,6 +26,7 @@ router.get('/:id([0-9]{1,})', async ctx => {
 		try {
 			data.rating = await rating.get(ctx.session.userId, ctx.params.id)
 			data.average = await rating.mean(ctx.params.id)
+			data.author = await getAuthor(data.author_id)
 			data.isAuthor = await article.byAuthor(ctx.session.userId, data.author_id)
 		}catch(e) {
 			data.isAuthor = false
