@@ -10,12 +10,25 @@ const scope = require('./support/scope')
 const defaultPort = 8080
 const port = process.env.PORT || defaultPort
 
+const admin = {
+	username: 'admin',
+	password: 'secretpass',
+	email: 'admin@admin.com'
+}
+
+process.env.ADMIN_USER = admin.username
+process.env.ADMIN_PASS = admin.password
+process.env.ADMIN_EMAIL = admin.email
+
 const app = require('../')
 
 const World = function() {
 	scope.host = `http://localhost:${port}`
 	scope.driver = puppeteer
-	scope.context = {}
+	scope.context = {
+		accounts: [],
+		admin
+	}
 	scope.app = app.listen(port)
 }
 

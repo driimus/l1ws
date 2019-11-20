@@ -69,6 +69,37 @@ const shouldBeOnPage = async pageName => {
 	)
 }
 
+const login = async user => {
+	await visitPage('login')
+	await typeInput(user.username, 'user')
+	await typeInput(user.password, 'pass')
+	return await pressButton('submit')
+}
+
+const loginAsAdmin = async() => await login(scope.context.admin)
+
+const loginAsUser = async username => {
+	const {accounts} = scope.context
+	const user = username
+		? accounts.find(u => u.username === username)
+		: accounts[accounts.length - 1]
+	return await login(user)
+}
+
+const newAccount = async(type, username) => {
+	await visitPage('signup')
+	const user = {
+		username,
+		password: 'Rpass12',
+		email: 'test@user.com'
+	}
+	scope.context.accounts.push(user)
+	await typeInput(username, 'user')
+	await typeInput(user.password, 'pass')
+	await typeInput(user.email, 'email')
+	await pressButton('submit')
+}
+
 module.exports = {
 	visitPage,
 	shouldSeeText,
@@ -77,5 +108,8 @@ module.exports = {
 	typeInput,
 	pressButton,
 	clickLink,
-	shouldBeOnPage
+	shouldBeOnPage,
+	loginAsUser,
+	loginAsAdmin,
+	newAccount
 }

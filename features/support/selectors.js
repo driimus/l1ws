@@ -7,6 +7,7 @@ module.exports = {
 		'Sign up': 'a[href="/register"]'
 	},
 	buttons: {
-		Search: '#search-btn'
+		Search: '#search-btn',
+		submit: 'input[type="submit"]'
 	}
 }
