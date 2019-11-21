@@ -157,7 +157,7 @@ describe('getAll()', () => {
 	})
 
 	test('get approved articles in reverse chronological order', async done => {
-		expect.assertions(2)
+		expect.assertions(3)
 		// Insert multiple articles.
 		await this.article.add(1, dummy)
 		await this.article.add(1, mostRecent)
@@ -166,6 +166,7 @@ describe('getAll()', () => {
 		await this.article.setStatus(2, 'approved')
 		await this.article.setStatus(3, 'approved')
 		const res = await this.article.getAll()
+		expect(res[0].hasOwnProperty('searchable_indices')).toBe(false)
 		// There should only be two results.
 		expect(res.length).toBe(2)
 		// First result should be most recent.
@@ -216,15 +217,17 @@ describe('get()', () => {
 	})
 
 	test('get article with existing ID', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		// Add article that is 'pending' by default.
 		await this.article.add(1, dummy)
 		// Mark article as approved.
 		await this.article.setStatus(1, 'approved')
 		// Retrieve approved article.
-		const {data: res} = await this.article.get(1)
+		const res = await this.article.get(1)
 		// Check that the result has the same content as the dummy.
-		expect(res).toMatchObject(dummy)
+		expect(res.data).toMatchObject(dummy)
+		// Getter should not retrieve search indices.
+		expect(res.hasOwnProperty('searchable_indices')).toBe(false)
 		done()
 	})
 
@@ -629,10 +632,11 @@ describe('find()', () => {
 	})
 
 	test('find article by content keyword', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		await this.article.add(1, dummy)
 		await this.article.add(1, dummy2)
 		const res = await this.article.find('very real', true)
+		expect(res[0].hasOwnProperty('searchable_indices')).toBe(false)
 		expect(res).toHaveLength(1)
 		done()
 	})
