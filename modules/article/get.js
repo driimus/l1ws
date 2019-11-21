@@ -6,10 +6,10 @@ const {isId} = require('../utils')
 /**
  * Retrieves a single article submission.
  *
+ * @async
  * @param {number} id - The ID of the requested article.
  * @param {boolean} showHidden - Flag for filtering articles by status.
- * @async
- * @returns {object} Article with a matching id.
+ * @returns {object} Article with a matching id but no search indices.
  */
 const get = async function(id, showHidden=false) {
 	try {
