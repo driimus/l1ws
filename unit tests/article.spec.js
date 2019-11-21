@@ -632,10 +632,11 @@ describe('find()', () => {
 	})
 
 	test('find article by content keyword', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		await this.article.add(1, dummy)
 		await this.article.add(1, dummy2)
 		const res = await this.article.find('very real', true)
+		expect(res[0].hasOwnProperty('searchable_indices')).toBe(false)
 		expect(res).toHaveLength(1)
 		done()
 	})
