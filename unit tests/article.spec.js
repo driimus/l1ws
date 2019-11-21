@@ -157,7 +157,7 @@ describe('getAll()', () => {
 	})
 
 	test('get approved articles in reverse chronological order', async done => {
-		expect.assertions(2)
+		expect.assertions(3)
 		// Insert multiple articles.
 		await this.article.add(1, dummy)
 		await this.article.add(1, mostRecent)
@@ -166,6 +166,7 @@ describe('getAll()', () => {
 		await this.article.setStatus(2, 'approved')
 		await this.article.setStatus(3, 'approved')
 		const res = await this.article.getAll()
+		expect(res[0].hasOwnProperty('searchable_indices')).toBe(false)
 		// There should only be two results.
 		expect(res.length).toBe(2)
 		// First result should be most recent.
