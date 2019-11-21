@@ -17,6 +17,7 @@ const {saltRounds} = require('../../config')[process.env.NODE_ENV]
 const register = async function(username, password, email) {
 	try {
 		await this.isAvailable('username', username)
+		await this.isAvailable('email', email)
 		if(password.length === 0) throw new Error('missing password')
 		// Save username and encrypted password.
 		password = await bcrypt.hash(password, saltRounds)

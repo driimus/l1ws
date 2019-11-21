@@ -30,8 +30,16 @@ describe('register()', () => {
 		expect.assertions(1)
 		const [user, pass] = ['doej', 'password']
 		await this.account.register(user, pass, 'doej@test.com')
-		await expect( this.account.register(user, pass, 'doej@test.com') )
+		await expect( this.account.register(user, pass, 'roej@test.com') )
 			.rejects.toEqual( Error(`username "${user}" already in use`) )
+		done()
+	})
+
+	test('register a duplicate email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'secretpass', 'doej@test.com')
+		await expect( this.account.register('resterino', 'secretpass', 'doej@test.com') )
+			.rejects.toEqual( Error('email "doej@test.com" already in use') )
 		done()
 	})
 
