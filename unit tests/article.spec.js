@@ -216,15 +216,17 @@ describe('get()', () => {
 	})
 
 	test('get article with existing ID', async done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		// Add article that is 'pending' by default.
 		await this.article.add(1, dummy)
 		// Mark article as approved.
 		await this.article.setStatus(1, 'approved')
 		// Retrieve approved article.
-		const {data: res} = await this.article.get(1)
+		const res = await this.article.get(1)
 		// Check that the result has the same content as the dummy.
-		expect(res).toMatchObject(dummy)
+		expect(res.data).toMatchObject(dummy)
+		// Getter should not retrieve search indices.
+		expect(res.hasOwnProperty('searchable_indices')).toBe(false)
 		done()
 	})
 
