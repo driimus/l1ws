@@ -12,6 +12,8 @@ defineStep('{string} should be displayed', _.shouldSeeText)
 
 defineStep('{string} should not be displayed', _.shouldNotSeeText)
 
+defineStep('a {string} error be displayed', _.shouldSeeError)
+
 defineStep('I wait for {float} seconds', {timeout: 10000}, _.wait)
 
 defineStep('I type {string} in {string}', _.typeInput)

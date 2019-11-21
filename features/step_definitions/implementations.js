@@ -2,6 +2,7 @@
 'use strict'
 
 const pages = require('../support/pages')
+const errors = require('../support/errors')
 const {buttons, links} = require('../support/selectors')
 const scope = require('../support/scope')
 
@@ -33,6 +34,15 @@ const shouldSeeText = async text => {
 	const {currentPage} = scope.context
 	const content = await currentPage.content()
 	if (content.includes(text) === false)
+		throw new Error(`Page does not contain text: "${text}"`)
+}
+
+const shouldSeeError = async text => {
+	const {currentPage} = scope.context
+	const content = await currentPage.content()
+	if (content.includes('Error Has Occurred') === false)
+		throw new Error('Page does not contain any error')
+	if (errors[text].test(content) === false)
 		throw new Error(`Page does not contain text: "${text}"`)
 }
 
@@ -88,7 +98,7 @@ const newAccount = async username => {
 	const user = {
 		username,
 		password: 'Rpass12',
-		email: 'test@user.com'
+		email: `${username}@user.com`
 	}
 	scope.context.accounts.push(user)
 	await typeInput(username, 'user')
@@ -101,6 +111,7 @@ module.exports = {
 	visitPage,
 	shouldSeeText,
 	shouldNotSeeText,
+	shouldSeeError,
 	wait,
 	typeInput,
 	pressButton,
