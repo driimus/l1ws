@@ -15,7 +15,8 @@ const get = async function(id, showHidden=false) {
 	try {
 		if (typeof showHidden !== 'boolean') throw new Error(`invalid showHidden value: "${showHidden}"`)
 		await isId(id, 'article') 	// Validate given ID.
-		const sql = `SELECT * FROM article WHERE id=$1
+		const sql = `SELECT id, author_id, created_at, status, data
+			FROM article WHERE id=$1
 			${showHidden === false ? 'AND status=\'approved\'' : ''}
 		`
 		// Get first result.
