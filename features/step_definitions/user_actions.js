@@ -8,10 +8,10 @@ const login = async user => {
 	await visitPage('login')
 	await typeInput(user.username, 'user')
 	await typeInput(user.password, 'pass')
-	return await pressButton('submit')
+	await pressButton('submit')
 }
 
-const loginAsAdmin = async() => await login(scope.context.admin)
+const loginAsAdmin = async() =>	await login(scope.admin)
 
 const loginAsUser = async() => {
 	const {accounts} = scope.context
