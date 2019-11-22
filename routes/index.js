@@ -22,15 +22,16 @@ const {getUserInfo} = require('./helpers')
  */
 router.get('/', async ctx => {
 	const data = await getUserInfo(ctx.session)
+	if(ctx.query.msg) data.msg = ctx.query.msg
 	try {
 		const article = await new Article()
 		// Filter out hidden articles for non-admins.
 		data.articles= await article.getAll(data.isAdmin)
-		if(ctx.query.msg) data.msg = ctx.query.msg
 		await ctx.render('index', data)
 	} catch(err) {
 		data.message = err.message
-		await ctx.render('error', data)
+		const page = data.message === 'found no published articles' ? 'index' : 'error'
+		await ctx.render(page, data)
 	}
 })
 
