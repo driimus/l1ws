@@ -6,26 +6,22 @@ const {defineStep} = require('cucumber')
 // Import step implementations.
 const _ = require('./implementations')
 
-defineStep('I am on the {string} page', _.visitPage)
+defineStep('I/he am/is on the {string} page', {timeout: 10000}, _.visitPage)
+defineStep('I/he visit(s) the {string} page', {timeout: 10000}, _.visitPage)
 
 defineStep('{string} should be displayed', _.shouldSeeText)
 
 defineStep('{string} should not be displayed', _.shouldNotSeeText)
 
-defineStep('a {string} error be displayed', _.shouldSeeError)
+defineStep('a {string} error should be displayed', _.shouldSeeError)
 
-defineStep('I wait for {float} seconds', {timeout: 10000}, _.wait)
+defineStep('I/he wait(s) for {float} seconds', {timeout: 10000}, _.wait)
 
-defineStep('I type {string} in {string}', _.typeInput)
+defineStep('I/he type(s) {string} in (the) {string} (field)', _.typeInput)
 
-defineStep('I press {string}', _.pressButton)
+defineStep('I/he press(es) {word}', _.pressButton)
 
-defineStep('I click {string}', _.clickLink)
+defineStep('I/he click(s) {string}', _.clickLink)
 
-defineStep('he should be on the {word} page', _.shouldBeOnPage)
-
-defineStep('the user {word} has an account', {timeout: 15000}, _.newAccount)
-
-defineStep('he logs in', {timeout: 10000}, _.loginAsUser)
-
-defineStep('the admin logs in', {timeout: 10000}, _.loginAsAdmin)
+defineStep('I/he should be on the {string} page', {timeout: 10000}, _.shouldBeOnPage)
+defineStep('I/he am/is taken to the {string} page', {timeout: 10000}, _.shouldBeOnPage)

@@ -17,12 +17,15 @@ const visitPage = async page => {
 	if (scope.browser === undefined)
 		scope.browser = await scope.driver.launch({
 			args: ['--disable-dev-shm-usage'],
-			headless: true,
+			headless: false,
 			slowMo: 40
 		})
-	scope.context.currentPage = await scope.browser.newPage()
-	// Use native viewport size for the Chromebook.
-	scope.context.currentPage.setViewport( {width: 1366, height: 768} )
+	const {currentPage} = scope.context
+	if (currentPage === undefined) {
+		scope.context.currentPage = await scope.browser.newPage()
+		// Use native viewport size for the Chromebook.
+		scope.context.currentPage.setViewport( {width: 1366, height: 768} )
+	}
 	const url = `${ scope.host }${ pages[page] }`
 	const visit = await scope.context.currentPage.goto(url, {
 		waitUntil: 'networkidle2'
@@ -73,38 +76,11 @@ const clickLink = async button => {
 const shouldBeOnPage = async pageName => {
 	const {currentPage} = scope.context
 	const url = scope.host + pages[pageName]
-	return await currentPage.waitForFunction(
+	const watchDog = currentPage.waitForFunction(
 		`window.location.href.split('?')[0] === '${url}'`,
 		{mutation: true}
 	)
-}
-
-const login = async user => {
-	await visitPage('login')
-	await typeInput(user.username, 'user')
-	await typeInput(user.password, 'pass')
-	return await pressButton('submit')
-}
-
-const loginAsAdmin = async() => await login(scope.context.admin)
-
-const loginAsUser = async() => {
-	const {accounts} = scope.context
-	return await login(accounts[accounts.length - 1])
-}
-
-const newAccount = async username => {
-	await visitPage('signup')
-	const user = {
-		username,
-		password: 'Rpass12',
-		email: `${username}@user.com`
-	}
-	scope.context.accounts.push(user)
-	await typeInput(username, 'user')
-	await typeInput(user.password, 'pass')
-	await typeInput(user.email, 'email')
-	await pressButton('submit')
+	await watchDog
 }
 
 module.exports = {
@@ -116,8 +92,5 @@ module.exports = {
 	typeInput,
 	pressButton,
 	clickLink,
-	shouldBeOnPage,
-	loginAsUser,
-	loginAsAdmin,
-	newAccount
+	shouldBeOnPage
 }
