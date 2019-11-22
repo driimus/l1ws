@@ -20,6 +20,9 @@
 		{{> notification }}
 		<div class="container col-xs-12 col-md-6 pb-5">
 			<h1 class="display-2 mt-2">Recent news</h1>
+			{{#unless articles}}
+			<h5 class="display-5 mt-2">Looks like there are no articles</h5>
+			{{/unless}}
 			{{#each articles}}
 			<a href="article/{{id}}" style="text-decoration: none">
 				<div class="card bg-dark text-white mb-3">
