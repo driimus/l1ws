@@ -137,7 +137,7 @@ describe('setAvatar()', () => {
 		expect.assertions(2)
 		const [user, pass] = ['doej', 'password']
 		const exp = `public/avatars/${user}.png`
-		await this.account.register(user, pass)
+		await this.account.register(user, pass, 'doej@test.com')
 		const image = {path: 'mockdir/fixtures/some.png', type: 'image/png'}
 		await mock({
 			'mockdir': {
@@ -156,7 +156,7 @@ describe('setAvatar()', () => {
 	test('error if file is not an image', async done => {
 		expect.assertions(1)
 		const [user, pass] = ['doej', 'password']
-		await this.account.register(user, pass)
+		await this.account.register(user, pass, 'doej@test.com')
 		const soundFile = {path: 'mockdir/fixtures/some', type: 'audio/x-wav'}
 		await mock({
 			'mockdir': {
@@ -275,7 +275,7 @@ describe('setAdmin()', () => {
 		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
 		await this.account.db.query(dummy)
 		// Promote user to admin from admin account.
-		await this.account.register('roej', 'password')
+		await this.account.register('roej', 'password', 'roej@test.com')
 		const flagged = await this.account.setAdmin('doej', 'roej', true)
 		expect(flagged).toBe(true)
 		done()
@@ -284,7 +284,7 @@ describe('setAdmin()', () => {
 	test('error if flag is done by user', async done => {
 		expect.assertions(1)
 		await this.account.register('doej', 'password', 'doej@test.com')
-		await this.account.register('roej', 'password')
+		await this.account.register('roej', 'password', 'roej@test.com')
 		await expect( this.account.setAdmin('doej', 'roej', true) )
 			.rejects.toEqual( Error('user "doej" is not an admin') )
 		done()
@@ -492,10 +492,10 @@ describe('getMailingList()', () => {
 	test('get list of newsletter recipients', async done => {
 		expect.assertions(2)
 		// Add a subscribed and unsubscribed user.
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await this.account.setEmail(1, 'valid@test.com')
 		await this.account.setSubscription(1, true)
-		await this.account.register('roej', 'password')
+		await this.account.register('roej', 'password', 'roej@test.com')
 		const recipients = await this.account.getMailingList()
 		expect(recipients.length).toBe(1)
 		expect(recipients[0]).toBe('valid@test.com')
@@ -504,7 +504,7 @@ describe('getMailingList()', () => {
 
 	test('error if no users are subscribed', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'roej@test.com')
 		await this.account.setEmail(1, 'valid@test.com')
 		await expect( this.account.getMailingList() )
 			.rejects.toEqual( Error('no subscriber emails found'))
