@@ -8,14 +8,14 @@ const {administrator} = require('../config')[process.env.NODE_ENV]
 
 // Ensures an admin account exists.
 const generateAdmin = async() => {
+	const user = await new User()
 	try {
-		const user = await new User()
 		await user.register(administrator.username, administrator.password, administrator.email)
-		const sql = 'UPDATE users SET is_admin=true WHERE username=$1'
-		await user.db.query(sql, [administrator.username])
 	} catch(e) {
 		// Do nothing since admin account exists.
 	}
+	const sql = 'UPDATE users SET is_admin=true WHERE username=$1'
+	await user.db.query(sql, [administrator.username])
 	return true
 }
 

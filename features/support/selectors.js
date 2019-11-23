@@ -8,6 +8,10 @@ module.exports = {
 	},
 	buttons: {
 		Search: '#search-btn',
-		submit: 'input[type="submit"]'
+		submit: 'input[type="submit"]',
+	},
+	checkboxes: {
+		subscribe: '#subscribe',
+		subscribed: 'input[name="subscribed"]'
 	}
 }

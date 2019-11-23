@@ -41,7 +41,7 @@ router.post('/register', koaBody, async ctx => {
 			await user.setAvatar(body.user, avatar)
 		}
 		// redirect to the home page
-		ctx.redirect(`/?msg=new user "${body.user}" added`)
+		ctx.redirect('/?msg=You have now signed up.')
 	} catch(err) {
 		await ctx.render('error', {message: err.message})
 	}

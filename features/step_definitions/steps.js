@@ -6,24 +6,32 @@ const {defineStep} = require('cucumber')
 // Import step implementations.
 const _ = require('./implementations')
 
-defineStep('I am on the {string} page', _.visitPage)
+defineStep('I/he am/is on the {string} page', {timeout: 10000}, _.visitPage)
+defineStep('I/he visit(s) the {string} page', {timeout: 10000}, _.visitPage)
 
 defineStep('{string} should be displayed', _.shouldSeeText)
 
 defineStep('{string} should not be displayed', _.shouldNotSeeText)
 
-defineStep('I wait for {float} seconds', {timeout: 10000}, _.wait)
+defineStep('a {string} error should be displayed', _.shouldSeeError)
 
-defineStep('I type {string} in {string}', _.typeInput)
+defineStep('I/he wait(s) for {float} seconds', {timeout: 10000}, _.wait)
 
-defineStep('I press {string}', _.pressButton)
+defineStep('I/he type(s) {string} in (the) {string} (field)', _.typeInput)
 
-defineStep('I click {string}', _.clickLink)
+defineStep('I/he update(s) the {string} (field)', _.replaceInput)
+, {timeout: 10000}
+defineStep('I/he upload(s) a new avatar', _.uploadAvatar)
 
-defineStep('he should be on the {word} page', _.shouldBeOnPage)
+defineStep('I/he press(es) {word}', {timeout: 15000}, _.pressButton)
 
-defineStep('the user {word} has an account', {timeout: 15000}, _.newAccount)
+defineStep('I/he check(s) {string}', _.pressCheckbox)
 
-defineStep('he logs in', {timeout: 10000}, _.loginAsUser)
+defineStep('I/he click(s) {string}', _.clickLink)
 
-defineStep('the admin logs in', {timeout: 10000}, _.loginAsAdmin)
+defineStep('I/he should be on the {string} page', {timeout: 10000}, _.shouldBeOnPage)
+defineStep('I/he am/is taken to the {string} page', {timeout: 10000}, _.shouldBeOnPage)
+
+defineStep('I/he should have a new avatar', _.hasNewAvatar)
+
+defineStep('{string} should be checked', _.shouldBeChecked)

@@ -1,8 +1,11 @@
 
 'use strict'
 
+const faker = require('faker')
+
 const pages = require('../support/pages')
-const {buttons, links} = require('../support/selectors')
+const errors = require('../support/errors')
+const {buttons, links, checkboxes} = require('../support/selectors')
 const scope = require('../support/scope')
 
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
@@ -16,12 +19,15 @@ const visitPage = async page => {
 	if (scope.browser === undefined)
 		scope.browser = await scope.driver.launch({
 			args: ['--disable-dev-shm-usage'],
-			headless: true,
-			slowMo: 40
+			headless: false,
+			slowMo: 10
 		})
-	scope.context.currentPage = await scope.browser.newPage()
-	// Use native viewport size for the Chromebook.
-	scope.context.currentPage.setViewport( {width: 1366, height: 768} )
+	const {currentPage} = scope.context
+	if (currentPage === undefined) {
+		scope.context.currentPage = await scope.browser.newPage()
+		// Use native viewport size for the Chromebook.
+		scope.context.currentPage.setViewport( {width: 1366, height: 768} )
+	}
 	const url = `${ scope.host }${ pages[page] }`
 	const visit = await scope.context.currentPage.goto(url, {
 		waitUntil: 'networkidle2'
@@ -33,6 +39,15 @@ const shouldSeeText = async text => {
 	const {currentPage} = scope.context
 	const content = await currentPage.content()
 	if (content.includes(text) === false)
+		throw new Error(`Page does not contain text: "${text}"`)
+}
+
+const shouldSeeError = async text => {
+	const {currentPage} = scope.context
+	const content = await currentPage.content()
+	if (content.includes('Error Has Occurred') === false)
+		throw new Error('Page does not contain any error')
+	if (errors[text].test(content) === false)
 		throw new Error(`Page does not contain text: "${text}"`)
 }
 
@@ -50,9 +65,22 @@ const typeInput = async(input, field) => {
 	await currentPage.type(`input[name="${field}"]`, input, { delay: 1 })
 }
 
+const replaceInput = async field => {
+	const {currentPage} = scope.context
+	await currentPage.evaluate(field => {
+		const input = document.querySelector(`input[name="${field}"]`)
+		input.value = `new${input.value}`
+	}, field)
+}
+
 const pressButton = async button => {
 	const {currentPage} = scope.context
 	return await currentPage.click(buttons[button])
+}
+
+const pressCheckbox = async checkboxName => {
+	const {currentPage} = scope.context
+	return await currentPage.click(checkboxes[checkboxName])
 }
 
 const clickLink = async button => {
@@ -63,50 +91,31 @@ const clickLink = async button => {
 const shouldBeOnPage = async pageName => {
 	const {currentPage} = scope.context
 	const url = scope.host + pages[pageName]
-	return await currentPage.waitForFunction(
+	const watchDog = currentPage.waitForFunction(
 		`window.location.href.split('?')[0] === '${url}'`,
 		{mutation: true}
 	)
+	await watchDog
 }
 
-const login = async user => {
-	await visitPage('login')
-	await typeInput(user.username, 'user')
-	await typeInput(user.password, 'pass')
-	return await pressButton('submit')
-}
-
-const loginAsAdmin = async() => await login(scope.context.admin)
-
-const loginAsUser = async() => {
-	const {accounts} = scope.context
-	return await login(accounts[accounts.length - 1])
-}
-
-const newAccount = async username => {
-	await visitPage('signup')
-	const user = {
-		username,
-		password: 'Rpass12',
-		email: 'test@user.com'
-	}
-	scope.context.accounts.push(user)
-	await typeInput(username, 'user')
-	await typeInput(user.password, 'pass')
-	await typeInput(user.email, 'email')
-	await pressButton('submit')
+const shouldBeChecked = async checkbox => {
+	const {currentPage} = scope.context
+	const elem = await currentPage.$(checkboxes[checkbox])
+	const value = await (await elem.getProperty('checked')).jsonValue()
+	if (value !== true) throw new Error(`Checkbox is not checked, instead: ${value}`)
 }
 
 module.exports = {
 	visitPage,
 	shouldSeeText,
 	shouldNotSeeText,
+	shouldSeeError,
 	wait,
 	typeInput,
+	replaceInput,
 	pressButton,
+	pressCheckbox,
 	clickLink,
 	shouldBeOnPage,
-	loginAsUser,
-	loginAsAdmin,
-	newAccount
+	shouldBeChecked
 }
