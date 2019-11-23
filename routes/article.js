@@ -1,7 +1,7 @@
 
 'use strict'
 
-const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
+const koaBody = require('koa-body')({multipart: true, includeUnparsed: true, uploadDir: '.'})
 const Router = require('koa-router')
 
 /* IMPORT CUSTOM MODULE */

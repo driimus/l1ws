@@ -20,29 +20,29 @@
 		{{> notification }}
 		<div class="container col-xs-12 col-sm-9 col-md-6 pb-5">
 			<h1 class="text-center px-4 pt-4 pb-1">Account details</h1>
-					<form action="/account" method="post" class="mb-4">
-			<div class="card">
-				<div class="row no-gutters overflow-hidden">
-					<div class="col-xs-12 col-sm-6 col-md-4">
-						{{#if isAdmin}}
-							<div class="admin-badge text-white py-md-2 py-3">Admin</div>
-						{{/if}}
-						<div class="form-group m-3">
-							<div class="image my-2">
-								<img
-									id="avatar"
-									class="img-thumbnail rounded-circle p-0"
-									src="{{avatar}}"
-									title="Profile picture"
-								>
-							</div>
+			<form action="/account" enctype="multipart/form-data" method="post" class="mb-4">
+				<div class="card">
+					<div class="row no-gutters overflow-hidden">
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							{{#if isAdmin}}
+								<div class="admin-badge text-white py-md-2 py-3">Admin</div>
+							{{/if}}
+							<div class="form-group m-3">
+								<div class="image my-2">
+									<img
+										id="avi"
+										class="img-thumbnail rounded-circle p-0"
+										src="{{avatar}}"
+										title="Profile picture"
+									>
+								</div>
 								<div class="custom-file mt-2">
 									<input
 										accepts="image/*"
 										type="file"
 										name="avatar"
 										class="custom-file-input"
-										onchange="loadPreview(event, 'avatar')"
+										onchange="loadPreview(event, 'avi')"
 										id="avatar"
 									/>
 									<label
@@ -53,8 +53,8 @@
 									>
 								</div>
 							</div>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-8">
+						</div>
+						<div class="col-xs-12 col-sm-6 col-md-8">
 							<div class="card-body">
 								<div class="row mb-2">
 									<label for="inputEmail3" class="col-sm-3 pr-0 col-form-label">Username</label>
@@ -79,7 +79,7 @@
 								<div class="form-group row">
 									<div class="col-auto">Newsletter subscription</div>
 									<div class="col-auto">
-										<div class="custom-control custom-switch">
+										<div class="custom-control custom-switch" id="subscribe">
 											<input
 												type="checkbox"
 												name="subscribed"

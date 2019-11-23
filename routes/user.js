@@ -1,7 +1,7 @@
 
 'use strict'
 
-const koaBody = require('koa-body')({multipart: true, uploadDir: '.'})
+const koaBody = require('koa-body')({multipart: true, includeUnparsed: true, uploadDir: '.'})
 const Router = require('koa-router')
 
 /* IMPORT CUSTOM MODULE */
@@ -95,8 +95,7 @@ router.post('/account', koaBody, async ctx => {
 		await user.setEmail(ctx.session.userId, email)
 		await user.setSubscription(ctx.session.userId, subscribed)
 		if(files && files.avatar.size !== 0) {
-			const {avatar} = ctx.request.files
-			await user.setAvatar(data.username, avatar)
+			await user.setAvatar(data.username, files.avatar)
 			ctx.session.avatar = await user.getAvatar(ctx.session.userId)
 		}
 		await ctx.redirect('/account?msg=your account details were updated')
