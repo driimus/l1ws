@@ -19,9 +19,19 @@ defineStep('I/he wait(s) for {float} seconds', {timeout: 10000}, _.wait)
 
 defineStep('I/he type(s) {string} in (the) {string} (field)', _.typeInput)
 
-defineStep('I/he press(es) {word}', _.pressButton)
+defineStep('I/he update(s) the {string} (field)', _.replaceInput)
+, {timeout: 10000}
+defineStep('I/he upload(s) a new avatar', _.uploadAvatar)
+
+defineStep('I/he press(es) {word}', {timeout: 15000}, _.pressButton)
+
+defineStep('I/he check(s) {string}', _.pressCheckbox)
 
 defineStep('I/he click(s) {string}', _.clickLink)
 
 defineStep('I/he should be on the {string} page', {timeout: 10000}, _.shouldBeOnPage)
 defineStep('I/he am/is taken to the {string} page', {timeout: 10000}, _.shouldBeOnPage)
+
+defineStep('I/he should have a new avatar', _.hasNewAvatar)
+
+defineStep('{string} should be checked', _.shouldBeChecked)

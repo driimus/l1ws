@@ -1,9 +1,11 @@
 
 'use strict'
 
+const faker = require('faker')
+
 const pages = require('../support/pages')
 const errors = require('../support/errors')
-const {buttons, links} = require('../support/selectors')
+const {buttons, links, checkboxes} = require('../support/selectors')
 const scope = require('../support/scope')
 
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
@@ -18,7 +20,7 @@ const visitPage = async page => {
 		scope.browser = await scope.driver.launch({
 			args: ['--disable-dev-shm-usage'],
 			headless: false,
-			slowMo: 40
+			slowMo: 10
 		})
 	const {currentPage} = scope.context
 	if (currentPage === undefined) {
@@ -63,9 +65,22 @@ const typeInput = async(input, field) => {
 	await currentPage.type(`input[name="${field}"]`, input, { delay: 1 })
 }
 
+const replaceInput = async field => {
+	const {currentPage} = scope.context
+	await currentPage.evaluate(field => {
+		const input = document.querySelector(`input[name="${field}"]`)
+		input.value = `new${input.value}`
+	}, field)
+}
+
 const pressButton = async button => {
 	const {currentPage} = scope.context
 	return await currentPage.click(buttons[button])
+}
+
+const pressCheckbox = async checkboxName => {
+	const {currentPage} = scope.context
+	return await currentPage.click(checkboxes[checkboxName])
 }
 
 const clickLink = async button => {
@@ -83,6 +98,13 @@ const shouldBeOnPage = async pageName => {
 	await watchDog
 }
 
+const shouldBeChecked = async checkbox => {
+	const {currentPage} = scope.context
+	const elem = await currentPage.$(checkboxes[checkbox])
+	const value = await (await elem.getProperty('checked')).jsonValue()
+	if (value !== true) throw new Error(`Checkbox is not checked, instead: ${value}`)
+}
+
 module.exports = {
 	visitPage,
 	shouldSeeText,
@@ -90,7 +112,10 @@ module.exports = {
 	shouldSeeError,
 	wait,
 	typeInput,
+	replaceInput,
 	pressButton,
+	pressCheckbox,
 	clickLink,
-	shouldBeOnPage
+	shouldBeOnPage,
+	shouldBeChecked
 }

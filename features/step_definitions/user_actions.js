@@ -66,11 +66,37 @@ const fillLoginFormWith = async field => {
 	await typeInput(user.password, 'pass')
 }
 
+const getAvatar = async() => {
+	const {currentPage} = scope.context
+	const avi = await currentPage.$('#avi')
+	scope.context.avatar = await (await avi.getProperty('src')).jsonValue()
+}
+
+const uploadAvatar = async() => {
+	const {currentPage} = scope.context
+	await getAvatar()
+	const [fileChooser] = await Promise.all([
+	  currentPage.waitForFileChooser(),
+	  currentPage.click('label[for="avatar"]'), // some button that triggers file selection
+	])
+	await fileChooser.accept(['public/avatars/newAvatar.jpg'])
+	return true
+}
+
+const hasNewAvatar = async() => {
+	const {avatar: old} = scope.context
+	await getAvatar()
+	console.log(scope.context.avatar)
+	if (scope.context.avatar === old) throw new Error(`Avatar was not updated, instead is: ${old}`)
+}
+
 module.exports = {
 	loginAsAdmin,
 	loginAsUser,
 	newAccount,
 	fillRegisterForm,
 	fillLoginFormWith,
-	fillRegisterFormWith
+	fillRegisterFormWith,
+	uploadAvatar,
+	hasNewAvatar
 }
