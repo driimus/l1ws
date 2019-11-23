@@ -16,8 +16,8 @@ const uploadPicture = async(username, image) => {
 	try {
 		if(image.type.split('/')[0] !== 'image') throw new Error('invalid image MIME type')
 		const extension = mime.extension(image.type)
-		const newPath = `public/avatars/${username}.${extension}`
-		await fs.copy(image.path, newPath)
+		const newPath = `avatars/${username}.${extension}`
+		await fs.copy(image.path, `public/${newPath}`)
 		return newPath
 	} catch(err) {
 		throw err

@@ -29,7 +29,7 @@ const find = async function(keyphrase, showHidden=false) {
 		keyphrase = parsed.keyphrase(keyphrase)
 		showHidden = parsed.showHidden(showHidden)
 		// Search indexed list of article words.
-		const sql = `SELECT * FROM article
+		const sql = `SELECT id, author_id, created_at, status, data FROM article
 			WHERE searchable_indices @@ to_tsquery($1) ${showHidden}
 		`
 		const {rows: articles} = await this.db.query(sql, [keyphrase])

@@ -10,6 +10,11 @@ module.exports = {
 				user: process.env.SENDGRID_USER,
 				pass: process.env.SENDGRID_PASS
 			}
+		},
+		administrator: {
+			username: process.env.ADMIN_USER,
+			password: process.env.ADMIN_PASS,
+			email: process.env.ADMIN_EMAIL
 		}
 	},
 	production: {
@@ -20,6 +25,11 @@ module.exports = {
 				user: process.env.SENDGRID_USER,
 				pass: process.env.SENDGRID_PASS
 			}
+		},
+		administrator: {
+			username: process.env.ADMIN_USER,
+			password: process.env.ADMIN_PASS,
+			email: process.env.ADMIN_EMAIL
 		}
 	},
 	test: {
@@ -32,6 +42,11 @@ module.exports = {
 				user: 'tristian98@ethereal.email',	// testing account username
 				pass: 'Mdb3P4AXBMWC7fYP7q'			// testing account password
 			}
+		},
+		administrator: {
+			username: process.env.ADMIN_USER,
+			password: process.env.ADMIN_PASS,
+			email: process.env.ADMIN_EMAIL
 		}
 	}
 }

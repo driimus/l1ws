@@ -30,8 +30,16 @@ describe('register()', () => {
 		expect.assertions(1)
 		const [user, pass] = ['doej', 'password']
 		await this.account.register(user, pass, 'doej@test.com')
-		await expect( this.account.register(user, pass, 'doej@test.com') )
+		await expect( this.account.register(user, pass, 'roej@test.com') )
 			.rejects.toEqual( Error(`username "${user}" already in use`) )
+		done()
+	})
+
+	test('register a duplicate email', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'secretpass', 'doej@test.com')
+		await expect( this.account.register('resterino', 'secretpass', 'doej@test.com') )
+			.rejects.toEqual( Error('email "doej@test.com" already in use') )
 		done()
 	})
 
@@ -129,7 +137,7 @@ describe('setAvatar()', () => {
 		expect.assertions(2)
 		const [user, pass] = ['doej', 'password']
 		const exp = `public/avatars/${user}.png`
-		await this.account.register(user, pass)
+		await this.account.register(user, pass, 'doej@test.com')
 		const image = {path: 'mockdir/fixtures/some.png', type: 'image/png'}
 		await mock({
 			'mockdir': {
@@ -148,7 +156,7 @@ describe('setAvatar()', () => {
 	test('error if file is not an image', async done => {
 		expect.assertions(1)
 		const [user, pass] = ['doej', 'password']
-		await this.account.register(user, pass)
+		await this.account.register(user, pass, 'doej@test.com')
 		const soundFile = {path: 'mockdir/fixtures/some', type: 'audio/x-wav'}
 		await mock({
 			'mockdir': {
@@ -267,7 +275,7 @@ describe('setAdmin()', () => {
 		const dummy = 'INSERT INTO users(username,password,is_admin) values(\'doej\',\'pass\',true)'
 		await this.account.db.query(dummy)
 		// Promote user to admin from admin account.
-		await this.account.register('roej', 'password')
+		await this.account.register('roej', 'password', 'roej@test.com')
 		const flagged = await this.account.setAdmin('doej', 'roej', true)
 		expect(flagged).toBe(true)
 		done()
@@ -276,7 +284,7 @@ describe('setAdmin()', () => {
 	test('error if flag is done by user', async done => {
 		expect.assertions(1)
 		await this.account.register('doej', 'password', 'doej@test.com')
-		await this.account.register('roej', 'password')
+		await this.account.register('roej', 'password', 'roej@test.com')
 		await expect( this.account.setAdmin('doej', 'roej', true) )
 			.rejects.toEqual( Error('user "doej" is not an admin') )
 		done()
@@ -484,10 +492,10 @@ describe('getMailingList()', () => {
 	test('get list of newsletter recipients', async done => {
 		expect.assertions(2)
 		// Add a subscribed and unsubscribed user.
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'doej@test.com')
 		await this.account.setEmail(1, 'valid@test.com')
 		await this.account.setSubscription(1, true)
-		await this.account.register('roej', 'password')
+		await this.account.register('roej', 'password', 'roej@test.com')
 		const recipients = await this.account.getMailingList()
 		expect(recipients.length).toBe(1)
 		expect(recipients[0]).toBe('valid@test.com')
@@ -496,7 +504,7 @@ describe('getMailingList()', () => {
 
 	test('error if no users are subscribed', async done => {
 		expect.assertions(1)
-		await this.account.register('doej', 'password')
+		await this.account.register('doej', 'password', 'roej@test.com')
 		await this.account.setEmail(1, 'valid@test.com')
 		await expect( this.account.getMailingList() )
 			.rejects.toEqual( Error('no subscriber emails found'))
@@ -534,6 +542,32 @@ describe('getAvatar()', () => {
 	test('error if invalid user id', async done => {
 		expect.assertions(1)
 		await expect( this.account.getAvatar('horse') )
+			.rejects.toEqual( Error('invalid user ID') )
+		done()
+	})
+
+})
+
+describe('getUsername()', () => {
+
+	test('get valid account username', async done => {
+		expect.assertions(1)
+		await this.account.register('doej', 'password', 'doej@test.com')
+		const uname = await this.account.getUsername(1)
+		expect(uname).toBe('doej')
+		done()
+	})
+
+	test('error if user does not exist', async done => {
+		expect.assertions(1)
+		await expect( this.account.getUsername(1) )
+			.rejects.toEqual( Error('user with ID "1" not found') )
+		done()
+	})
+
+	test('error if invalid user id', async done => {
+		expect.assertions(1)
+		await expect( this.account.getUsername('horse') )
 			.rejects.toEqual( Error('invalid user ID') )
 		done()
 	})

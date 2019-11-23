@@ -1,18 +1,19 @@
 {
   "name": "localnews",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Coursework with all the required features",
   "main": "index.js",
   "engines": {
     "node": "12.x"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "start": "cross-env NODE_ENV=production node ./bin/www",
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/www",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.conf",
     "linter": "node_modules/.bin/eslint .",
-    "test": "jest --coverage --detectOpenHandles && codecov --token=$CODECOV",
-    "unit": "./node_modules/.bin/jest --coverage -c jest-test.config.js 'unit tests/'"
+    "test": "jest --coverage --detectOpenHandles",
+    "unit": "./node_modules/.bin/jest --coverage -c jest-test.config.js 'unit tests/' && codecov --token=$CODECOV",
+    "acceptance-test": "NODE_ENV=test ./node_modules/.bin/cucumber-js "
   },
   "jest": {
     "projects": [
@@ -36,7 +37,7 @@
     "bcrypt-promise": "^2.0.0",
     "bootstrap": "^4.3.1",
     "fs-extra": "^7.0.1",
-    "handlebars": "^4.5.1",
+    "handlebars": "^4.5.3",
     "jquery": "^3.4.1",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",

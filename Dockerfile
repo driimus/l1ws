@@ -1,4 +1,4 @@
-FROM node:12-slim
+FROM node:erbium-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
@@ -7,9 +7,18 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install bcrypt prerequisites
-RUN apt-get update && apt-get install build-essential python curl git -y
-# Install dependencies
-RUN npm i
+RUN apk add --no-cache --virtual .build-deps-full \
+	binutils-gold \
+	g++ \
+	gcc \
+	gnupg \
+	libgcc \
+	linux-headers \
+	make \
+	python
+
+# Install webserver dependencies
+RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
