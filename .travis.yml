@@ -1,4 +1,10 @@
 sudo: required
+
+language: node_js
+node_js: node
+
+cache: npm
+
 services:
   - docker
   - postgresql
@@ -10,17 +16,16 @@ addons:
     - postgresql-11
     - postgresql-client-11
 
-# Build the image before running scripts.
 before_install:
-  - docker build -t petrec/localnews -f Dockerfile .
-
-install:
   # Remove the new cluster.
   - sudo pg_dropcluster 11 main --stop
   - sudo service postgresql stop
   # Upgrade the in-RAM cluster to the latest version.
   - sudo pg_upgradecluster -m upgrade 9.6 main
   - sudo service postgresql restart
+
+install:
+  - npm ci
 
 # Set up the test database
 before_script:
@@ -32,18 +37,38 @@ before_script:
 
 # Execute tests
 script:
-  - docker run --network=host -e CI=true -e CODECOV=$CODECOV_TOKEN petrec/localnews npm run unit
-  - docker run --network=host --user=petrec --cap-add=SYS_ADMIN petrec/localnews npm run acceptance-test
+  - npm run unit
+  - npm run acceptance-test
+
+after_script:
+  - docker build -t petrec/localnews -f Dockerfile .
+
+before_deploy:
+  # Generate documentation
+  - npm run jsdoc
 
 deploy:
-  provider: elasticbeanstalk
-  region: $ELASTIC_BEANSTALK_REGION
-  app: $ELASTIC_BEANSTALK_APP
-  bucket_name: $TARGET_S3_BUCKET
-  bucket_path: $TARGET_S3_BUCKET_PATH
-  on:
-    branch: master
+  - provider: elasticbeanstalk
+    region: $ELASTIC_BEANSTALK_REGION
+    app: $ELASTIC_BEANSTALK_APP
+    bucket_name: $TARGET_S3_BUCKET
+    bucket_path: $TARGET_S3_BUCKET_PATH
+    on:
+      branch: master
+    # Use decrypted keys.
+    access_key_id: $ACCESS_KEY_ID
+    secret_access_key: $SECRET_ACCESS_KEY
 
-  # Use decrypted keys.
-  access_key_id: $ACCESS_KEY_ID
-  secret_access_key: $SECRET_ACCESS_KEY
+    # Deploy documentation to gh-pages
+  - provider: pages
+    local_dir: docs/jsdoc
+    skip_cleanup: true
+    github_token: $GITHUB_TOKEN
+    # Disabled to replace old docs
+    # keep_history: true
+    on:
+      branch: master
+
+after_deploy:
+  # Update Codecov unit test coverage report
+  - codecov --token=$CODECOV_TOKEN
