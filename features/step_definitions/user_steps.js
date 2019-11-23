@@ -17,3 +17,7 @@ defineStep('the admin logs in', {timeout: 10000}, _.loginAsAdmin)
 defineStep('I/he try/tries to sign up', {timeout: 10000}, _.fillRegisterForm)
 
 defineStep('I/he try/tries to sign up with an existent {word}', {timeout: 10000}, _.fillRegisterFormWith)
+
+defineStep('I/he upload(s) a new avatar', _.uploadAvatar)
+
+defineStep('I/he should have a new avatar', _.hasNewAvatar)

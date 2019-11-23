@@ -19,7 +19,7 @@ const visitPage = async page => {
 	if (scope.browser === undefined)
 		scope.browser = await scope.driver.launch({
 			args: ['--disable-dev-shm-usage'],
-			headless: false,
+			headless: true,
 			slowMo: 10
 		})
 	const {currentPage} = scope.context

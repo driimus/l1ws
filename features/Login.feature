@@ -18,5 +18,5 @@ Feature: User authentication
   Scenario: Successful login
     Given he logs in
     When he is taken to the 'home' page
-    And he waits for 3 seconds
+    And he waits for 0.3 seconds
     Then 'you are now logged in' should be displayed

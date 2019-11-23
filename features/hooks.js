@@ -30,14 +30,14 @@ BeforeAll(async() => {
 	scope.app = app.listen(scope.port)
 })
 
-Before(async() => {
+// Before(async() => {
+// 	const pool = new db()
+// })
+
+After(async() => {
 	const pool = new db()
 	await pool.query('TRUNCATE TABLE users')
 	await makeAdmin(scope.admin)
-})
-
-After(async() => {
-
 	let session = scope.context.currentPage
 	// Exit if there is no session.
 	if (scope.browser === undefined || session === undefined) return

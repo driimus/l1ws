@@ -86,7 +86,6 @@ const uploadAvatar = async() => {
 const hasNewAvatar = async() => {
 	const {avatar: old} = scope.context
 	await getAvatar()
-	console.log(scope.context.avatar)
 	if (scope.context.avatar === old) throw new Error(`Avatar was not updated, instead is: ${old}`)
 }
 
