@@ -8,6 +8,9 @@ const errors = require('../support/errors')
 const {buttons, links, checkboxes} = require('../support/selectors')
 const scope = require('../support/scope')
 
+// Disable delay for CI builds.
+const slowMo = process.env.CI ? 0 : 40
+
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
 
 const wait = async seconds => {
@@ -20,7 +23,7 @@ const visitPage = async page => {
 		scope.browser = await scope.driver.launch({
 			args: ['--disable-dev-shm-usage'],
 			headless: true,
-			slowMo: 10
+			slowMo
 		})
 	const {currentPage} = scope.context
 	if (currentPage === undefined) {
