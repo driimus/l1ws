@@ -22,7 +22,7 @@ const visitPage = async page => {
 	if (scope.browser === undefined)
 		scope.browser = await scope.driver.launch({
 			args: ['--disable-dev-shm-usage'],
-			headless: true,
+			headless: false,
 			slowMo
 		})
 	const {currentPage} = scope.context

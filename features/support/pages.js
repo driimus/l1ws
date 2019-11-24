@@ -3,6 +3,7 @@
 
 const pages = {
 	home: '/',
+	search: '/search',
 	login: '/login',
 	logout: '/logout',
 	signup: '/register',

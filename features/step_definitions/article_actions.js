@@ -3,6 +3,7 @@
 
 const faker = require('faker')
 
+const db = require('../../db')
 const scope = require('../support/scope')
 const pages = require('../support/pages')
 const selectors = require('../support/selectors')
@@ -22,7 +23,7 @@ const generateArticle = async title => {
 	}
 	if(scope.context.articles) scope.context.articles.push(article)
 	else scope.context.articles = [article]
-			return article
+	return article
 }
 
 const newArticle = async title => {
@@ -40,13 +41,13 @@ const newArticle = async title => {
 	// await currentPage.waitForSelector('#confirm-btn')
 	await wait(0.1)
 	await currentPage.click('#confirm-btn', {clickCount: 2, delay: 5})
-	await pressButton('confirm')
+	// await pressButton('confirm')
 	// await currentPage.click('#confirm-btn')
 	// await currentPage.click('#add-content')
 	// await typeText(article.content[2], 'content')
 	await wait(0.1)
 	await pressButton('Add article')
-	await pressButton('Add article')
+	// await pressButton('Add article')
 }
 
 const typeText = async(input, field) => {
@@ -59,19 +60,23 @@ const typeText = async(input, field) => {
 	}, {name: selectors.fields[field], value: input})
 }
 
+const approve = async title => {
+	const pool = new db()
+	await pool.query(`UPDATE article SET status='approved'`)
+}
+
 const newArticleByUser = async(status, title, username) => {
 	const {accounts} = scope.context
 	const user = accounts.find(acc => acc.username === username)
 	await login(user)
 	await newArticle(title)
-	await wait(6)
+	if(status === 'approved') await approve(title)
 	await logout()
 }
 
 const newArticleByAdmin = async title => {
 	await loginAsAdmin()
 	await newArticle(title)
-	await wait(4)
 	await logout()
 }
 
@@ -100,7 +105,7 @@ const visitArticle = async page => {
 
 const shouldSeeArticles = async count => {
 	const {currentPage} = scope.context
-	const results = await currentPage.$$('.card')
+	const results = await currentPage.$$('#articleCard')
 	if (results.length !== count)
 		throw new Error(`Page contains ${results.length} articles instead of ${count}`)
 }
