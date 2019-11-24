@@ -1,8 +1,6 @@
 
 'use strict'
 
-const faker = require('faker')
-
 const pages = require('../support/pages')
 const errors = require('../support/errors')
 const {buttons, links, checkboxes} = require('../support/selectors')

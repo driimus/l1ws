@@ -111,6 +111,7 @@ const shouldSeeArticles = async count => {
 }
 
 module.exports = {
+	newArticle,
 	newArticleByUser,
 	newArticleByAdmin,
 	newArticlesByAdmin,

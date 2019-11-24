@@ -24,6 +24,8 @@ defineStep('I/he update(s) the {string} (field)', _.replaceInput)
 
 defineStep('I/he press(es) {word}', {timeout: 15000}, _.pressButton)
 
+defineStep('I/he press(es) {string}', {timeout: 15000}, _.pressButton)
+
 defineStep('I/he check(s) {string}', _.pressCheckbox)
 
 defineStep('I/he click(s) {string}', _.clickLink)
