@@ -8,6 +8,7 @@ module.exports = {
 	},
 	buttons: {
 		search: '#search-btn',
+		edit: '#edit-btn',
 		submit: 'input[type="submit"]',
 		confirm: '#confirm-btn',
 		approved: 'button[value="approved"]',

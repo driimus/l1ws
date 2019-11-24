@@ -7,7 +7,13 @@ const db = require('../../db')
 const scope = require('../support/scope')
 const pages = require('../support/pages')
 const selectors = require('../support/selectors')
-const {wait, visitPage, typeInput, pressButton} = require('./implementations')
+const {
+	wait,
+	visitPage,
+	typeInput,
+	replaceInput,
+	pressButton
+} = require('./implementations')
 const {login, loginAsAdmin, logout} = require('./user_actions')
 
 const generateArticle = async title => {
@@ -38,9 +44,10 @@ const newArticle = async title => {
 	await typeText(article.content[0], 'content')
 	await currentPage.click('#add-image')
 	await typeText(article.content[1], 'image')
-	// await currentPage.waitForSelector('#confirm-btn')
-	await wait(0.1)
+	// await wait(0.1)
+	await currentPage.waitForSelector('#confirm-btn', {visible: true})
 	await currentPage.click('#confirm-btn', {clickCount: 2, delay: 5})
+	await currentPage.waitForSelector('#confirm-btn', {visible: false})
 	// await pressButton('confirm')
 	// await currentPage.click('#confirm-btn')
 	// await currentPage.click('#add-content')
@@ -96,25 +103,54 @@ const approveLatest = async() => {
 }
 
 const visitArticle = async page => {
+	const {currentPage} = scope.context
 	const url = `${ scope.host }${ page }`
-	const visit = await scope.context.currentPage.goto(url, {
+	const visit = await currentPage.goto(url, {
 		waitUntil: 'networkidle2'
 	})
 	return visit
 }
 
+const goToEdit = async() => {
+	const {currentPage} = scope.context
+	const url = `${ currentPage.url() }/edit`
+	const visit = await currentPage.goto(url, {
+		waitUntil: 'networkidle2'
+	})
+	return visit
+}
+
+const goToArticle = async() => {
+	const {length} = scope.context.articles
+	await visitArticle(pages.article(length))
+}
+
 const shouldSeeArticles = async count => {
 	const {currentPage} = scope.context
+	await wait(0.1)
 	const results = await currentPage.$$('#articleCard')
 	if (results.length !== count)
 		throw new Error(`Page contains ${results.length} articles instead of ${count}`)
 }
 
+const editArticle = async field => {
+	await pressButton('edit')
+	const {currentPage} = scope.context
+	await wait(0.3)
+	// await currentPage.waitForNavigation({waitUntil: 'networkidle2'})
+	await typeInput('So long ', 'summary')
+	await wait(0.1)
+	await pressButton('Add article')
+}
+
 module.exports = {
 	newArticle,
+	editArticle,
 	newArticleByUser,
 	newArticleByAdmin,
 	newArticlesByAdmin,
 	approveLatest,
+	goToArticle,
+	goToEdit,
 	shouldSeeArticles
 }

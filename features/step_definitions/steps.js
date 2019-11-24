@@ -19,7 +19,7 @@ defineStep('I/he wait(s) for {float} seconds', {timeout: 10000}, _.wait)
 
 defineStep('I/he type(s) {string} in (the) {string} (field)', _.typeInput)
 
-defineStep('I/he update(s) the {string} (field)', _.replaceInput)
+defineStep('I/he update(s) the {string}( field)', _.replaceInput)
 , {timeout: 10000}
 
 defineStep('I/he press(es) {word}', {timeout: 15000}, _.pressButton)

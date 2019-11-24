@@ -6,8 +6,7 @@ const errors = require('../support/errors')
 const {buttons, links, checkboxes} = require('../support/selectors')
 const scope = require('../support/scope')
 
-// Disable delay for CI builds.
-const slowMo = process.env.CI ? 0 : 40
+const slowMo = 40
 
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
 
@@ -19,8 +18,8 @@ const wait = async seconds => {
 const visitPage = async page => {
 	if (scope.browser === undefined)
 		scope.browser = await scope.driver.launch({
-			args: ['--disable-dev-shm-usage'],
-			headless: false,
+			args: ['--disable-dev-shm-usage', '--start-fullscreen'],
+			headless: true,
 			slowMo
 		})
 	const {currentPage} = scope.context
@@ -37,6 +36,7 @@ const visitPage = async page => {
 }
 
 const shouldSeeText = async text => {
+	await delay(100)
 	const {currentPage} = scope.context
 	const content = await currentPage.content()
 	if (content.includes(text) === false)
@@ -44,6 +44,7 @@ const shouldSeeText = async text => {
 }
 
 const shouldSeeError = async text => {
+	await delay(100)
 	const {currentPage} = scope.context
 	const content = await currentPage.content()
 	if (content.includes('Error Has Occurred') === false)
@@ -53,6 +54,7 @@ const shouldSeeError = async text => {
 }
 
 const shouldNotSeeText = async text => {
+	await delay(100)
 	const {currentPage} = scope.context
 	const content = await currentPage.content()
 	if (content.includes(text) === true)
@@ -76,6 +78,7 @@ const replaceInput = async field => {
 
 const pressButton = async button => {
 	const {currentPage} = scope.context
+	await delay(100)
 	return await currentPage.click(buttons[button])
 }
 
@@ -100,6 +103,7 @@ const shouldBeOnPage = async pageName => {
 }
 
 const shouldBeChecked = async checkbox => {
+	await delay(100)
 	const {currentPage} = scope.context
 	const elem = await currentPage.$(checkboxes[checkbox])
 	const value = await (await elem.getProperty('checked')).jsonValue()
