@@ -11,7 +11,6 @@ const {
 	wait,
 	visitPage,
 	typeInput,
-	replaceInput,
 	pressButton
 } = require('./implementations')
 const {login, loginAsAdmin, logout} = require('./user_actions')
@@ -143,9 +142,18 @@ const editArticle = async field => {
 	await pressButton('Add article')
 }
 
+const rateArticle = async value => {
+	const {currentPage} = scope.context
+	currentPage.on('dialog', async dialog => await dialog.dismiss())
+	const stars = await currentPage.$$('.fa-star')
+	const target = stars[5 - value]
+	await target.click()
+}
+
 module.exports = {
 	newArticle,
 	editArticle,
+	rateArticle,
 	newArticleByUser,
 	newArticleByAdmin,
 	newArticlesByAdmin,

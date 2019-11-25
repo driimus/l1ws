@@ -14,6 +14,8 @@ defineStep('I/he try/tries to edit the article', {timeout: 10000}, _.goToEdit)
 
 defineStep('I/he visit(s) the article', {timeout: 10000}, _.goToArticle)
 
+defineStep('I/he rate(s) the article {int} stars', {timeout: 10000}, _.rateArticle)
+
 defineStep('I/he edit(s) the {string}', {timeout: 15000}, _.editArticle)
 
 defineStep('a(n) {word} article titled {string}', {timeout: 10000}, _.newArticleByAdmin)

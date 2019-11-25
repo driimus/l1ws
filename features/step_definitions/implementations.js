@@ -110,6 +110,8 @@ const shouldBeChecked = async checkbox => {
 	if (value !== true) throw new Error(`Checkbox is not checked, instead: ${value}`)
 }
 
+const dismissAlert = async() => await wait(1)
+
 module.exports = {
 	visitPage,
 	shouldSeeText,
@@ -122,5 +124,6 @@ module.exports = {
 	pressCheckbox,
 	clickLink,
 	shouldBeOnPage,
-	shouldBeChecked
+	shouldBeChecked,
+	dismissAlert
 }

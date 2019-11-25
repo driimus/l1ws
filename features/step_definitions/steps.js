@@ -28,6 +28,8 @@ defineStep('I/he press(es) {string}', {timeout: 15000}, _.pressButton)
 
 defineStep('I/he check(s) {string}', _.pressCheckbox)
 
+defineStep('I/he dismiss(es) the alert', _.dismissAlert)
+
 defineStep('I/he click(s) {string}', _.clickLink)
 
 defineStep('I/he should be on the {string} page', {timeout: 10000}, _.shouldBeOnPage)
