@@ -17,6 +17,7 @@ const parsed = {
 
 /**
  * Retrieves all the articles with data containing the keyphrase.
+ * @memberof Article.prototype
  *
  * @async
  * @param {string} keyphrase - Phrase containing all the desired words.

@@ -5,6 +5,7 @@ const {isInt} = require('../utils')
 
 /**
  * Determines the time left until sending out a newsletter.
+ * @memberof Newsletter.prototype
  *
  * @async
  * @param {object} today - Current time.

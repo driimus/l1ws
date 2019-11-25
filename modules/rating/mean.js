@@ -8,6 +8,7 @@ const precision = 2
 
 /**
  * Retrieves the average of an article's ratings.
+ * @memberof Rating.prototype
  *
  * @async
  * @param {number} articleId - The ID of the target article.

@@ -15,16 +15,20 @@ defineStep('{string} should not be displayed', _.shouldNotSeeText)
 
 defineStep('a {string} error should be displayed', _.shouldSeeError)
 
-defineStep('I/he wait(s) for {float} seconds', {timeout: 10000}, _.wait)
+defineStep('I/he wait(s) for {float} second(s)', {timeout: 10000}, _.wait)
 
 defineStep('I/he type(s) {string} in (the) {string} (field)', _.typeInput)
 
-defineStep('I/he update(s) the {string} (field)', _.replaceInput)
+defineStep('I/he update(s) the {string}( field)', _.replaceInput)
 , {timeout: 10000}
 
 defineStep('I/he press(es) {word}', {timeout: 15000}, _.pressButton)
 
+defineStep('I/he press(es) {string}', {timeout: 15000}, _.pressButton)
+
 defineStep('I/he check(s) {string}', _.pressCheckbox)
+
+defineStep('I/he dismiss(es) the alert', _.dismissAlert)
 
 defineStep('I/he click(s) {string}', _.clickLink)
 

@@ -1,3 +1,7 @@
+/**
+ * Utilities module.
+ * @module utils
+ */
 
 'use strict'
 
@@ -43,6 +47,10 @@ const isInt = async(value, model) => {
 const emailPattern = new RegExp('^[a-zA-Z0-9.!#$%&\'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]' +
 	'{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$')
 
+/** Validate email address format.
+ * @param {string} email - The address to test against.
+ * @return {boolean} Whether the address is an email.
+ */
 const isEmail = email => emailPattern.test(email)
 
 module.exports = {isId, isInt, isEmail}

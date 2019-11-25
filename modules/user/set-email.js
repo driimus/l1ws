@@ -5,10 +5,11 @@ const {isId} = require('../utils')
 
 /**
  * Updates the email address of an user account.
+ * @memberof User.prototype
  *
+ * @async
  * @param {number} id - Unique ID of the target account.
  * @param {string} newEmail - Updated e-mail address.
- * @async
  * @returns {boolean} Whether the email was successfully changed.
  */
 const setEmail = async function(id, newEmail) {

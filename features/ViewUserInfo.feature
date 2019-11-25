@@ -2,7 +2,7 @@ Feature: User account information
 
   Scenario: View Admin account information
     Given the admin logs in
-    And he waits for 3.5 seconds
+    And he waits for 1 second
     When he visits the 'account details' page
     Then 'Admin' should be displayed
 

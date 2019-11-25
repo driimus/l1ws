@@ -6,6 +6,7 @@ const mime = require('mime-types')
 
 /**
  * Saves a new profile picture for the user.
+ * @private
  *
  * @param {string} username - User the picture will be linked to.
  * @param {object} image - The submitted profile picture.
@@ -26,6 +27,7 @@ const uploadPicture = async(username, image) => {
 
 /**
  * Checks that an account with the given username exists.
+ * @private
  *
  * @async
  * @param {object} user - The module handing the check.
@@ -45,6 +47,7 @@ const userExsits = async(user, username) => {
 
 /**
  * Updates the user's avatar.
+ * @memberof User.prototype
  *
  * @async
  * @param {string} username - User the picture will be linked to.

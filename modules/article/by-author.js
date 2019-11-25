@@ -3,6 +3,7 @@
 
 /**
  * Compares two user IDs for equality.
+ * @memberof Article.prototype
  *
  * @async
  * @param {number} thisId - The ID to compare.

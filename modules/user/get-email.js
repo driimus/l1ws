@@ -5,9 +5,10 @@ const {isId} = require('../utils')
 
 /**
  * Retrieves the email address of an user account.
+ * @memberof User.prototype
  *
- * @param {number} id - Unique ID of the target account.
  * @async
+ * @param {number} id - Unique ID of the target account.
  * @returns {string} The account's email address.
  */
 const getEmail = async function(id) {

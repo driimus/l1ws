@@ -3,6 +3,7 @@
 
 /**
  * Confirms status of an admin account.
+ * @memberof User.prototype
  *
  * @param {string} username - Identifier of the admin.
  * @async

@@ -1,12 +1,12 @@
 
 'use strict'
 
-const {BeforeAll, Before, After, AfterAll} = require('cucumber')
-const scope = require('./support/scope')
+const {BeforeAll, After, AfterAll} = require('cucumber')
+const scope = require('./scope')
 
-const app = require('../')
-const db = require('../db')
-const User = require('../modules/user')
+const app = require('../../')
+const db = require('../../db')
+const User = require('../../modules/user')
 
 const defaultPort = 8080
 
@@ -30,13 +30,9 @@ BeforeAll(async() => {
 	scope.app = app.listen(scope.port)
 })
 
-// Before(async() => {
-// 	const pool = new db()
-// })
-
 After(async() => {
 	const pool = new db()
-	await pool.query('TRUNCATE TABLE users')
+	await pool.query('DROP TABLE IF EXISTS users,article')
 	await makeAdmin(scope.admin)
 	let session = scope.context.currentPage
 	// Exit if there is no session.

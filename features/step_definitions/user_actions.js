@@ -11,6 +11,8 @@ const login = async user => {
 	await pressButton('submit')
 }
 
+const logout = async() => await visitPage('logout')
+
 const loginAsAdmin = async() =>	await login(scope.admin)
 
 const loginAsUser = async() => {
@@ -92,6 +94,8 @@ const hasNewAvatar = async() => {
 module.exports = {
 	loginAsAdmin,
 	loginAsUser,
+	login,
+	logout,
 	newAccount,
 	fillRegisterForm,
 	fillLoginFormWith,

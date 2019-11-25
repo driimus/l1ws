@@ -5,6 +5,7 @@ const {isId} = require('../utils')
 
 /**
  * Retrieves a single article submission.
+ * @memberof Article.prototype
  *
  * @async
  * @param {number} id - The ID of the requested article.

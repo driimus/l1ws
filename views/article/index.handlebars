@@ -64,12 +64,19 @@
 					</div>
 					{{#if isAuthor }}
 					<div class="col-xs-12 col-md-4 p-0 my-md-auto ml-md-auto pb-2">
-						<a class="btn btn-block btn-dark rounded-pill" href="/article/{{id}}/edit">Edit</a>
+						<a
+							id="edit-btn"
+							class="btn btn-block btn-dark rounded-pill"
+							href="/article/{{id}}/edit"
+						>Edit</a
+						>
 					</div>
 					{{/if}}
 				</div>
 				<p class="font-italic text-muted">{{data.summary}}</p>
-				<img src="/{{data.thumbnail}}" class="rounded">
+				<div class="thumbnail rounded">
+					<img src="/{{data.thumbnail}}">
+				</div>
 				{{#each data.content}}
 					{{#isText this}}
 						<p class="content my-sm-1 my-md-2" style="white-space: pre-line;">{{value}}</p>
