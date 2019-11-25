@@ -18,7 +18,7 @@ Feature: User account information
 
   Scenario: User subscribes to the newsletter
     Given he checks 'subscribe'
-    And he waits for 3 seconds
+    And he waits for 1 second
     When he presses submit
     Then 'details were updated' should be displayed
     And 'subscribed' should be checked

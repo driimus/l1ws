@@ -1,12 +1,12 @@
 
 'use strict'
 
-const {BeforeAll, Before, After, AfterAll} = require('cucumber')
-const scope = require('./support/scope')
+const {BeforeAll, After, AfterAll} = require('cucumber')
+const scope = require('./scope')
 
-const app = require('../')
-const db = require('../db')
-const User = require('../modules/user')
+const app = require('../../')
+const db = require('../../db')
+const User = require('../../modules/user')
 
 const defaultPort = 8080
 
@@ -29,10 +29,6 @@ BeforeAll(async() => {
 	scope.port = process.env.PORT || defaultPort
 	scope.app = app.listen(scope.port)
 })
-
-// Before(async() => {
-// 	const pool = new db()
-// })
 
 After(async() => {
 	const pool = new db()
