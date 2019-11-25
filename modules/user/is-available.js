@@ -15,6 +15,7 @@ const FIELDS = {
 }
 /**
  * Checks whether the value is available for a given user attribute.
+ * @memberof User.prototype
  *
  * @async
  * @param {string} field - Name of the user attribute.

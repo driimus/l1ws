@@ -5,6 +5,7 @@ const {isId} = require('../utils')
 
 /**
  * Retrieves an individual article rating.
+ * @memberof Rating.prototype
  *
  * @async
  * @param {number} userId - The ID of the rating's author.

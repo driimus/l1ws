@@ -14,6 +14,7 @@ const isValid = async rating => {
 
 /**
  * Creates or updates an individual article rating.
+ * @memberof Rating.prototype
  *
  * @async
  * @param {number} userId - The ID of the user giving the rating.

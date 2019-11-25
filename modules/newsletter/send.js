@@ -8,6 +8,7 @@ const noArticlesErr = Error('no articles to send via newsletter')
 
 /**
  * Filters out the list of recipients.
+ * @private
  *
  * @async
  * @param {string|Array} recipients - List of newsletter recipients.
@@ -26,6 +27,7 @@ const isString = str => typeof str === 'string' && str.length !== 0
 
 /**
  * Filters out the list of artciles.
+ * @private
  *
  * @async
  * @param {string|Array} artciles - List of newsletter artciles.
@@ -45,6 +47,7 @@ const filteredArticles = async articles => {
 
 /**
  * Sends a filled out newsletter template to a target user.
+ * @memberof Newsletter.prototype
  *
  * @async
  * @param {string|Array} recipients - List of newsletter recipients.

@@ -3,6 +3,7 @@
 
 /**
  * Retrieves the email address of users subscribed to the newsletter.
+ * @memberof User.prototype
  *
  * @async
  * @returns {string|Array} The list of email addresses for subscribed users.

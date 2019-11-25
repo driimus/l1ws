@@ -3,9 +3,9 @@
 
 /**
  * Retrieves a summary of the articles published over the last 24 hours.
+ * @memberof Article.prototype
  *
  * @async
- *
  * @returns {object[]} List of the latest publications' summaries as objects.
  */
 const getRecent = async function() {

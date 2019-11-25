@@ -3,9 +3,11 @@
 
 /**
  * Checks whether the user corresponds to an admin account.
+ * @memberof User.prototype
  *
- * @param {string} username - Identifier of the user.
  * @async
+ * @param {string} username - Identifier of the user.
+ * @returns {boolean} Whether the account belongs to an admin.
  */
 const isAdmin = async function(username) {
 	try {

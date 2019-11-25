@@ -14,6 +14,7 @@ const isStatus = status => {
 
 /**
  * Updates the newsletter subscription status of an user account.
+ * @memberof User.prototype
  * @async
  * @param {number} id - Unique ID of the target account.
  * @param {boolean} newStatus - New subscription status.

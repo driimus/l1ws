@@ -7,6 +7,7 @@ const {saltRounds} = require('../../config')[process.env.NODE_ENV]
 
 /**
  * Creates a new user with the given credentials.
+ * @memberof User.prototype
  *
  * @async
  * @param {string} username - Identifier of the user.
