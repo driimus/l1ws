@@ -10,6 +10,8 @@ defineStep('the user {word} has an account', {timeout: 15000}, _.newAccount)
 
 defineStep('I/he log(s) in', {timeout: 10000}, _.loginAsUser)
 
+defineStep('I/he log(s) out', {timeout: 10000}, _.logout)
+
 defineStep('I/he enter(s) the wrong {word}', {timeout: 10000}, _.fillLoginFormWith)
 
 defineStep('the admin logs in', {timeout: 10000}, _.loginAsAdmin)

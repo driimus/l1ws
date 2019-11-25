@@ -36,7 +36,7 @@ BeforeAll(async() => {
 
 After(async() => {
 	const pool = new db()
-	await pool.query('TRUNCATE TABLE users')
+	await pool.query('DROP TABLE IF EXISTS users,article')
 	await makeAdmin(scope.admin)
 	let session = scope.context.currentPage
 	// Exit if there is no session.
