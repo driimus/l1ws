@@ -71,6 +71,8 @@
     "jsdoc-route-plugin": "^0.1.0",
     "markdownlint": "^0.17.2",
     "nodemon": "^1.19.4",
+    "pixelmatch": "^5.1.0",
+    "pngjs": "^3.4.0",
     "puppeteer": "^2.0.0"
   }
 }
