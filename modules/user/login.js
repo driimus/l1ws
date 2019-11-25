@@ -5,10 +5,11 @@ const bcrypt = require('bcrypt-promise')
 
 /**
  * Authenticates an existing user.
+ * @memberof User.prototype
  *
+ * @async
  * @param {string} username - Identifier of the user.
  * @param {string} password - The plaintext password to be checked.
- * @async
  * @returns {number} ID of the user that logged in.
  */
 const login = async function(username, password) {

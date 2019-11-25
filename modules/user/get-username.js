@@ -5,6 +5,7 @@ const {isId} = require('../utils')
 
 /**
  * Retrieves the username of an user account.
+ * @memberof User.prototype
  *
  * @async
  * @param {number} id - Unique ID of the target account.

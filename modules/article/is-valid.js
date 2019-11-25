@@ -3,9 +3,10 @@
 
 /**
  * Checks whether an Article object has all the required fields.
+ * @memberof Article.prototype
  *
- * @param {object} article - The article object to check.
  * @async
+ * @param {object} article - The article object to check.
  * @returns {boolean} Whether the article is valid or not.
  */
 const isValid = async(article) => {

@@ -5,9 +5,10 @@ const {isId} = require('../utils')
 
 /**
  * Retrieves the status of an article submission.
+ * @memberof Article.prototype
  *
- * @param {number} id - The ID of the requested article.
  * @async
+ * @param {number} id - The ID of the requested article.
  * @returns {string} Current submission status (approved/pending).
  */
 const getStatus = async function(id) {

@@ -14,6 +14,6 @@ Feature: Edit existing article
     Given he logs in
     And he visits the article
     When he edits the 'summary'
-    And he waits for 3 seconds
+    And he waits for 1 second
     Then 'successfully edited' should be displayed
     But 'All the fish' should not be displayed

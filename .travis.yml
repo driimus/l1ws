@@ -69,6 +69,16 @@ deploy:
     on:
       branch: master
 
+    # Deploy documentation on University GitHub
+  - provider: pages
+    local_dir: docs/jsdoc
+    skip_cleanup: true
+    github_token: $UNI_GITHUB_TOKEN
+    repo: petrec/petrec
+    github_url: github.coventry.ac.uk
+    on:
+      branch: master
+
 after_deploy:
   # Update Codecov unit test coverage report
   - codecov --token=$CODECOV_TOKEN

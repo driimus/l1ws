@@ -3,6 +3,7 @@
 
 /**
  * Retrieves all the articles in reverse chronological order.
+ * @memberof Article.prototype
  *
  * @async
  * @param {boolean} showHidden - Flag for filtering articles by status.

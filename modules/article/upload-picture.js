@@ -7,9 +7,10 @@ const path = require('path')
 
 /**
  * Saves a new article thumbnail to the filesystem.
+ * @memberof Article.prototype
  *
- * @param {object} img - The submitted image.
  * @async
+ * @param {object} img - The submitted image.
  * @returns {string} Relative path to the public uploaded image.
  */
 const uploadPicture = async img => {

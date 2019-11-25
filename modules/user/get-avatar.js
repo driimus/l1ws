@@ -5,6 +5,7 @@ const {isId} = require('../utils')
 
 /**
  * Retrieves the path to an user's avatar image.
+ * @memberof User.prototype
  *
  * @async
  * @param {number} id - Unique ID of the target user.

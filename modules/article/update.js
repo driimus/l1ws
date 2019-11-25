@@ -17,11 +17,12 @@ const wasModified = async(article, newArticle) =>
 
 /**
  * Updates an existing article submission.
+ * @memberof Article.prototype
  *
+ * @async
  * @param {number} userId - The ID of the update's requester.
  * @param {number} articleId - The ID of the original article.
  * @param {object} newArticle - The updated article object.
- * @async
  * @returns {boolean} Whether the process was successful.
  */
 const update = async function(userId, articleId, newArticle) {

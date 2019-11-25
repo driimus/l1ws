@@ -3,10 +3,11 @@
 
 /**
  * Saves a new article submission.
+ * @memberof Article.prototype
  *
+ * @async
  * @param {number} userId - The ID of the article's author.
  * @param {object} article - The article object submitted.
- * @async
  * @returns {boolean} If the process was successful.
  */
 const add = async function(userId, article) {
