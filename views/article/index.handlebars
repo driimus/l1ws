@@ -74,7 +74,9 @@
 					{{/if}}
 				</div>
 				<p class="font-italic text-muted">{{data.summary}}</p>
-				<img src="/{{data.thumbnail}}" class="rounded">
+				<div class="thumbnail rounded">
+					<img src="/{{data.thumbnail}}">
+				</div>
 				{{#each data.content}}
 					{{#isText this}}
 						<p class="content my-sm-1 my-md-2" style="white-space: pre-line;">{{value}}</p>
