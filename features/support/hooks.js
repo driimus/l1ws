@@ -32,7 +32,7 @@ BeforeAll(async() => {
 	scope.app = app.listen(scope.port)
 })
 
-After(async(scenario) => {
+After({timeout: 20000}, async(scenario) => {
 	const pool = new db()
 	await pool.query('DROP TABLE IF EXISTS users,article,rating')
 	await makeAdmin(scope.admin)

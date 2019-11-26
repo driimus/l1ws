@@ -1,8 +1,6 @@
 
 'use strict'
 
-const faker = require('faker')
-
 const db = require('../../db')
 const scope = require('../support/scope')
 const pages = require('../support/pages')
@@ -18,12 +16,12 @@ const {login, loginAsAdmin, logout} = require('./user_actions')
 const generateArticle = async title => {
 	const article = {
 		headline: title,
-		summary: faker.lorem.sentence(),
-		thumbnail: faker.image.imageUrl(),
+		summary: 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
+		thumbnail: 'https://w.wallhaven.cc/full/p8/wallhaven-p8gj8j.jpg',
 		content: [
-			faker.lorem.paragraph(),
-			faker.image.imageUrl(),
-			faker.lorem.paragraph()
+			'Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.',
+			'https://w.wallhaven.cc/full/13/wallhaven-13gom9.jpg',
+			'Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet.'
 		]
 	}
 	if(scope.context.articles) scope.context.articles.push(article)
@@ -89,7 +87,7 @@ const newArticleByAdmin = async title => {
 const newArticlesByAdmin = async count => {
 	await loginAsAdmin()
 	for(const a in count)
-		await newArticle(faker.lorem.sentence())
+		await newArticle('Lorem ipsum dolor sit amet, consectetuer adipiscing elit.')
 	await logout()
 }
 

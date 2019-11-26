@@ -26,9 +26,15 @@ const snap = {
 	ref: label => `snapshots/ref/${label}.png`
 }
 
+async function removeDate(page) {
+	await page.evaluate(() => {
+		(document.querySelectorAll('#date') || []).forEach(el => el.remove())
+	})
+}
+
 module.exports = async label => {
-	console.log(label)
 	const {currentPage} = scope.context
+	await removeDate(currentPage)
 	await currentPage.screenshot({path: snap.compare(label), fullPage: true})
 
 	// If there's no reference screenshot, save the taken screenshot as the new reference
