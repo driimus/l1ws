@@ -20,15 +20,13 @@
 		<div class="container col-xs-12 col-md-6 pb-5">
 			<h1 class="display-2 mt-2">Recent news</h1>
 			{{#each articles}}
-			<a href="article/{{id}}" style="text-decoration: none">
 				<div class="card bg-dark text-white mb-3">
 					{{!-- No thumbnail for newsletter. --}}
 					<div class="card-body">
-						<h5 class="card-title">{{data.headline}}</h5>
-						<p class="card-text">{{data.summary}}</p>
+						<h5 class="card-title">{{this.headline}}</h5>
+						<p class="card-text">{{this.summary}}</p>
 					</div>
 				</div>
-			</a>
 			{{/each}}
 		</div>
 		<script type="text/javascript" src="/jquery.js"></script>
