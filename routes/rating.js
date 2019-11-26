@@ -15,7 +15,7 @@ const router = new Router({prefix: '/article'})
  * The published article full-view page.
  *
  * @name Published Article
- * @route {GET} /:id
+ * @route {GET} /article/:id
  */
 router.get('/:id([0-9]{1,})', async ctx => {
 	let data = await getUserInfo(ctx.session)
@@ -42,7 +42,7 @@ router.get('/:id([0-9]{1,})', async ctx => {
  * The secure article rating update script.
  *
  * @name Rate Article
- * @route {POST} /:id/rate
+ * @route {POST} /article/:id/rate
  * @authentication This route requires cookie-based authentication.
  */
 router.post('/:id([0-9]{1,})/rate', koaBody, async ctx => {
