@@ -3,6 +3,7 @@
 
 const {BeforeAll, After, AfterAll} = require('cucumber')
 const scope = require('./scope')
+const snapshot = require('./snapshot')
 
 const app = require('../../')
 const db = require('../../db')
@@ -25,15 +26,18 @@ BeforeAll(async() => {
 		password: 'secretpass',
 		email: 'owner@admin.com'
 	}
+	scope.snapshotCount = 1
 	// Run the server on a custom port.
 	scope.port = process.env.PORT || defaultPort
 	scope.app = app.listen(scope.port)
 })
 
-After(async() => {
+After({timeout: 20000}, async(scenario) => {
 	const pool = new db()
-	await pool.query('DROP TABLE IF EXISTS users,article')
+	await pool.query('DROP TABLE IF EXISTS users,article,rating')
 	await makeAdmin(scope.admin)
+
+	await snapshot(scenario.pickle.name)
 	let session = scope.context.currentPage
 	// Exit if there is no session.
 	if (scope.browser === undefined || session === undefined) return
