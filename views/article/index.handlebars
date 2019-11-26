@@ -75,7 +75,7 @@
 				</div>
 				<p class="font-italic text-muted">{{data.summary}}</p>
 				<div class="thumbnail rounded">
-					<img src="/{{data.thumbnail}}">
+					<img src="{{toUrl data.thumbnail}}">
 				</div>
 				{{#each data.content}}
 					{{#isText this}}
