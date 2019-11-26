@@ -41,17 +41,11 @@ const newArticle = async title => {
 	await typeText(article.content[0], 'content')
 	await currentPage.click('#add-image')
 	await typeText(article.content[1], 'image')
-	// await wait(0.1)
 	await currentPage.waitForSelector('#confirm-btn', {visible: true})
 	await currentPage.click('#confirm-btn', {clickCount: 2, delay: 5})
 	await currentPage.waitForSelector('#confirm-btn', {visible: false})
-	// await pressButton('confirm')
-	// await currentPage.click('#confirm-btn')
-	// await currentPage.click('#add-content')
-	// await typeText(article.content[2], 'content')
 	await wait(0.1)
 	await pressButton('Add article')
-	// await pressButton('Add article')
 }
 
 const typeText = async(input, field) => {
@@ -134,7 +128,6 @@ const editArticle = async field => {
 	await pressButton('edit')
 	const {currentPage} = scope.context
 	await wait(0.3)
-	// await currentPage.waitForNavigation({waitUntil: 'networkidle2'})
 	await typeInput('So long ', 'summary')
 	await wait(0.1)
 	await pressButton('Add article')
