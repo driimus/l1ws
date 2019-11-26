@@ -32,14 +32,13 @@ BeforeAll(async() => {
 	scope.app = app.listen(scope.port)
 })
 
-After(async() => {
+After(async(scenario) => {
 	const pool = new db()
-	await pool.query('DROP TABLE IF EXISTS users,article')
+	await pool.query('DROP TABLE IF EXISTS users,article,rating')
 	await makeAdmin(scope.admin)
 
+	await snapshot(scenario.pickle.name)
 	let session = scope.context.currentPage
-	await snapshot(scope.snapshotCount, session)
-	scope.snapshotCount += 1
 	// Exit if there is no session.
 	if (scope.browser === undefined || session === undefined) return
 	const cookies = await session.cookies()
