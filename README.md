@@ -7,6 +7,10 @@
 
 ## [Assignment Topic](https://github.coventry.ac.uk/web/assignment-topics/blob/master/11%20Local%20News.md)
 
+## Code Coverage Grid Graph for the modules directory
+
+![](https://codecov.io/gh/driimus/340ctcw/branch/master/graphs/tree.svg?token=BseGtb6kXn)
+
 ## [Live demo](http://cwlocalnews-env.zg6je4v2an.eu-west-2.elasticbeanstalk.com/) - hosted on AWS
 
 ## Docs
