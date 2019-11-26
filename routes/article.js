@@ -15,7 +15,7 @@ const router = new Router({prefix: '/article'})
  * Redirect to article submission endpoint.
  *
  * @name New Article Shortcut
- * @route {GET} /
+ * @route {GET} /article
  */
 router.get('/', async ctx => ctx.redirect('/article/new'))
 
@@ -23,7 +23,7 @@ router.get('/', async ctx => ctx.redirect('/article/new'))
  * The secure article submission page.
  *
  * @name New Article
- * @route {GET} /new
+ * @route {GET} /article/new
  * @authentication This route requires cookie-based authentication.
  */
 router.get('/new', async ctx => {
@@ -42,7 +42,7 @@ router.get('/new', async ctx => {
  * The secure article submission processor.
  *
  * @name New Article
- * @route {POST} /new
+ * @route {POST} /article/new
  * @authentication This route requires cookie-based authentication.
  */
 router.post('/new', koaBody, async ctx => {
@@ -63,7 +63,7 @@ router.post('/new', koaBody, async ctx => {
  * The secure article image upload script.
  *
  * @name Upload Pictures
- * @route {POST} /upload
+ * @route {POST} /article/upload
  * @authentication This route requires cookie-based authentication.
  */
 router.post('/upload', koaBody, async ctx => {
@@ -84,7 +84,7 @@ router.post('/upload', koaBody, async ctx => {
  * The secure article status update endpoint.
  *
  * @name Review Article
- * @route {POST} /:id
+ * @route {POST} /article/:id
  * @authentication This route requires cookie-based authentication as admin.
  */
 router.post('/:id([0-9]{1,})', koaBody, async ctx => {
@@ -107,7 +107,7 @@ router.post('/:id([0-9]{1,})', koaBody, async ctx => {
  * The secure article editing page.
  *
  * @name Published Article
- * @route {GET} /:id/edit
+ * @route {GET} /article/:id/edit
  * @authentication This route requires cookie-based authentication.
  */
 router.get('/:id([0-9]{1,})/edit', async ctx => {
@@ -130,7 +130,7 @@ router.get('/:id([0-9]{1,})/edit', async ctx => {
  * The secure edited article controller.
  *
  * @name Edit Article
- * @route {POST} /:id/edit
+ * @route {POST} /article/:id/edit
  * @authentication This route requires cookie-based authentication.
  */
 router.post('/:id([0-9]{1,})/edit', koaBody, async ctx => {
@@ -145,7 +145,7 @@ router.post('/:id([0-9]{1,})/edit', koaBody, async ctx => {
 			content: JSON.parse(content),
 			thumbnail
 		})
-		return ctx.redirect(`/?msg=your article was successfully edited`)
+		return ctx.redirect('/?msg=your article was successfully edited')
 	} catch(err) {
 		data.message = err.message
 		await ctx.render('error', data)

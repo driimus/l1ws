@@ -5,11 +5,11 @@
 [![BCH compliance](https://bettercodehub.com/edge/badge/driimus/340ctcw?branch=master&token=3fe4a078e4b128f4c9399facabd3d763186b5bd0)](https://bettercodehub.com/)
 <br>A local news site where users can log in an post local news and events.
 
-## [Assignment Topic](https://github.coventry.ac.uk/web/assignment-topics/blob/master/11%20Local%20News.md)
+## [Assignment Topic](https://github.coventry.ac.uk/web/assignment-topics/blob/master/12%20Local%20News.md)
 
 ## Code Coverage Grid Graph for the modules directory
 
-![](https://codecov.io/gh/driimus/340ctcw/branch/master/graphs/tree.svg?token=BseGtb6kXn)
+![Grid Graph](https://codecov.io/gh/driimus/340ctcw/branch/master/graphs/tree.svg?token=BseGtb6kXn)
 
 ## [Live demo](http://cwlocalnews-env.zg6je4v2an.eu-west-2.elasticbeanstalk.com/) - hosted on AWS
 
