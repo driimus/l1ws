@@ -11,7 +11,7 @@
 
 ## Docs
 
-- [University GitHub](https://github.coventry.ac.uk/pages/petrec/petrec/)
+- [University GitHub](https://github.coventry.ac.uk/pages/340CT-1920SEPJAN/petrec/)
 - [Normal GitHub](https://driimus.github.io/340ctcw/)
 
 ## Quick links
