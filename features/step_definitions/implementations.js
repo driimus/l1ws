@@ -7,7 +7,7 @@ const {buttons, links, checkboxes} = require('../support/selectors')
 const scope = require('../support/scope')
 
 const slowMo = 40
-
+const w = 1366, h = 768
 const delay = duration => new Promise(resolve => setTimeout(resolve, duration))
 
 const wait = async seconds => {
@@ -18,7 +18,7 @@ const wait = async seconds => {
 const visitPage = async page => {
 	if (scope.browser === undefined)
 		scope.browser = await scope.driver.launch({
-			args: ['--disable-dev-shm-usage', '--start-fullscreen'],
+			args: ['--disable-dev-shm-usage', `--window-size=${w},${h}`],
 			headless: true,
 			slowMo
 		})
@@ -26,7 +26,7 @@ const visitPage = async page => {
 	if (currentPage === undefined) {
 		scope.context.currentPage = await scope.browser.newPage()
 		// Use native viewport size for the Chromebook.
-		scope.context.currentPage.setViewport( {width: 1366, height: 768} )
+		scope.context.currentPage.setViewport( {width: w, height: h} )
 	}
 	const url = `${ scope.host }${ pages[page] }`
 	const visit = await scope.context.currentPage.goto(url, {

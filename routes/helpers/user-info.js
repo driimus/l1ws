@@ -17,7 +17,12 @@ const getAuthor = async id => {
 const getUserInfo = async session => {
 	const user = await new User()
 	const {authorised: loggedIn, username, avatar} = session
-	const isAdmin = await user.isAdmin(username)
+	let isAdmin = false
+	try {
+		isAdmin = await user.isAdmin(username)
+	} catch(e) {
+		//skip
+	}
 	return {loggedIn, username, avatar, isAdmin}
 }
 
