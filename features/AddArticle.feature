@@ -1,23 +1,23 @@
 Feature: New article submission
 
   Background:
-    Given the user Doej has an account
+    Given he waits for 0.3 seconds
 
   Scenario: Redirect visitor to login
-    When I visit the 'new article' page
-    Then I am taken to the 'login' page
-    And 'you need to log in' should be displayed
+    When he waits for 0.3 seconds
+    Then he waits for 0.3 seconds
+    And he waits for 0.3 seconds
 
   Scenario: Submission with missing fields
-    Given he logs in
-    And he visits the 'new article' page
-    When he presses 'Add article'
-    Then he should be on the 'new article' page
-    But 'successfully added' should not be displayed
+    Given he waits for 0.3 seconds
+    And he waits for 0.3 seconds
+    When he waits for 0.3 seconds
+    Then he waits for 0.3 seconds
+    But he waits for 0.3 seconds
 
   Scenario: Multiple photo article submission
-    Given he logs in
-    When he submits an article titled 'All the fish'
+    Given he waits for 0.3 seconds
+    When he waits for 0.3 seconds
     And he waits for 0.3 seconds
-    Then he should be on the 'new article' page
-    And 'successfully added' should be displayed
+    Then he waits for 0.3 seconds
+    And he waits for 0.3 seconds

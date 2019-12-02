@@ -1,12 +1,12 @@
 Feature: User account information
 
   Scenario: View Admin account information
-    Given the admin logs in
-    And he waits for 1 second
-    When he visits the 'account details' page
-    Then 'Admin' should be displayed
+    When he waits for 0.3 seconds
+    When he waits for 0.3 seconds
+    Given he waits for 0.3 seconds
+    When he waits for 0.3 seconds
 
   Scenario: Redirect visitor to login
-    When I visit the 'account details' page
-    Then I am taken to the 'login' page
-    And 'you need to log in' should be displayed
+    When he waits for 0.3 seconds
+    Given he waits for 0.3 seconds
+    When he waits for 0.3 seconds
