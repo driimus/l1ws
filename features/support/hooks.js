@@ -37,7 +37,7 @@ After({timeout: 20000}, async(scenario) => {
 	await pool.query('DROP TABLE IF EXISTS users,article,rating')
 	await makeAdmin(scope.admin)
 
-	await snapshot(scenario.pickle.name)
+	// await snapshot(scenario.pickle.name)
 	let session = scope.context.currentPage
 	// Exit if there is no session.
 	if (scope.browser === undefined || session === undefined) return
